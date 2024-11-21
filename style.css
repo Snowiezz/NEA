@@ -2,23 +2,22 @@ body {
   margin:0px;
   padding:0px;
   background-color:#ffffff;
-  font-family: Verdana, sans-serif;
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 .logo {
-  font-size: 30px;
+  font-size: 35px;
   font-weight: bold;
   color: #ffffff;
   text-decoration:none;
-  margin-left: 5px;
+  margin-left: 40px;
 
 }
-
 .header { 
   margin: 0px;
   padding: 0px;
   height: 70px;
   color: rgb(247, 245, 245);
-  background-color: #04aa6d;
+  background-color: #00774b;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,15 +29,15 @@ body {
   margin-right: 50px;
   padding: 10px;
   border-radius: 10px;
-  font-weight: 900;
+  font-weight: 500;
 }
 .home {
   margin-left: auto;
 }
 
 .searcher:hover,.comparer:hover,.home:hover{
-  background-color: #ffffff;
-  color: #04aa6d;
+  background-color: #009c63;
+  color: #ffffff;
 }
 .signlog {
   padding: 10px;
