@@ -53,13 +53,16 @@ body {
   margin: 0;
 } 
 .searchbar {
-  background-color: #00eb95;
+  background-color: #ffffff;
   border: 2px solid #ececec;
-  border-radius: 10px;
-  margin-right: 100px;
-  width: 300px;
+  border-radius: 20px;
+  margin-left: 150px;
+  width: 1000px;
   text-decoration: white;
-  padding: 12px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 50px;
   
 
 }
@@ -67,7 +70,10 @@ body {
   outline: none;
 }
 .searchbar::placeholder {
-  color: white;
+  color: #747474;
+  font-weight: 500;
+  font-size: 18px;
+  padding-left: 10px;
 }
 
 
