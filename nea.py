@@ -1,6 +1,7 @@
 import tkinter as tk 
-from tkinter import * 
+from tkinter import font 
 import tkinter.ttk as ttk
+
 #functions
 def openpage(current,page): 
     current.place_forget() 
@@ -9,6 +10,7 @@ def openpage(current,page):
 def back(current,page): 
     current.place_forget() 
     page.place(relwidth=1,relheight=1) 
+
 
 
  
@@ -41,10 +43,10 @@ class loginpage(tk.Frame):
         self.greeting = Greeting(self)
         self.greeting.place(relx=0.5,y=100,anchor="center")
         #frame
-        self.form_frame = tk.Frame(self,bg="white",padx= 20,pady=20,relief="sunken",highlightbackground="black",highlightthickness="2")
+        self.form_frame = tk.Frame(self,bg="white",padx= 20,pady=20,relief="sunken",highlightbackground="dark gray",highlightthickness="2")
         self.form_frame.place(relx=0.5,rely=0.45,anchor="center")
         #log in
-        self.logintext = tk.Label(self.form_frame,text="Login", font=("Tahoma",47,"bold"),fg="green",bg="white")
+        self.logintext = tk.Label(self.form_frame,text="Login", font=("Tahoma",47,"bold"),fg="black",bg="white")
         self.logintext.pack(pady=25)
         #email box
         self.email_text = tk.Label(self.form_frame, text="Email Address", font=("tahoma",15), fg = "black", bg= "white", ) 
@@ -62,18 +64,26 @@ class loginpage(tk.Frame):
         self.password_form = tk.Entry(self.password_form_frame, font= ("Tahoma",20,"normal"), show="*",insertbackground = "grey", highlightcolor = "red", width = 35,fg='black',bg='white' )
         self.password_form.pack(padx=0,pady=0)
         #forgotpassword
-        self.forgotpassword = tk.Label(self.password_form_frame,text="Forgot Password?",fg="gray",bg="white",font=("Tahoma",15,"underline"),cursor="hand1")
+        self.forgotpassword = tk.Label(self.password_form_frame,text="Forgot Password?",fg="gray",bg="white",font=("Tahoma",10,"underline"),cursor="hand2")
         self.forgotpassword.pack(anchor="nw",padx=0,pady=0)
 
-        self.loginbtn = tk.Button(self.form_frame, text="Login",font=("Tahoma",12,"bold"),fg="white",bd=0,relief="flat",cursor="hand2",highlightbackground="Green",bg="white",width=30,height=2)
+        self.loginbtn = tk.Button(self.form_frame, text="Login",font=("Tahoma",12,"bold"),fg="white",bd=0,relief="flat",cursor="hand2",bg="green",width=35,height=2)
+        self.loginbtn.bind("<Button-1>",lambda event:loginchecker())
         self.loginbtn.pack()
         #signupchecker
-        self.signupcheck = tk.Label(self,text="New to Unipicker?",fg="black",bg="white",font=("Tahoma",15))
-        self.signupcheck.place(rely=0.7,relx=0.47,anchor="center")
+        self.signupcheck = tk.Label(self,text="New to Unipicker?",fg="black",bg="white",font=("Tahoma",12))
+        self.signupcheck.place(rely=0.68,relx=0.47,anchor="center")
         
-        self.signupcheck1 = tk.Label(self,text="Join Now",fg="Blue",bg="White",font=("Tahoma",15,"underline"))
-        self.signupcheck1.place(rely=0.7,anchor="center",relx=0.53)
+        self.signupcheck1 = tk.Label(self,text="Join Now",fg="Blue",bg="White",font=("Tahoma",12,"underline"),cursor="hand2")
+        self.signupcheck1.place(rely=0.68,anchor="center",relx=0.53)
         self.signupcheck1.bind("<Button-1>",lambda event:openpage(self,signuppage))
+
+        #password checker
+
+        def loginchecker():
+            password = self.password_form.get()
+            if password == "testing12":    
+                openpage(self,signuppage)   
 
 class signuppage(tk.Frame):
     def __init__(self,parent):
@@ -87,6 +97,7 @@ class signuppage(tk.Frame):
         self.greeting.place(relx=0.5,y=100,anchor="center")
 
 
+
 class app(tk.Tk):
     def __init__(self,parent):
         super().__init__(parent)
@@ -97,7 +108,7 @@ class app(tk.Tk):
         self.page = basepage(self)
         basepage.pack(fill="both", expand=True)
         
-        
+
     
 
 
