@@ -26,11 +26,19 @@ class NEA(ctk.CTk):
                 self.greeting.place(relx=0.5,y=100,anchor="center")
                 self.configure(fg_color="white")
 
-                self.form_frame = ctk.CTkFrame(self,fg_color="white",padx= 20,pady=20,relief="sunken",highlightbackground="dark gray",highlightthickness="2")
+                self.bglabel = Image.open("")
+
+                self.form_frame = ctk.CTkFrame(self,border_color="gray",fg_color="white",border_width=1)
                 self.form_frame.place(relx=0.5,rely=0.45,anchor="center")
                 #log in
-                self.logintext = ctk.CTkLabel(self.form_frame,text="Login", font=("Tahoma",47,"bold"),fg="black",bg="white")
-                self.logintext.pack(pady=25)
+                self.logintext = ctk.CTkLabel(self.form_frame,text="Login", font=("Tahoma",80,"bold"),text_color="black",fg_color="white")
+                self.logintext.pack(pady=50,padx=50)
+                #email box
+                self.email_text = ctk.CTkLabel(self.form_frame, text="Email Address", font=("tahoma",15), text_color="black", fg_color= "white") 
+                self.email_text.pack(anchor="w",padx=5)
+
+                self.email_form = ctk.CTkEntry(self.form_frame, font= ("Tahoma",20,"normal"), width=550,height=50 ) 
+                self.email_form.pack(padx=5)
 
 
 
