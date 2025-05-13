@@ -18,22 +18,25 @@ class NEA(ctk.CTk):
 
         class Greeting(ctk.CTkLabel):
             def __init__(self,parent):
-                super().__init__(parent,text="UniPicker",text_color="green",font=("tahoma",70,"bold"))
-        class basepage(ctk.CTkFrame):
+                super().__init__(parent,text="UniPicker",text_color="green",font=("tahoma",90,"bold"))
+        class loginpage(ctk.CTkFrame):
             def __init__(self,parent):
                 super().__init__(parent)
                 self.greeting = Greeting(self)
                 self.greeting.place(relx=0.5,y=100,anchor="center")
                 self.configure(fg_color="white")
 
+                self.form_frame = ctk.CTkFrame(self,fg_color="white",padx= 20,pady=20,relief="sunken",highlightbackground="dark gray",highlightthickness="2")
+                self.form_frame.place(relx=0.5,rely=0.45,anchor="center")
+                #log in
+                self.logintext = ctk.CTkLabel(self.form_frame,text="Login", font=("Tahoma",47,"bold"),fg="black",bg="white")
+                self.logintext.pack(pady=25)
 
-                self.login = ctk.CTkButton(self, text = "Log In", fg_color = "green", font = ("tahoma",35))
-                self.login.place(relx = 0.5,y = 400,anchor = "center") 
-                self.signup = ctk.CTkButton(self, text = "Sign up", fg_color= "green", font = ("tahoma",35),corner_radius=12 )
-                self.signup.place(relx = 0.5,y = 600,anchor = "center")
 
 
-        self.page = basepage(self)
+
+
+        self.page = loginpage(self)
         self.page.pack(fill="both", expand=True) 
         
         
