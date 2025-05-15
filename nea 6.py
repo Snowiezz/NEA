@@ -1,7 +1,9 @@
 import customtkinter as ctk
-
+from PIL import Image
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("green")
+
+
 class NEA(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -18,16 +20,18 @@ class NEA(ctk.CTk):
 
         class Greeting(ctk.CTkLabel):
             def __init__(self,parent):
-                super().__init__(parent,text="UniPicker",text_color="white",font=("tahoma",60,"bold"))
+                logo_image = ctk.CTkImage(light_image=Image.open("Untitled-2.png"),size=(350,250))
+                super().__init__(parent,image=logo_image,text="")
         class loginpage(ctk.CTkFrame):
             def __init__(self,parent):
                 super().__init__(parent)
-                self.greeting = Greeting(self)
-                #self.greeting.place(relx=0.1,y=80,anchor="w")
                 self.configure(fg_color="#25995e")
+                self.greeting = Greeting(self)
+                self.greeting.pack(pady=20)
+
 
                 self.form_frame = ctk.CTkFrame(self,border_color="#2b2b2b",fg_color="white",corner_radius=12)
-                self.form_frame.place(relx=0.5,rely=0.5,anchor="center")
+                self.form_frame.place(relx=0.5,rely=0.53,anchor="center")
                 #log in
                 self.logintext_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
                 self.logintext_frame.pack(pady=50,padx=20,anchor="w")
@@ -57,10 +61,14 @@ class NEA(ctk.CTk):
                 self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), show="*",text_color='white',fg_color='lightgrey',width=500,height=50,border_width=0,corner_radius=10)
                 self.password_form.pack(padx=15,pady=0)
 
-                self.buttonandsignupcheck = ctk.CTkFrame(self.form_frame,fg_color="white")
-                self.buttonandsignupcheck.pack()
 
-                self.loginbtn = ctk.CTkButton(self.buttonandsignupcheck, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,)
+
+
+
+
+                self.signupcheckform = ctk.CTkFrame(self.form_frame, fg_color="white")
+                self.signupcheckform.pack(anchor="center",pady=0, padx=10)
+                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,command=lambda: openpage(self,signuppage))
                 self.loginbtn.pack(pady=20,padx=0)
 
 
@@ -74,6 +82,30 @@ class NEA(ctk.CTk):
                 self.signupcheck.pack(side="left", padx=5)
                 self.signupcheck1.pack(side="left", padx=5)
                 self.signupcheckform.pack(pady=10,anchor="center")
+                self.signupcheck.pack(side="left", padx=2, anchor="center")
+                self.signupcheck1.pack(side="left", padx=2, anchor="center")
+                
+                
+                
+                
+            
+        class signuppage(ctk.CTkFrame):
+            def __init__(self,parent):
+                super.__init__(parent)
+                self.configure(fg_color="#25995e")
+                self.greeting = Greeting(self)
+                self.greeting.pack(pady=20)
+                
+                
+                
+                
+        def openpage(current,page): 
+            current.place_forget() 
+            page.place(relwidth=1, relheight=1) 
+
+        def back(current,page): 
+            current.place_forget() 
+            page.place(relwidth=1,relheight=1) 
 
 
 
