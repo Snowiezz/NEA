@@ -1,7 +1,9 @@
 import customtkinter as ctk
-
+from PIL import Image
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("green")
+
+
 class NEA(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -18,16 +20,18 @@ class NEA(ctk.CTk):
 
         class Greeting(ctk.CTkLabel):
             def __init__(self,parent):
-                super().__init__(parent,text="UniPicker",text_color="white",font=("tahoma",60,"bold"))
+                logo_image = ctk.CTkImage(light_image=Image.open("Untitled-2.png"),size=(350,250))
+                super().__init__(parent,image=logo_image,text="")
         class loginpage(ctk.CTkFrame):
             def __init__(self,parent):
                 super().__init__(parent)
-                self.greeting = Greeting(self)
-                #self.greeting.place(relx=0.1,y=80,anchor="w")
                 self.configure(fg_color="#25995e")
+                self.greeting = Greeting(self)
+                self.greeting.pack(pady=20)
+
 
                 self.form_frame = ctk.CTkFrame(self,border_color="#2b2b2b",fg_color="white",corner_radius=12)
-                self.form_frame.place(relx=0.5,rely=0.5,anchor="center")
+                self.form_frame.place(relx=0.5,rely=0.53,anchor="center")
                 #log in
                 self.logintext_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
                 self.logintext_frame.pack(pady=50,padx=20,anchor="w")
@@ -64,13 +68,35 @@ class NEA(ctk.CTk):
 
                 self.signupcheckform = ctk.CTkFrame(self.form_frame, fg_color="white")
                 self.signupcheckform.pack(anchor="center",pady=0, padx=10)
-                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,)
+                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,command=lambda: openpage(self,signuppage))
                 self.loginbtn.pack(pady=20,padx=0)
 
                 self.signupcheck = ctk.CTkLabel(self.signupcheckform, text="New to Unipicker?", text_color="black", fg_color="white", font=("Tahoma",16))
                 self.signupcheck1 = ctk.CTkLabel(self.signupcheckform, text="Join Now", text_color="green", fg_color="white", font=("Tahoma",16,"bold"), cursor="hand2")
                 self.signupcheck.pack(side="left", padx=2, anchor="center")
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
+                
+                
+                
+                
+            
+        class signuppage(ctk.CTkFrame):
+            def __init__(self,parent):
+                super.__init__(parent)
+                self.configure(fg_color="#25995e")
+                self.greeting = Greeting(self)
+                self.greeting.pack(pady=20)
+                
+                
+                
+                
+        def openpage(current,page): 
+            current.place_forget() 
+            page.place(relwidth=1, relheight=1) 
+
+        def back(current,page): 
+            current.place_forget() 
+            page.place(relwidth=1,relheight=1) 
 
 
 
