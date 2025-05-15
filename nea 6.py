@@ -20,7 +20,7 @@ class NEA(ctk.CTk):
 
         class Greeting(ctk.CTkLabel):
             def __init__(self,parent):
-                logo_image = ctk.CTkImage(light_image=Image.open("Untitled-2.png"),size=(350,250))
+                logo_image = ctk.CTkImage(light_image=Image.open("8653395.png"),size=(350,250))
                 super().__init__(parent,image=logo_image,text="")
         class loginpage(ctk.CTkFrame):
             def __init__(self,parent):
