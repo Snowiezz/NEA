@@ -101,23 +101,24 @@ class NEA(ctk.CTk):
 
 
                 self.signuptext = ctk.CTkLabel(self.form_frame,text="Sign Up", font=("Tahoma",40,"bold"),text_color="black",fg_color="white")
-                self.signuptext.pack(anchor="center")
+                self.signuptext.pack(anchor="center",pady=20)
 
                 self.name_text = ctk.CTkLabel(self.form_frame, text="Name", font=("tahoma",18), text_color="black", fg_color= "white") 
-                self.name_text.pack(anchor="w",padx=28)
+                self.name_text.pack(anchor="w",padx=20)
                 self.name_form = ctk.CTkEntry(self.form_frame, font= ("Tahoma",20,"normal"), width=500,height=50,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
                 self.name_form.pack(padx=15)
 
-
-                self.email_text = ctk.CTkLabel(self.form_frame, text="Email Address", font=("tahoma",18), text_color="black", fg_color= "white") 
-                self.email_text.pack(anchor="w",padx=28)
-                self.email_form = ctk.CTkEntry(self.form_frame, font= ("Tahoma",20,"normal"), width=500,height=50,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
+                self.email_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
+                self.email_frame.pack(anchor="w",pady=10,padx=0,fill="x")
+                self.email_text = ctk.CTkLabel(self.email_frame, text="Email Address", font=("tahoma",18), text_color="black", fg_color= "white") 
+                self.email_text.pack(anchor="w",padx=20)
+                self.email_form = ctk.CTkEntry(self.email_frame, font= ("Tahoma",20,"normal"), width=500,height=50,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
                 self.email_form.pack(padx=15)
 
 
 
                 self.password_form_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
-                self.password_form_frame.pack(anchor="w",pady=30,padx=0,fill="x")
+                self.password_form_frame.pack(anchor="w",pady=10,padx=0,fill="x")
                 self.innerpassword_frame = ctk.CTkFrame(self.password_form_frame,fg_color="white")
                 self.innerpassword_frame.pack(anchor="w",fill = "x")
                 self.password_text = ctk.CTkLabel(self.innerpassword_frame,text="Password", font=("tahoma",18),text_color="black",fg_color="white")
@@ -136,8 +137,8 @@ class NEA(ctk.CTk):
                 self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10)
                 self.loginbtn.pack(pady=20,padx=0)
 
-                self.signupcheck = ctk.CTkLabel(self.signupcheckform, text="New to Unipicker?", text_color="black", fg_color="white", font=("Tahoma",16))
-                self.signupcheck1 = ctk.CTkLabel(self.signupcheckform, text="Join Now", text_color="green", fg_color="white", font=("Tahoma",16,"bold"), cursor="hand2")
+                self.signupcheck = ctk.CTkLabel(self.signupcheckform, text="Already have an account?", text_color="black", fg_color="white", font=("Tahoma",16))
+                self.signupcheck1 = ctk.CTkLabel(self.signupcheckform, text="Sign in", text_color="green", fg_color="white", font=("Tahoma",16,"bold"), cursor="hand2")
                 self.signupcheck1.bind("<Button-1>",lambda event: openpage(self,self.controller.signuppage))
                 self.signupcheck.pack(side="left", padx=2, anchor="center")
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
