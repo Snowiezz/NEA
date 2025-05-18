@@ -2,11 +2,13 @@ import customtkinter as ctk
 from PIL import Image
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("green")
-def openpage(current,page): 
-    current.place_forget() 
-    page.place(relwidth=1, relheight=1) 
+
+
 
 class NEA(ctk.CTk):
+    def openpage(self,current,page): 
+        current.place_forget() 
+        page.place(relwidth=1, relheight=1) 
     def __init__(self):
         super().__init__()
         self.state('zoomed')          # standards across all pages
@@ -34,6 +36,7 @@ class NEA(ctk.CTk):
                 self.controller = controller
         #        self.greeting = Greeting(self)
         #        self.greeting.pack(pady=20)
+
 
 
                 self.form_frame = ctk.CTkFrame(self,border_color="#2b2b2b",fg_color="white",corner_radius=12)
@@ -66,6 +69,7 @@ class NEA(ctk.CTk):
 
                 self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), show="*",text_color='white',fg_color='lightgrey',width=500,height=50,border_width=0,corner_radius=10)
                 self.password_form.pack(padx=15,pady=0)
+        
 
 
 
@@ -74,14 +78,21 @@ class NEA(ctk.CTk):
 
                 self.signupcheckform = ctk.CTkFrame(self.form_frame, fg_color="white")
                 self.signupcheckform.pack(anchor="center",pady=0, padx=10)
-                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10)
+                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,command=self.passwordchecker)
                 self.loginbtn.pack(pady=20,padx=0)
 
                 self.signupcheck = ctk.CTkLabel(self.signupcheckform, text="New to Unipicker?", text_color="black", fg_color="white", font=("Tahoma",16))
                 self.signupcheck1 = ctk.CTkLabel(self.signupcheckform, text="Join Now", text_color="green", fg_color="white", font=("Tahoma",16,"bold"), cursor="hand2")
-                self.signupcheck1.bind("<Button-1>",lambda event: openpage(self,self.controller.signuppage))
+                self.signupcheck1.bind("<Button-1>",lambda event: self.controller.openpage(self,self.controller.signuppage))
                 self.signupcheck.pack(side="left", padx=2, anchor="center")
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
+            def passwordchecker(self):
+                if self.password_form.get() == "build":
+                    self.controller.openpage(self,self.controller.otherpage)
+                    print("fix")
+
+
+                
                 
                 
                 
@@ -101,7 +112,7 @@ class NEA(ctk.CTk):
 
 
                 self.signuptext = ctk.CTkLabel(self.form_frame,text="Sign Up", font=("Tahoma",40,"bold"),text_color="black",fg_color="white")
-                self.signuptext.pack(anchor="center",pady=20)
+                self.signuptext.pack(anchor="w",pady=40,padx=20)
 
                 self.name_text = ctk.CTkLabel(self.form_frame, text="Name", font=("tahoma",18), text_color="black", fg_color= "white") 
                 self.name_text.pack(anchor="w",padx=20)
@@ -118,7 +129,7 @@ class NEA(ctk.CTk):
 
 
                 self.password_form_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
-                self.password_form_frame.pack(anchor="w",pady=10,padx=0,fill="x")
+                self.password_form_frame.pack(anchor="w",pady=0,padx=10,fill="x")
                 self.innerpassword_frame = ctk.CTkFrame(self.password_form_frame,fg_color="white")
                 self.innerpassword_frame.pack(anchor="w",fill = "x")
                 self.password_text = ctk.CTkLabel(self.innerpassword_frame,text="Password", font=("tahoma",18),text_color="black",fg_color="white")
@@ -139,12 +150,18 @@ class NEA(ctk.CTk):
 
                 self.signupcheck = ctk.CTkLabel(self.signupcheckform, text="Already have an account?", text_color="black", fg_color="white", font=("Tahoma",16))
                 self.signupcheck1 = ctk.CTkLabel(self.signupcheckform, text="Sign in", text_color="green", fg_color="white", font=("Tahoma",16,"bold"), cursor="hand2")
-                self.signupcheck1.bind("<Button-1>",lambda event: openpage(self,self.controller.signuppage))
+                self.signupcheck1.bind("<Button-1>",lambda event: self.controller.openpage(self,self.controller.loginpage))
                 self.signupcheck.pack(side="left", padx=2, anchor="center")
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
+        class otherpage(ctk.CTkFrame):
+            def __init__(self,parent,controller):
+                super().__init__(parent)
+                self.configure(fg_color="#25995e")
+                self.controller = controller
+        self.otherpage = otherpage(parent=self,controller=self)
         self.loginpage = loginpage(parent=self,controller=self)
         self.signuppage = signuppage(parent=self,controller=self)
-        self.loginpage.pack(fill="both", expand=True)
+        self.loginpage.place(relwidth=1,relheight=1)
                 
                 
                 
