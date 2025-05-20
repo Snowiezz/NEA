@@ -1,8 +1,11 @@
 import customtkinter as ctk
-from PIL import Image
+from tkinter import messagebox #confirmation 
+from PIL import Image #logo
+import re # for valid email pattern
+import sqlite3 #db
+
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("green")
-import sqlite3
 
 
 
@@ -24,7 +27,7 @@ class NEA(ctk.CTk):
         self.cursor = self.db.cursor()
 
         self.cursor.execute(""" CREATE TABLE iF NOT EXISTS users(id integer PRIMARY
-KEY AUTOINCREMENT, username text NOT NULL, password text NOT NULL); """) #creates table, autoincrements every time new data added
+KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NULL); """) #creates table, autoincrements every time new data added
         self.db.commit()
 
  
@@ -40,12 +43,14 @@ KEY AUTOINCREMENT, username text NOT NULL, password text NOT NULL); """) #create
         #        logo_image = ctk.CTkImage(light_image=Image.open("Untitled-2.png"),size=(350,250))
         #        super().__init__(parent,image=logo_image,text="")
         class loginpage(ctk.CTkFrame):
-            def __init__(self,parent,controller):
+            def __init__(self,db,cursor,parent,controller):
                 super().__init__(parent)
                 self.configure(fg_color="#25995e")
                 self.controller = controller
           #     self.greeting = Greeting(self)
         #       self.greeting.pack(pady=20)
+                self.db = db
+                self.cursor = cursor
 
 
 
@@ -89,7 +94,7 @@ KEY AUTOINCREMENT, username text NOT NULL, password text NOT NULL); """) #create
 
                 self.signupcheckform = ctk.CTkFrame(self.form_frame, fg_color="white")
                 self.signupcheckform.pack(anchor="center",pady=0, padx=10)
-                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,command=self.passwordchecker)
+                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,command=self.accountchecker)
                 self.loginbtn.pack(pady=20,padx=0)
 
                 self.signupcheck = ctk.CTkLabel(self.signupcheckform, text="New to Unipicker?", text_color="black", fg_color="white", font=("Tahoma",16))
@@ -97,10 +102,25 @@ KEY AUTOINCREMENT, username text NOT NULL, password text NOT NULL); """) #create
                 self.signupcheck1.bind("<Button-1>",lambda event: self.controller.openpage(self,self.controller.signuppage))
                 self.signupcheck.pack(side="left", padx=2, anchor="center")
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
-            def passwordchecker(self):
-                if self.email_form.get() == "test":
-                    self.controller.openpage(self,self.controller.otherpage)
-                    print("fix")
+                
+            def accountchecker(self):
+                emailcheck = self.email_form.get()
+                passcheck = self.password_form.get()
+                self.cursor.execute("SELECT Password FROM users WHERE Email = ?", (emailcheck, )) # finds email
+                result = self.cursor.fetchone() # stores results
+                if result: # if a result is found
+                    stored_password = result[0]
+                    if stored_password == passcheck:
+                        messagebox.showinfo("Login", "Login successful")
+                        self.controller.openpage(self,self.controller.otherpage)
+                    else:
+                        print("fail")
+                        messagebox.showinfo("Error", "Incorrect email or password")
+                if not result: # if no result is found
+                    messagebox.showinfo("Error", "Incorrect email or password")
+            
+
+
                 
 
 
@@ -167,17 +187,28 @@ KEY AUTOINCREMENT, username text NOT NULL, password text NOT NULL); """) #create
                 self.signupcheck1.bind("<Button-1>",lambda event: self.controller.openpage(self,self.controller.loginpage))
                 self.signupcheck.pack(side="left", padx=2, anchor="center")
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
+            def validemail(email):
+                pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'  # checks if valid email follows email format
+                return re.match(pattern, email) is not None # returns true if email is valid
             def signup_user(self):
+                newname = self.name_form.get()
                 newuser = self.email_form.get()
                 newpass = self.password_form.get()
-                print("connected")
-                if not newuser or not newpass: # checks fields arent empty
-                    print("Username or Password cannot be blank")
+                if not newuser or not newpass or not newname: # checks fields arent empty
+                    print("Name/Username/Password cannot be blank")
                     return
+                if not self.validemail():
+                    messagebox.showinfo("Error", "Invalid email format")
                 else:
-                    self.cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (newuser, newpass))
-                    self.db.commit()
-                    print("user registered success!")
+                    self.cursor.execute("SELECT Email FROM users WHERE Email = ?", (newuser, )) # finds email
+                    result = self.cursor.fetchone() # stores results
+                    if result: # if a result is found
+                        messagebox.showinfo("Error", "Email already exists")
+                        return
+                    else:
+                        self.cursor.execute("INSERT INTO users (Name,Email,Password) VALUES (?, ?, ?)", (newname,newuser, newpass))
+                        self.db.commit()
+                        messagebox.showinfo("Success!","user registered success!")
 
         class otherpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
@@ -185,7 +216,7 @@ KEY AUTOINCREMENT, username text NOT NULL, password text NOT NULL); """) #create
                 self.configure(fg_color="#25995e")
                 self.controller = controller
         self.otherpage = otherpage(parent=self,controller=self)
-        self.loginpage = loginpage(parent=self,controller=self)
+        self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
         self.loginpage.place(relwidth=1,relheight=1)
                 
