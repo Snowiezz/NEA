@@ -59,32 +59,28 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 self.form_frame.place(relx=0.5,rely=0.53,anchor="center")
                 #log in
                 self.logintext_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
-                self.logintext_frame.pack(pady=50,padx=20,anchor="w")
+                self.logintext_frame.pack(pady=30,padx=20,anchor="w")
 
                 self.logintext = ctk.CTkLabel(self.logintext_frame,text="Login", font=("Tahoma",40,"bold"),text_color="black",fg_color="white")
                 self.logintext.pack(anchor="w")
                 self.logintext1 = ctk.CTkLabel(self.logintext_frame,text="Sign in to continue.", font=("Tahoma",14),text_color="gray",fg_color="white")
                 self.logintext1.pack(anchor="w")
                 #email box
-                self.email_text = ctk.CTkLabel(self.form_frame, text="Email Address", font=("tahoma",18), text_color="black", fg_color= "white") 
-                self.email_text.pack(anchor="w",padx=28)
 
-                self.email_form = ctk.CTkEntry(self.form_frame, font= ("Tahoma",20,"normal"), placeholder_text="Email Address",width=500,height=50,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
+                self.email_form = ctk.CTkEntry(self.form_frame, font= ("Tahoma",20,"normal"), placeholder_text="Email Address",width=500,height=70,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
                 self.email_form.pack(padx=15)
                         #password box
 
 
                 self.password_form_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
                 self.password_form_frame.pack(anchor="w",pady=30,padx=10,fill="x")
-                self.innerpassword_frame = ctk.CTkFrame(self.password_form_frame,fg_color="white")
-                self.innerpassword_frame.pack(anchor="w",fill = "x")
-                self.forgotpassword = ctk.CTkLabel(self.innerpassword_frame,text="Forgot Password?",text_color="green",fg_color="white",font=("Tahoma",15,"underline"),cursor="hand2")
-                self.forgotpassword.pack(anchor="e",side="right",padx=20,pady=0)
-                self.password_text = ctk.CTkLabel(self.innerpassword_frame,text="Password", font=("tahoma",18),text_color="black",fg_color="white")
-                self.password_text.pack(anchor="w",side="left",padx=20)
 
-                self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), placeholder_text="Password",show="*",text_color='black',fg_color='lightgrey',width=500,height=50,border_width=0,corner_radius=10)
+
+
+                self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), placeholder_text="Password",show="*",text_color='black',fg_color='lightgrey',width=500,height=70,border_width=0,corner_radius=10)
                 self.password_form.pack(padx=15,pady=0)
+                self.forgotpassword = ctk.CTkLabel(self.password_form_frame,text="Forgot Password?",text_color="green",fg_color="white",font=("Tahoma",15,"underline"),cursor="hand2")
+                self.forgotpassword.pack(anchor="e",side="right",padx=20,pady=0)
         
 
 
@@ -155,8 +151,8 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
 
                 self.email_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
                 self.email_frame.pack(anchor="w",pady=10,padx=0,fill="x")
-                self.email_text = ctk.CTkLabel(self.email_frame, text="Email Address", font=("tahoma",18), text_color="black", fg_color= "white") 
-                self.email_text.pack(anchor="w",padx=20)
+                #self.email_text = ctk.CTkLabel(self.email_frame, text="Email Address", font=("tahoma",18), text_color="black", fg_color= "white") 
+                #self.email_text.pack(anchor="w",padx=20)
                 self.email_form = ctk.CTkEntry(self.email_frame, font= ("Tahoma",20,"normal"), width=500,height=50,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
                 self.email_form.pack(padx=15)
 
@@ -166,8 +162,8 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 self.password_form_frame.pack(anchor="w",pady=0,padx=10,fill="x")
                 self.innerpassword_frame = ctk.CTkFrame(self.password_form_frame,fg_color="white")
                 self.innerpassword_frame.pack(anchor="w",fill = "x")
-                self.password_text = ctk.CTkLabel(self.innerpassword_frame,text="Password", font=("tahoma",18),text_color="black",fg_color="white")
-                self.password_text.pack(anchor="w",side="left",padx=20)
+                #self.password_text = ctk.CTkLabel(self.innerpassword_frame,text="Password", font=("tahoma",18),text_color="black",fg_color="white")
+                #self.password_text.pack(anchor="w",side="left",padx=20)
 
                 self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), show="*",text_color='white',fg_color='lightgrey',width=500,height=50,border_width=0,corner_radius=10)
                 self.password_form.pack(padx=15,pady=0)
