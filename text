@@ -1,0 +1,15 @@
+
+ ###   def verify_login(self):
+        email = self.email_form.get()
+        password = self.password_form.get()
+
+        with sqlite3.connect("login.db") as db:
+            cursor = db.cursor()
+            cursor.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
+            user = cursor.fetchone()
+
+        if user:
+            print("Login successful")
+            self.controller.openpage(self, SomeOtherPage)  # Navigate to another page
+        else:
+            print("Invalid credentials")  ###    

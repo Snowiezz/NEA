@@ -3,22 +3,29 @@ from PIL import Image
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("green")
 import sqlite3
-with sqlite3.connect("login.db") as db:
-    cursor = db.cursor()
-cursor.execute(""" CREATE TABLE OF NOT EXISTS users(id integer PRIMARY
-KEY AUTOINCREMENT, username text NOT NULL, passowrd text NOT NULL); """)
+
+
 
 class NEA(ctk.CTk):
     def openpage(self,current,page): 
         current.place_forget() 
-        page.place(relwidth=1, relheight=1) 
+        page.place(relwidth=1, relheight=1)
+
+
     def __init__(self):
         super().__init__()
         self.state('zoomed')          # standards across all pages
         self.geometry('1920x1080')
         self.title("UniPicker")
         self.configure(fg_color="white")
-        
+
+        #connect to db
+        self.db = sqlite3.connect("login.db")
+        self.cursor = self.db.cursor()
+
+        self.cursor.execute(""" CREATE TABLE iF NOT EXISTS users(id integer PRIMARY
+KEY AUTOINCREMENT, username text NOT NULL, password text NOT NULL); """) #creates table, autoincrements every time new data added
+        self.db.commit()
 
  
 
@@ -28,20 +35,18 @@ class NEA(ctk.CTk):
         self.after(500, lambda: self.attributes('-topmost', False)) #macos
         
 
-        class Greeting(ctk.CTkLabel):
-            def __init__(self,parent):
-                logo_image = ctk.CTkImage(light_image=Image.open("Untitled-2.png"),size=(350,250))
-                super().__init__(parent,image=logo_image,text="")
+        #class Greeting(ctk.CTkLabel):
+        #    def __init__(self,parent):
+        #        logo_image = ctk.CTkImage(light_image=Image.open("Untitled-2.png"),size=(350,250))
+        #        super().__init__(parent,image=logo_image,text="")
         class loginpage(ctk.CTkFrame):
-            def verifylogin(self):
-                emailcheck = self.email_form.get()
-                passcheck = self.password_form.get()
             def __init__(self,parent,controller):
                 super().__init__(parent)
                 self.configure(fg_color="#25995e")
                 self.controller = controller
-                self.greeting = Greeting(self)
-                self.greeting.pack(pady=20)
+          #     self.greeting = Greeting(self)
+        #       self.greeting.pack(pady=20)
+
 
 
 
@@ -96,6 +101,7 @@ class NEA(ctk.CTk):
                 if self.email_form.get() == "test":
                     self.controller.openpage(self,self.controller.otherpage)
                     print("fix")
+                
 
 
                 
@@ -105,12 +111,14 @@ class NEA(ctk.CTk):
                 
             
         class signuppage(ctk.CTkFrame):
-            def __init__(self,parent,controller):
+            def __init__(self,db,cursor,parent,controller):
                 super().__init__(parent)
                 self.controller = controller
                 self.configure(fg_color="#25995e")
-                self.greeting = Greeting(self)
-                self.greeting.pack(pady=20)
+                #self.greeting = Greeting(self)
+                #self.greeting.pack(pady=20)
+                self.db = db 
+                self.cursor = cursor
                                 
                                 
                 self.form_frame = ctk.CTkFrame(self,border_color="#2b2b2b",fg_color="white",corner_radius=12)
@@ -151,7 +159,7 @@ class NEA(ctk.CTk):
 
                 self.signupcheckform = ctk.CTkFrame(self.form_frame, fg_color="white")
                 self.signupcheckform.pack(anchor="center",pady=0, padx=10)
-                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10)
+                self.loginbtn = ctk.CTkButton(self.form_frame, text="Sign Up",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,command=self.signup_user)
                 self.loginbtn.pack(pady=20,padx=0)
 
                 self.signupcheck = ctk.CTkLabel(self.signupcheckform, text="Already have an account?", text_color="black", fg_color="white", font=("Tahoma",16))
@@ -159,6 +167,18 @@ class NEA(ctk.CTk):
                 self.signupcheck1.bind("<Button-1>",lambda event: self.controller.openpage(self,self.controller.loginpage))
                 self.signupcheck.pack(side="left", padx=2, anchor="center")
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
+            def signup_user(self):
+                newuser = self.email_form.get()
+                newpass = self.password_form.get()
+                print("connected")
+                if not newuser or not newpass: # checks fields arent empty
+                    print("Username or Password cannot be blank")
+                    return
+                else:
+                    self.cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (newuser, newpass))
+                    self.db.commit()
+                    print("user registered success!")
+
         class otherpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
                 super().__init__(parent)
@@ -166,7 +186,7 @@ class NEA(ctk.CTk):
                 self.controller = controller
         self.otherpage = otherpage(parent=self,controller=self)
         self.loginpage = loginpage(parent=self,controller=self)
-        self.signuppage = signuppage(parent=self,controller=self)
+        self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
         self.loginpage.place(relwidth=1,relheight=1)
                 
                 
@@ -194,21 +214,7 @@ class loginpage(ctk.CTkFrame):
 
         self.login_button = ctk.CTkButton(self, text="Login", command=self.verify_login)
         self.login_button.pack()
-
-    def verify_login(self):
-        email = self.email_form.get()
-        password = self.password_form.get()
-
-        with sqlite3.connect("login.db") as db:
-            cursor = db.cursor()
-            cursor.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
-            user = cursor.fetchone()
-
-        if user:
-            print("Login successful")
-            self.controller.openpage(self, SomeOtherPage)  # Navigate to another page
-        else:
-            print("Invalid credentials")        
+  
         
         
         
