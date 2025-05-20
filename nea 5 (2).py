@@ -73,7 +73,7 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
 
 
                 self.password_form_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
-                self.password_form_frame.pack(anchor="w",pady=30,padx=10,fill="x")
+                self.password_form_frame.pack(anchor="w",pady=20,padx=10,fill="x")
 
 
 
@@ -88,10 +88,11 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
 
 
 
+
+                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=500,height=70,corner_radius=10,command=self.accountchecker)
+                self.loginbtn.pack(pady=0,padx=0)
                 self.signupcheckform = ctk.CTkFrame(self.form_frame, fg_color="white")
-                self.signupcheckform.pack(anchor="center",pady=0, padx=10)
-                self.loginbtn = ctk.CTkButton(self.form_frame, text="Login",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,command=self.accountchecker)
-                self.loginbtn.pack(pady=20,padx=0)
+                self.signupcheckform.pack(anchor="center",pady=15, padx=10)
 
                 self.signupcheck = ctk.CTkLabel(self.signupcheckform, text="New to Unipicker?", text_color="black", fg_color="white", font=("Tahoma",16))
                 self.signupcheck1 = ctk.CTkLabel(self.signupcheckform, text="Join Now", text_color="green", fg_color="white", font=("Tahoma",16,"bold"), cursor="hand2")
@@ -139,44 +140,43 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                                 
                 self.form_frame = ctk.CTkFrame(self,border_color="#2b2b2b",fg_color="white",corner_radius=12)
                 self.form_frame.place(relx=0.5,rely=0.53,anchor="center")
+ 
+                self.entryform_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
+                self.entryform_frame.pack(pady=20,padx=0)
+                self.signuptext_frame = ctk.CTkFrame(self.entryform_frame,fg_color="white") #signuptext is in entry form so padding of entryform doesnt affect signuptext
+                self.signuptext_frame.pack(pady=15,padx=20,anchor="w")
+
+                self.signuptext = ctk.CTkLabel(self.signuptext_frame,text="Sign Up", font=("Tahoma",40,"bold"),text_color="black",fg_color="white")
+                self.signuptext.pack(anchor="w")
+                self.signuptext1 = ctk.CTkLabel(self.signuptext_frame,text="Sign Up to continue.", font=("Tahoma",14),text_color="gray",fg_color="white")
+                self.signuptext1.pack(anchor="w")
 
 
-                self.signuptext = ctk.CTkLabel(self.form_frame,text="Sign Up", font=("Tahoma",40,"bold"),text_color="black",fg_color="white")
-                self.signuptext.pack(anchor="w",pady=40,padx=20)
+                self.name_form = ctk.CTkEntry(self.entryform_frame, font= ("Tahoma",20,"normal"),placeholder_text="Name" ,width=500,height=70,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
+                self.name_form.pack(padx=15,pady=10)
 
-                self.name_text = ctk.CTkLabel(self.form_frame, text="Name", font=("tahoma",18), text_color="black", fg_color= "white") 
-                self.name_text.pack(anchor="w",padx=20)
-                self.name_form = ctk.CTkEntry(self.form_frame, font= ("Tahoma",20,"normal"), width=500,height=50,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
-                self.name_form.pack(padx=15)
 
-                self.email_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
-                self.email_frame.pack(anchor="w",pady=10,padx=0,fill="x")
-                #self.email_text = ctk.CTkLabel(self.email_frame, text="Email Address", font=("tahoma",18), text_color="black", fg_color= "white") 
-                #self.email_text.pack(anchor="w",padx=20)
-                self.email_form = ctk.CTkEntry(self.email_frame, font= ("Tahoma",20,"normal"), width=500,height=50,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
-                self.email_form.pack(padx=15)
+                self.email_form = ctk.CTkEntry(self.entryform_frame, font= ("Tahoma",20,"normal"),placeholder_text="Email Address" ,width=500,height=70,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
+                self.email_form.pack(padx=15,pady=10)
 
 
 
-                self.password_form_frame = ctk.CTkFrame(self.form_frame,fg_color="white")
+                self.password_form_frame = ctk.CTkFrame(self.entryform_frame,fg_color="white")
                 self.password_form_frame.pack(anchor="w",pady=0,padx=10,fill="x")
-                self.innerpassword_frame = ctk.CTkFrame(self.password_form_frame,fg_color="white")
-                self.innerpassword_frame.pack(anchor="w",fill = "x")
-                #self.password_text = ctk.CTkLabel(self.innerpassword_frame,text="Password", font=("tahoma",18),text_color="black",fg_color="white")
-                #self.password_text.pack(anchor="w",side="left",padx=20)
 
-                self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), show="*",text_color='white',fg_color='lightgrey',width=500,height=50,border_width=0,corner_radius=10)
-                self.password_form.pack(padx=15,pady=0)
+                self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), placeholder_text="Password",show="*",text_color='white',fg_color='lightgrey',width=500,height=70,border_width=0,corner_radius=10)
+                self.password_form.pack(padx=15,pady=10)
 
 
 
 
 
 
+
+                self.loginbtn = ctk.CTkButton(self.form_frame, text="Sign Up",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=500,height=70,corner_radius=10,command=self.signup_user)
+                self.loginbtn.pack(pady=10,padx=0)
                 self.signupcheckform = ctk.CTkFrame(self.form_frame, fg_color="white")
-                self.signupcheckform.pack(anchor="center",pady=0, padx=10)
-                self.loginbtn = ctk.CTkButton(self.form_frame, text="Sign Up",font=("Tahoma",20,"bold"),text_color="white",cursor="hand2",fg_color="#25995e",width=450,height=50,corner_radius=10,command=self.signup_user)
-                self.loginbtn.pack(pady=20,padx=0)
+                self.signupcheckform.pack(anchor="center",pady=15, padx=10)
 
                 self.signupcheck = ctk.CTkLabel(self.signupcheckform, text="Already have an account?", text_color="black", fg_color="white", font=("Tahoma",16))
                 self.signupcheck1 = ctk.CTkLabel(self.signupcheckform, text="Sign in", text_color="green", fg_color="white", font=("Tahoma",16,"bold"), cursor="hand2")
