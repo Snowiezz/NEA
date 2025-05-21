@@ -183,7 +183,7 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 self.signupcheck1.bind("<Button-1>",lambda event: self.controller.openpage(self,self.controller.loginpage))
                 self.signupcheck.pack(side="left", padx=2, anchor="center")
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
-            def validemail(email):
+            def validemail(self, email):
                 pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'  # checks if valid email follows email format
                 return re.match(pattern, email) is not None # returns true if email is valid
             def signup_user(self):
@@ -193,7 +193,7 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 if not newuser or not newpass or not newname: # checks fields arent empty
                     print("Name/Username/Password cannot be blank")
                     return
-                if not self.validemail():
+                if not self.validemail(newuser):
                     messagebox.showinfo("Error", "Invalid email format")
                 else:
                     self.cursor.execute("SELECT Email FROM users WHERE Email = ?", (newuser, )) # finds email
