@@ -39,17 +39,17 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
         self.after(500, lambda: self.attributes('-topmost', False)) #macos
         
 
-        #class Greeting(ctk.CTkLabel):
-        #    def __init__(self,parent):
-        #        logo_image = ctk.CTkImage(light_image=Image.open("Untitled-2.png"),size=(350,250))
-        #        super().__init__(parent,image=logo_image,text="")
+        class Greeting(ctk.CTkLabel):
+            def __init__(self,parent):
+                logo_image = ctk.CTkImage(light_image=Image.open("Untitled-2.png"),size=(350,250))
+                super().__init__(parent,image=logo_image,text="")
         class loginpage(ctk.CTkFrame):
             def __init__(self,db,cursor,parent,controller):
                 super().__init__(parent)
                 self.configure(fg_color="#25995e")
                 self.controller = controller
-          #     self.greeting = Greeting(self)
-        #       self.greeting.pack(pady=20)
+                self.greeting = Greeting(self)
+                self.greeting.pack(pady=20)
                 self.db = db
                 self.cursor = cursor
 
@@ -100,7 +100,10 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 self.signupcheck1.bind("<Button-1>",lambda event: self.controller.openpage(self,self.controller.signuppage))
                 self.signupcheck.pack(side="left", padx=2, anchor="center")
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
-                
+            def passwordhasher(self,password):
+                return hashlib.sha256(password.encode()).hexdigest()
+            def check_password(self, entered_password, stored_hash):
+                return self.passwordhasher(entered_password) == stored_hash
             def accountchecker(self):
                 emailcheck = self.email_form.get()
                 passcheck = self.password_form.get()
@@ -108,14 +111,15 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 result = self.cursor.fetchone() # stores results
                 if result: # if a result is found
                     stored_password = result[0]
-                    if stored_password == passcheck:
+                    if self.check_password(passcheck, stored_password): # checks if password is correct
                         messagebox.showinfo("Login", "Login successful")
                         self.controller.openpage(self,self.controller.otherpage)
                     else:
                         print("fail")
-                        messagebox.showinfo("Error", "Incorrect email or password")
-                if not result: # if no result is found
-                    messagebox.showinfo("Error", "Incorrect email or password")
+                        messagebox.showinfo("Error", "Incorrect email or password 2")
+                else: # if no result is found
+                    messagebox.showinfo("Error", "Incorrect email or password 1")
+            
             
 
 
@@ -133,8 +137,8 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 super().__init__(parent)
                 self.controller = controller
                 self.configure(fg_color="#25995e")
-                #self.greeting = Greeting(self)
-                #self.greeting.pack(pady=20)
+                self.greeting = Greeting(self)
+                self.greeting.pack(pady=20)
                 self.db = db 
                 self.cursor = cursor
                                 
