@@ -159,7 +159,7 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 self.email_form = ctk.CTkEntry(self.entryform_frame, font= ("Tahoma",20,"normal"),placeholder_text="Email Address" ,width=500,height=70,border_width=0,fg_color='lightgrey',corner_radius=10 ) 
                 self.email_form.pack(padx=15,pady=10)
 
-
+ 
 
                 self.password_form_frame = ctk.CTkFrame(self.entryform_frame,fg_color="white")
                 self.password_form_frame.pack(anchor="w",pady=0,padx=10,fill="x")
@@ -188,21 +188,21 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 return re.match(pattern, email) is not None # returns true if email is valid
             def signup_user(self):
                 newname = self.name_form.get()
-                newuser = self.email_form.get()
+                newemail = self.email_form.get()
                 newpass = self.password_form.get()
-                if not newuser or not newpass or not newname: # checks fields arent empty
+                if not newemail or not newpass or not newname: # checks fields arent empty
                     print("Name/Username/Password cannot be blank")
                     return
-                if not self.validemail(newuser):
+                if not self.validemail(newemail):
                     messagebox.showinfo("Error", "Invalid email format")
                 else:
-                    self.cursor.execute("SELECT Email FROM users WHERE Email = ?", (newuser, )) # finds email
+                    self.cursor.execute("SELECT Email FROM users WHERE Email = ?", (newemail, )) # finds email
                     result = self.cursor.fetchone() # stores results
                     if result: # if a result is found
                         messagebox.showinfo("Error", "Email already exists")
                         return
                     else:
-                        self.cursor.execute("INSERT INTO users (Name,Email,Password) VALUES (?, ?, ?)", (newname,newuser, newpass))
+                        self.cursor.execute("INSERT INTO users (Name,Email,Password) VALUES (?, ?, ?)", (newname,newemail, newpass))
                         self.db.commit()
                         messagebox.showinfo("Success!","user registered success!")
 
@@ -223,25 +223,6 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
 
 
 
-
-
-
-        
-class loginpage(ctk.CTkFrame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        self.configure(fg_color="#25995e")
-
-        self.email_form = ctk.CTkEntry(self, placeholder_text="Email Address", width=500, height=50)
-        self.email_form.pack()
-
-        self.password_form = ctk.CTkEntry(self, placeholder_text="Password", width=500, height=50, show="*")
-        self.password_form.pack()
-
-        self.login_button = ctk.CTkButton(self, text="Login", command=self.verify_login)
-        self.login_button.pack()
-  
         
         
         
