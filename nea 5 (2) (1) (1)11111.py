@@ -187,11 +187,22 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
             def validemail(self, email):
                 pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'  # checks if valid email follows email format
                 return re.match(pattern, email) is not None # returns true if email is valid
-            #def validpass(self,password):
-            #    if len(password) < 10:
-            #        return False
-            #        messagebox.showinfo("Error", "Password must be above 10 characters!")
-            #    elif 
+            def validpass(self,password):
+                if len(password) < 10:
+                    messagebox.showinfo("Error", "Password must be above 10 characters!")
+                    return False
+                if not re.search(r'[A-Z]', password):
+                    messagebox.showinfo("Error", "Password must contain at least one uppercase letter!") # checks for uppercase
+                    return False
+                if not re.search(r'[a-z]', password):
+                    messagebox.showinfo("Error", "Password must contain at least one lowercase letter!") # checks for lowercase
+                    return False
+                if not re.search(r'\d', password):
+                    messagebox.showinfo("Error", "Password must contain at least one digit!") # checks for digit
+                    return False
+
+                else:
+                    return True
                 
                 
                 
@@ -244,21 +255,7 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
 
 
 
-        
-class loginpage(ctk.CTkFrame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        self.configure(fg_color="#25995e")
 
-        self.email_form = ctk.CTkEntry(self, placeholder_text="Email Address", width=500, height=50)
-        self.email_form.pack()
-
-        self.password_form = ctk.CTkEntry(self, placeholder_text="Password", width=500, height=50, show="*")
-        self.password_form.pack()
-
-        self.login_button = ctk.CTkButton(self, text="Login", command=self.verify_login)
-        self.login_button.pack()
   
         
         
