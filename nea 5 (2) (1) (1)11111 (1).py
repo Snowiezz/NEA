@@ -14,6 +14,14 @@ class NEA(ctk.CTk):
     def openpage(self,current,page): 
         current.place_forget() 
         page.place(relwidth=1, relheight=1)
+    def quiztaken(self,user_id,currentpage):
+        self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id,))
+        result = self.cursor.fetchone()
+        if result and result[0] == 0:
+            self.openpage(currentpage, self.controller.quizpage)
+        else:
+            self.openpage(currentpage, self.controller.mainpage)
+            
 
 
     def __init__(self):
@@ -35,11 +43,7 @@ class NEA(ctk.CTk):
         self.after(100, lambda: self.focus_force())   #macos
         self.after(100, lambda: self.attributes('-topmost', True))  #macos
         self.after(500, lambda: self.attributes('-topmost', False)) #macos
-        def quiztaken(self,user_id,currentpage,newpage):
-            self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id,))
-            result = self.cursor.fetchone()
-            if result and result[0] == 0:
-                self.open(current_page, new_page)
+
 
         #class Greeting(ctk.CTkLabel):
         #    def __init__(self,parent):
@@ -111,8 +115,10 @@ class NEA(ctk.CTk):
                 if result: # if a result is found
                     stored_password = result[0]
                     if stored_password == passcheck:
+                        self.cursor.execute("SELECT id FROM users WHERE Email = ?", (emailcheck, )) # finds email
+                        result1 = self.cursor.fetchone() # stores results
                         messagebox.showinfo("Login", "Login successful")
-                        self.controller.openpage(self,self.controller.quizpage)
+                        self.controller.quiztaken(self,result1[0]) 
                     else:
                         print("fail")
                         messagebox.showinfo("Error", "Incorrect email or password")
@@ -189,11 +195,22 @@ class NEA(ctk.CTk):
             def validemail(self, email):
                 pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'  # checks if valid email follows email format
                 return re.match(pattern, email) is not None # returns true if email is valid
-            #def validpass(self,password):
-            #    if len(password) < 10:
-            #        return False
-            #       messagebox.showinfo("Error", "Password must be above 10 characters!")
-            #    elif 
+            def validpass(self,password):
+                if len(password) < 10:
+                    messagebox.showinfo("Error", "Password must be above 10 characters!")
+                    return False
+                if not re.search(r'[A-Z]', password):
+                    messagebox.showinfo("Error", "Password must contain at least one uppercase letter!") # checks for uppercase
+                    return False
+                if not re.search(r'[a-z]', password):
+                    messagebox.showinfo("Error", "Password must contain at least one lowercase letter!") # checks for lowercase
+                    return False
+                if not re.search(r'\d', password):
+                    messagebox.showinfo("Error", "Password must contain at least one digit!") # checks for digit
+                    return False
+
+                else:
+                    return True
                 
                 
                 
@@ -223,10 +240,12 @@ class NEA(ctk.CTk):
                         self.cursor.execute("INSERT INTO users (Name,Email,Password) VALUES (?, ?, ?)", (newname,newuser, self.hashedpass))
                         self.db.commit()
                         messagebox.showinfo("Success!","user registered success!")
-                        self.cursor.execute("SELECT id FROM users WHERE is_active = 1")
+                        self.cursor.execute("SELECT id FROM users WHERE email = ?", (newuser,))
                         result1 = self.cursor.fetchone()
-                        
-                        if result1 and result1[0] == 0:
+
+                        if result1:
+                            user_id = result1[0]
+                            self.controller.quiztaken(user_id, self)
                         
 
 
@@ -235,6 +254,13 @@ class NEA(ctk.CTk):
                 super().__init__(parent)
                 self.configure(fg_color="#25995e")
                 self.controller = controller
+        class mainpage(ctk.CTkFrame):
+            def __init__(self,parent,controller):
+                super().__init__(parent)
+                self.configure(fg_color="#25995e")
+                self.controller = controller
+
+        self.mainpage = mainpage(parent=self,controller=self)
         self.quizpage = quizpage(parent=self,controller=self)
         self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
