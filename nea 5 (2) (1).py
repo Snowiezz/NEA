@@ -113,12 +113,12 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                     stored_password = result[0]
                     if self.check_password(passcheck, stored_password): # checks if password is correct
                         messagebox.showinfo("Login", "Login successful")
-                        self.controller.openpage(self,self.controller.otherpage)
+                        self.controller.openpage(self,self.controller.mainpage)
                     else:
                         print("fail")
-                        messagebox.showinfo("Error", "Incorrect email or password 2")
+                        messagebox.showinfo("Error", "Incorrect email or password")
                 else: # if no result is found
-                    messagebox.showinfo("Error", "Incorrect email or password 1")
+                    messagebox.showinfo("Error", "Incorrect email or password")
             
             
 
@@ -213,43 +213,19 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                         self.cursor.execute("INSERT INTO users (Name,Email,Password) VALUES (?, ?, ?)", (newname,newuser, self.hashedpass))
                         self.db.commit()
                         messagebox.showinfo("Success!","user registered success!")
+                        self.controller.openpage(self,self.controller.mainpage)
 
 
-        class otherpage(ctk.CTkFrame):
+        class mainpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
                 super().__init__(parent)
                 self.configure(fg_color="#25995e")
                 self.controller = controller
-        self.otherpage = otherpage(parent=self,controller=self)
+        self.mainpage = mainpage(parent=self,controller=self)
         self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
         self.loginpage.place(relwidth=1,relheight=1)
-                
-                
-                
 
-
-
-
-
-
-
-
-        
-class loginpage(ctk.CTkFrame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        self.configure(fg_color="#25995e")
-
-        self.email_form = ctk.CTkEntry(self, placeholder_text="Email Address", width=500, height=50)
-        self.email_form.pack()
-
-        self.password_form = ctk.CTkEntry(self, placeholder_text="Password", width=500, height=50, show="*")
-        self.password_form.pack()
-
-        self.login_button = ctk.CTkButton(self, text="Login", command=self.verify_login)
-        self.login_button.pack()
   
         
         
