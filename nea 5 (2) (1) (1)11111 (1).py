@@ -264,33 +264,13 @@ class NEA(ctk.CTk):
         self.quizpage = quizpage(parent=self,controller=self)
         self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
-        self.loginpage.place(relwidth=1,relheight=1)
+        self.quizpage.place(relwidth=1,relheight=1)
                 
                 
                 
 
 
 
-
-
-
-
-
-        
-class loginpage(ctk.CTkFrame):
-    def __init__(self, parent, controller):
-        super().__init__(parent)
-        self.controller = controller
-        self.configure(fg_color="#25995e")
-
-        self.email_form = ctk.CTkEntry(self, placeholder_text="Email Address", width=500, height=50)
-        self.email_form.pack()
-
-        self.password_form = ctk.CTkEntry(self, placeholder_text="Password", width=500, height=50, show="*")
-        self.password_form.pack()
-
-        self.login_button = ctk.CTkButton(self, text="Login", command=self.verify_login)
-        self.login_button.pack()
   
         
         
