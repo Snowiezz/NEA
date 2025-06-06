@@ -252,8 +252,12 @@ class NEA(ctk.CTk):
         class quizpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
                 super().__init__(parent)
-                self.configure(fg_color="#25995e")
+                self.configure(fg_color="white")
                 self.controller = controller
+                self.header = ctk.CTkFrame(self,fg_color="#25995e",height=0.2)
+                self.header.place(relx=0,rely=0,relwidth=1,relheight=0.12)
+                self.logintext = ctk.CTkLabel(self.header,text="UniPicker", font=("Tahoma",55,"bold"),text_color="white",fg_color="#25995e")
+                self.logintext.place(anchor="w",rely=0.5,relx=0.04)
         class mainpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
                 super().__init__(parent)
