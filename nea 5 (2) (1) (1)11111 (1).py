@@ -208,7 +208,6 @@ class NEA(ctk.CTk):
                 if not re.search(r'\d', password):
                     messagebox.showinfo("Error", "Password must contain at least one digit!") # checks for digit
                     return False
-
                 else:
                     return True
                 
@@ -258,6 +257,12 @@ class NEA(ctk.CTk):
                 self.header.place(relx=0,rely=0,relwidth=1,relheight=0.12)
                 self.logintext = ctk.CTkLabel(self.header,text="UniPicker", font=("Tahoma",55,"bold"),text_color="white",fg_color="#25995e")
                 self.logintext.place(anchor="w",rely=0.5,relx=0.04)
+                self.scrollableframe = ctk.CTkScrollableFrame(self,fg_color="white")
+                self.scrollableframe.place(relx=0,rely=0.12,relwidth=1,relheight=0.88)
+                self.quiztext = ctk.CTkLabel(self.scrollableframe,text="Quiz",font=("Tahoma",95,"bold"),fg_color="white",text_color="#25995e")
+                self.quiztext.pack(anchor="center")
+                self.quizquestion1 = ctk.CTkLavel(self.scrollableframe,text="1: ") #######FINISH
+
         class mainpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
                 super().__init__(parent)
