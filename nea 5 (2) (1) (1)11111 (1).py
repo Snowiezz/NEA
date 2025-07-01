@@ -244,10 +244,7 @@ class NEA(ctk.CTk):
 
                         if result1:
                             user_id = result1[0]
-                            self.controller.quiztaken(user_id, self)
-                        
-
-
+                            self.controller.quiztaken(user_id, self)#
         class quizpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
                 super().__init__(parent)
@@ -261,7 +258,14 @@ class NEA(ctk.CTk):
                 self.scrollableframe.place(relx=0,rely=0.12,relwidth=1,relheight=0.88)
                 self.quiztext = ctk.CTkLabel(self.scrollableframe,text="Quiz",font=("Tahoma",95,"bold"),fg_color="white",text_color="#25995e")
                 self.quiztext.pack(anchor="center")
-                self.quizquestion1 = ctk.CTkLavel(self.scrollableframe,text="1: ") #######FINISH
+                self.quizquestion1 = ctk.CTkLabel(self.scrollableframe,text="1: What Subjects are you taking?",text_color="#25995e",font=("Tahoma",35,"bold")) #######FINISH
+                self.quizquestion1.pack(padx=200, pady=10, anchor="center")
+                self.quizquestion1ans = ctk.CTkOptionMenu(self.scrollableframe,values=["Op1","Op2","Op3"],height=50)
+                self.quizquestion1ans.set("Choose one")
+                self.quizquestion1ans.pack(pady=40)
+
+
+        
 
         class mainpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
@@ -310,3 +314,4 @@ class NEA(ctk.CTk):
         
 app = NEA()
 app.mainloop()
+
