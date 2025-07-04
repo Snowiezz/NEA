@@ -260,8 +260,8 @@ class NEA(ctk.CTk):
                 self.quiztext.pack(anchor="center")
                 self.quizquestion1 = ctk.CTkLabel(self.scrollableframe,text="1: What Subjects are you taking?",text_color="#25995e",font=("Tahoma",35,"bold")) #######FINISH
                 self.quizquestion1.pack(padx=200, pady=10, anchor="center")
-                self.quizquestion1ans = ctk.CTkOptionMenu(self.scrollableframe,values=["Op1","Op2","Op3"],height=50)
-                self.quizquestion1ans.set("Choose one")
+                self.quizquestion1ans = ctk.CTkOptionMenu(self.scrollableframe,values=["Maths","Biology","Computer Science","Chemistry"],height=80,width=500,font=("Tahoma",20))
+                self.quizquestion1ans.set("Choose a subject")
                 self.quizquestion1ans.pack(pady=40)
 
 
