@@ -247,6 +247,7 @@ class NEA(ctk.CTk):
                             self.controller.quiztaken(user_id, self)#
         class quizpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
+
                 super().__init__(parent)
                 self.configure(fg_color="white")
                 self.controller = controller
@@ -256,13 +257,61 @@ class NEA(ctk.CTk):
                 self.logintext.place(anchor="w",rely=0.5,relx=0.04)
                 self.scrollableframe = ctk.CTkScrollableFrame(self,fg_color="white")
                 self.scrollableframe.place(relx=0,rely=0.12,relwidth=1,relheight=0.88)
+
                 self.quiztext = ctk.CTkLabel(self.scrollableframe,text="Quiz",font=("Tahoma",95,"bold"),fg_color="white",text_color="#25995e")
                 self.quiztext.pack(anchor="center")
                 self.quizquestion1 = ctk.CTkLabel(self.scrollableframe,text="1: What Subjects are you taking?",text_color="#25995e",font=("Tahoma",35,"bold")) #######FINISH
                 self.quizquestion1.pack(padx=200, pady=10, anchor="center")
-                self.quizquestion1ans = ctk.CTkOptionMenu(self.scrollableframe,values=["Maths","Biology","Computer Science","Chemistry"],height=80,width=500,font=("Tahoma",20))
+
+                # Row hold lift of selected subjects
+                self.selection_row = ctk.CTkFrame(self.scrollableframe, fg_color="white")
+                self.selection_row.pack(pady=(5,2), anchor="center")
+                self.selectedsubjectlist = ctk.CTkLabel(
+                    self.selection_row,
+                    text="You have selected:",
+                    text_color="#a3a3a3",
+                    font=("Tahoma", 20)
+                )
+                self.selectedsubjectlist.pack(side="left", padx=(0, 10))
+                self.selectedsubjects_frame = ctk.CTkFrame(self.selection_row, fg_color="white")
+
+
+
+                self.selectedsubjects = []
+                self.update_selected_subjects()
+
+
+                self.subjectlist = ["Arabic","Art & Design","Biology","Business Studies","Chemistry","Computer Science","Economics","English Language","English Literature","French","Geography",'German',"History","Law","Mathematics","Mathematics-Further","Music","Physics","Psychology","Religious Studies","Sociology","Travel & Tourism"] # list of subjects
+                self.quizquestion1ans = ctk.CTkOptionMenu(self.scrollableframe,values=self.subjectlist,height=80,width=500,font=("Tahoma",20),command=self.subject_selected)
                 self.quizquestion1ans.set("Choose a subject")
-                self.quizquestion1ans.pack(pady=40)
+                self.quizquestion1ans.pack(pady=(2,10))
+            def remove_subject(self,subject): # removes subject, allows user to click x and cancel subject
+                self.selectedsubjects.remove(subject) # removes
+                self.update_selected_subjects()# updates list again
+            def update_selected_subjects(self):
+                for widget in self.selectedsubjects_frame.winfo_children(): # deletes widgets so they dont stack
+                    widget.destroy() # destroys widgets
+                if not self.selectedsubjects: #if theres no elements
+                    self.selectedsubjects_frame.pack_forget() # hides frame when theres no elements
+                    self.selectedsubjectlist.configure(text="You have selected: None",font=("Tahoma",20,"bold"))
+                else:
+                    self.selectedsubjects_frame.pack(side="left")
+                    self.selectedsubjectlist.configure(text="You have selected:", font=("Tahoma", 20, "bold"))
+                    for subject in self.selectedsubjects:
+                        self.container  = ctk.CTkFrame(self.selectedsubjects_frame, fg_color="white") # container allows x to be next to subject
+                        self.container.pack(side="left", padx=0, pady=0) # packs container
+                        subject_label = ctk.CTkLabel(self.container, text=subject, font=("Tahoma", 20), text_color="grey")
+                        subject_label.pack(side="left", padx=5, pady=5) # packs button
+                        x_label = ctk.CTkLabel(self.container, text="x", font=("Tahoma", 18,"bold"), text_color="#7C7C7C", cursor="hand2")
+                        x_label.pack(side="right", padx=0) # packs x
+                        x_label.bind("<Button-1>", lambda event, s=subject: self.remove_subject(s)) # binds click to remove subject
+            def subject_selected(self,choice):
+                if choice not in self.selectedsubjects:
+                    self.selectedsubjects.append(choice) # adds subject to list
+                    self.update_selected_subjects()
+                else:
+                    messagebox.showinfo("Error", "You have already selected this subject")
+                self.quizquestion1ans.set("Choose a subject")
 
 
         
