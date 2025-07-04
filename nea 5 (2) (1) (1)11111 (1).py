@@ -260,18 +260,74 @@ class NEA(ctk.CTk):
                 self.quiz_answers = {}
                 self.current_question_index = 0
                 self.subjectlist = ["Arabic","Art & Design","Biology","Business Studies","Chemistry","Computer Science","Economics","English Language","English Literature","French","Geography",'German',"History","Law","Mathematics","Mathematics-Further","Music","Physics","Psychology","Religious Studies","Sociology","Travel & Tourism"] # list of subjects
-                self.quiztext = ctk.CTkLabel(self.scrollableframe,text="Quiz",font=("Tahoma",95,"bold"),fg_color="white",text_color="#25995e")
-                self.quiztext.pack(anchor="center")
+                self.universitylist = [
+    "University of Oxford",
+    "University of Cambridge",
+    "Imperial College London",
+    "London School of Economics and Political Science",
+    "University College London (UCL)",
+    "University of Edinburgh",
+    "University of Manchester",
+    "King’s College London",
+    "University of Bristol",
+    "University of Glasgow",
+    "University of Warwick",
+    "University of Birmingham",
+    "University of Southampton",
+    "University of Sheffield",
+    "University of York",
+    "University of Leeds",
+    "Durham University",
+    "University of Nottingham",
+    "University of Exeter",
+    "University of Liverpool",
+    "University of Bath",
+    "Newcastle University",
+    "University of Aberdeen",
+    "Queen Mary University of London",
+    "University of Leicester",
+    "University of Reading",
+    "Loughborough University",
+    "University of St Andrews",
+    "Queen’s University Belfast",
+    "Cardiff University",
+    "University of East Anglia (UEA)",
+    "University of Surrey",
+    "University of Kent",
+    "University of Sussex",
+    "Heriot-Watt University",
+    "University of Dundee",
+    "University of Strathclyde",
+    "University of Essex",
+    "Brunel University London",
+    "Goldsmiths, University of London",
+    "Royal Holloway, University of London",
+    "University of Lincoln",
+    "Aston University",
+    "Nottingham Trent University",
+    "Oxford Brookes University",
+    "University of Hull",
+    "Keele University",
+    "University of Stirling",
+    "Swansea University",
+    "Edge Hill University"
+]
                 self.questions = [
                     {
-                        "text": "1: What subjects are you taking?",
+                        "text": "What subjects are you taking?",
                         "type": "multi",
                         "options": self.subjectlist,
                         "handler": self.subject_selected
+                    },
+                    {
+                        "text": "2: Are you interested in any potential universities?",
+                        "type": "single",
+                        "options": self.universitylist,
+                        "handler": self.subject_selected
                     }
                 ]
-                self.question_label = ctk.CTkLabel(self.scrollableframe ,font=("Tahoma", 35), text_color="#25995e")
-                self.question_label.pack(pady=(50,20))
+                self.question_label = ctk.CTkLabel(self.scrollableframe ,font=("Tahoma", 35,"bold"), text_color="#25995e")
+                self.question_label.pack(pady=(50,30))
                 self.answer_menu = ctk.CTkOptionMenu(self.scrollableframe, height=80, width=500, font=("Tahoma", 20),values=[])
                 self.answer_menu.pack(pady=(10))
 
