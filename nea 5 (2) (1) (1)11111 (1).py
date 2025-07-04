@@ -257,13 +257,29 @@ class NEA(ctk.CTk):
                 self.logintext.place(anchor="w",rely=0.5,relx=0.04)
                 self.scrollableframe = ctk.CTkScrollableFrame(self,fg_color="white")
                 self.scrollableframe.place(relx=0,rely=0.12,relwidth=1,relheight=0.88)
-
+                self.quiz_answers = {}
+                self.current_question_index = 0
+                self.subjectlist = ["Arabic","Art & Design","Biology","Business Studies","Chemistry","Computer Science","Economics","English Language","English Literature","French","Geography",'German',"History","Law","Mathematics","Mathematics-Further","Music","Physics","Psychology","Religious Studies","Sociology","Travel & Tourism"] # list of subjects
                 self.quiztext = ctk.CTkLabel(self.scrollableframe,text="Quiz",font=("Tahoma",95,"bold"),fg_color="white",text_color="#25995e")
                 self.quiztext.pack(anchor="center")
-                self.quizquestion1 = ctk.CTkLabel(self.scrollableframe,text="1: What Subjects are you taking?",text_color="#25995e",font=("Tahoma",35,"bold")) #######FINISH
-                self.quizquestion1.pack(padx=200, pady=10, anchor="center")
+                self.questions = [
+                    {
+                        "text": "1: What subjects are you taking?",
+                        "type": "multi",
+                        "options": self.subjectlist,
+                        "handler": self.subject_selected
+                    }
+                ]
+                self.question_label = ctk.CTkLabel(self.scrollableframe ,font=("Tahoma", 35), text_color="#25995e")
+                self.question_label.pack(pady=(50,20))
+                self.answer_menu = ctk.CTkOptionMenu(self.scrollableframe, height=80, width=500, font=("Tahoma", 20),values=[])
+                self.answer_menu.pack(pady=(10))
 
-                # Row hold lift of selected subjects
+                
+
+
+
+                # Row holds list of selected subjects
                 self.selection_row = ctk.CTkFrame(self.scrollableframe, fg_color="white")
                 self.selection_row.pack(pady=(5,2), anchor="center")
                 self.selectedsubjectlist = ctk.CTkLabel(
@@ -279,12 +295,31 @@ class NEA(ctk.CTk):
 
                 self.selectedsubjects = []
                 self.update_selected_subjects()
+                self.continue_button = ctk.CTkButton(self.scrollableframe, text="Continue", font=("Tahoma", 30,"bold"), command=self.next_question,width=400,height=70)
+                self.continue_button.pack(pady=(300))
+                self.display_question()  # Display the first question
 
-
-                self.subjectlist = ["Arabic","Art & Design","Biology","Business Studies","Chemistry","Computer Science","Economics","English Language","English Literature","French","Geography",'German',"History","Law","Mathematics","Mathematics-Further","Music","Physics","Psychology","Religious Studies","Sociology","Travel & Tourism"] # list of subjects
-                self.quizquestion1ans = ctk.CTkOptionMenu(self.scrollableframe,values=self.subjectlist,height=80,width=500,font=("Tahoma",20),command=self.subject_selected)
-                self.quizquestion1ans.set("Choose a subject")
-                self.quizquestion1ans.pack(pady=(2,10))
+            def display_question(self):
+                question = self.questions[self.current_question_index]
+                self.question_label.configure(text=question["text"])
+                if question["type"] == "multi":
+                    # Show your custom subject dropdown and chips
+                    self.answer_menu.pack(pady=10)  # hide the dynamic dropdown
+                    self.selection_row.pack(pady=(5, 2), anchor="center")
+                else:
+                    # Show the normal dropdown for single choice
+                    self.selection_row.pack_forget()
+                    self.answer_menu.configure(values=question["options"], command=question["handler"])
+                    self.answer_menu.set("Choose an option")
+                    self.answer_menu.pack(pady=(10))
+                self.answer_menu.configure(values=question["options"],command=question["handler"])
+                self.answer_menu.set("Choose an answer") # sets default value
+            def next_question(self):
+                if self.current_question_index < len(self.questions) - 1: # checks theres another question 
+                    self.current_question_index += 1
+                    self.display_question()
+                else:
+                    messagebox.showinfo("Quiz Completed", "Thank you for completing the quiz!")
             def remove_subject(self,subject): # removes subject, allows user to click x and cancel subject
                 self.selectedsubjects.remove(subject) # removes
                 self.update_selected_subjects()# updates list again
@@ -311,7 +346,7 @@ class NEA(ctk.CTk):
                     self.update_selected_subjects()
                 else:
                     messagebox.showinfo("Error", "You have already selected this subject")
-                self.quizquestion1ans.set("Choose a subject")
+                self.answer_menu.set("Choose a subject")
 
 
         
