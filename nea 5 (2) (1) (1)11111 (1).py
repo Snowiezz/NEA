@@ -323,17 +323,24 @@ class NEA(ctk.CTk):
                         "handler": self.subject_selected
                     },
                     {
-                        "text": "2: Are you interested in any potential universities?",
+                        "text": "Are you interested in any potential universities?",
                         "type": "multi",
                         "options": self.universitylist,
                         "handler": self.university_selected
                     },
                     {
-                        "text": "3: Do you plan on staying at home or moving away for university?",
+                        "text": "Do you plan on staying at home or moving away for university?",
                         "type": "single",
                         "options": ["Staying at home", "Moving away"," Not sure"],
                         "handler": self.question3choice
+
+                    },
+                    {
+                        "text": "What is your postcode? (For location-based recommendations)",
+                        "type": "text",
+                        "handler": self.postcode_selected,
                     }
+
                 ]
                 self.question_label = ctk.CTkLabel(self.scrollableframe ,font=("Tahoma", 35,"bold"), text_color="#25995e") # label for questions
                 self.question_label.pack(pady=(50,30))
@@ -351,6 +358,7 @@ class NEA(ctk.CTk):
                 self.selectedsubjects_frame = ctk.CTkFrame(self.selection_row, fg_color="white")
                 self.selectedsubjects_frame.pack(side="left", padx=0, pady=0)
                 self.question3_button_frame = ctk.CTkFrame(self.scrollableframe, fg_color="white")
+                self.postcode_entry = ctk.CTkEntry(self.scrollableframe, font=("Tahoma", 20), placeholder_text="Enter your postcode", width=500, height=70, border_width=0, fg_color='lightgrey', corner_radius=10)
 
 
 
@@ -371,6 +379,7 @@ class NEA(ctk.CTk):
                 self.question3_button_frame.pack_forget()  # Hide the question 3 button frame
                 self.answer_menu.pack_forget()  # Hide the dynamic dropdown
                 self.continue_button.pack_forget()  # Hide the continue button
+                self.postcode_entry.pack_forget()  # Hide the postcode entry
                 if self.current_question_index == 1:
                     self.selection_label.configure(text="You have selected:", font=("Tahoma", 20, "bold"))
                 if question["type"] == "multi":
@@ -379,16 +388,20 @@ class NEA(ctk.CTk):
                     self.answer_menu.configure(values=question["options"], command=question["handler"])
                     self.answer_menu.set("Choose a subject")
                     # Show your custom subject dropdown and chips
-                    self.answer_menu.pack(pady=(100,10))  # hide the dynamic dropdown
+                    self.answer_menu.pack(pady=(150,10))  # hide the dynamic dropdown
                     self.selection_row.pack(pady=(5, 2), anchor="center")
                     self.update_selected_subjects()  # Update the selected subjects list
-                    self.continue_button.pack(pady=(100,100))
+                    self.continue_button.pack(pady=(200,10))
                 elif question["type"] =="single":
                     self.question_label.configure(text=question["text"])
                     for option in question["options"]:
                         btn = ctk.CTkButton(self.question3_button_frame, text=option, font=("Tahoma", 20), command=lambda choice=option: question["handler"](choice), width=250, height=60)
                         btn.pack(side="left", padx=30, pady=200)  # Pack buttons side by side
                     self.question3_button_frame.pack(pady=(10, 20), anchor="center")
+                elif question["type"] == "text":
+                    self.question_label.configure(text=question["text"])
+                    self.postcode_entry.pack(pady=(10, 20), anchor="center")
+                    self.postcode_entry.bind("<Return>", lambda event: question["handler"](self.postcode_entry.get()))
                 else:
                     # Show the normal dropdown for single choice
                     self.selection_row.pack_forget()
@@ -457,7 +470,16 @@ class NEA(ctk.CTk):
             def question3choice(self,choice):
                 self.quiz_answers[self.questions[self.current_question_index]["text"]] = choice
                 self.next_question()
-        
+            def postcode_selected(self, *_):
+                postcode = self.postcode_entry.get().strip()
+                if not postcode:
+                    messagebox.showinfo("Error", "Postcode cannot be blank")
+                    return
+                if not re.match(r'^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$', postcode, re.IGNORECASE): #postcode forma
+                    messagebox.showinfo("Error", "Invalid postcode format")
+                    return
+                self.quiz_answers["Postcode"] = postcode
+                self.next_question()
 
         class mainpage(ctk.CTkFrame):
             def __init__(self,parent,controller):
