@@ -400,8 +400,10 @@ class NEA(ctk.CTk):
                     self.question3_button_frame.pack(pady=(10, 20), anchor="center")
                 elif question["type"] == "text":
                     self.question_label.configure(text=question["text"])
-                    self.postcode_entry.pack(pady=(10, 20), anchor="center")
+                    self.postcode_entry.pack(pady=(100, 20), anchor="center")
                     self.postcode_entry.bind("<Return>", lambda event: question["handler"](self.postcode_entry.get()))
+                    self.continue_button.configure(text="Submit", command=lambda: question["handler"]())
+                    self.continue_button.pack(pady=(200,10))
                 else:
                     # Show the normal dropdown for single choice
                     self.selection_row.pack_forget()
