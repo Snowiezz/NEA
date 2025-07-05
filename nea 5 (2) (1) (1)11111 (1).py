@@ -319,18 +319,21 @@ class NEA(ctk.CTk):
                     {
                         "text": "What subjects are you taking?",
                         "type": "multi",
+                        "qnum": 1,
                         "options": self.subjectlist,
                         "handler": self.subject_selected
                     },
                     {
                         "text": "Are you interested in any potential universities?",
                         "type": "multi",
+                        "qnum": 2,
                         "options": self.universitylist,
                         "handler": self.university_selected
                     },
                     {
                         "text": "Do you plan on staying at home or moving away for university?",
                         "type": "single",
+                        "qnum": 3,
                         "options": ["Staying at home", "Moving away"," Not sure"],
                         "handler": self.question3choice
 
@@ -338,6 +341,7 @@ class NEA(ctk.CTk):
                     {
                         "text": "What is your postcode? (For location-based recommendations)",
                         "type": "text",
+                        "qnum": 4,
                         "handler": self.postcode_selected,
                     }
 
@@ -361,9 +365,7 @@ class NEA(ctk.CTk):
                 self.postcode_entry = ctk.CTkEntry(self.scrollableframe, font=("Tahoma", 20), placeholder_text="Enter your postcode", width=500, height=70, border_width=0, fg_color='lightgrey', corner_radius=10)
 
 
-
-                self.selectedsubjects = [] # stores selected subjects
-                self.selecteduniversities = [] # stores selected universities
+                self.selected_answers = {} # stores selected answers
                 self.continue_button = ctk.CTkButton(self.scrollableframe, text="Continue", font=("Tahoma", 30,"bold"), command=self.next_question,width=400,height=70)
                 self.update_selected_subjects()
                 self.display_question()  # Display the first question
@@ -413,12 +415,10 @@ class NEA(ctk.CTk):
                     
 
             def next_question(self):
-                if self.current_question_index == 0: # if first question
-                    self.quiz_answers[self.questions[self.current_question_index]["text"]] = self.selectedsubjects.copy() 
-                    self.selectedsubjects.clear()
-                elif self.current_question_index == 1: # if second question
-                    self.quiz_answers[self.questions[self.current_question_index]["text"]] = self.selecteduniversities.copy()
-                    self.selecteduniversities.clear()
+                current_text = self.questions[self.current_question_index]["qnum"] # gets current q number
+                current_selection = self.selected_answers.get(self.current_question_index, None)
+                self.quiz_answers[current_text] = current_selection
+                self.selected_answers[self.current_question_index] = [] # stores selected subjects in dictionary
                 if self.current_question_index < len(self.questions) - 1: # checks theres another question 
                     self.current_question_index += 1
                     self.display_question()
@@ -432,12 +432,7 @@ class NEA(ctk.CTk):
             def update_selected_subjects(self):
                 for widget in self.selectedsubjects_frame.winfo_children(): # deletes widgets so they dont stack
                     widget.destroy() # destroys widgets
-                if self.current_question_index == 0: # if first question
-                    selected = self.selectedsubjects
-                elif self.current_question_index == 1: # if second question
-                    selected = self.selecteduniversities
-                else:
-                    selected = []
+                selected = self.selected_answers.get(self.current_question_index, []) # gets selected subjects from dictionary
                 if not selected : #if theres no elements
                     self.selection_label.configure(text="You have selected: None",font=("Tahoma",20,"bold"))
                     self.selectedsubjects_frame.pack_forget() # hides frame when theres no elements
@@ -455,22 +450,25 @@ class NEA(ctk.CTk):
                         x_label.pack(side="right", padx=0) # packs x
                         x_label.bind("<Button-1>", lambda event, s=item: self.remove_subject(s)) # binds click to remove subject
             def subject_selected(self,choice):
-            
-                if choice not in self.selectedsubjects:
-                    self.selectedsubjects.append(choice) # adds subject to list
+                selected = self.selected_answers.get(self.current_question_index,[]) #looks in dictionary for answers stored
+                if choice not in selected:
+                    selected.append(choice) # adds subject to list
+                    self.selected_answers[self.current_question_index] = selected # updates dictionary with new subject
                     self.update_selected_subjects()
                 else:
                     messagebox.showinfo("Error", "You have already selected this subject")
                 self.answer_menu.set("Choose a subject")
             def university_selected(self,choice):
-                if choice not in self.selecteduniversities:
-                    self.selecteduniversities.append(choice)
+                selected = self.selected_answers.get(1,[]) #looks in dictionary for answers stored
+                if choice not in selected:
+                    selected.append(choice)
+                    self.selected_answers[1] = selected
                     self.update_selected_subjects()
                 else:
                     messagebox.showinfo("Error", "You have already selected this university")
                 self.answer_menu.set("Choose a university")
             def question3choice(self,choice):
-                self.quiz_answers[self.questions[self.current_question_index]["text"]] = choice
+                self.selected_answers[self.current_question_index] = choice
                 self.next_question()
             def postcode_selected(self, *_):
                 postcode = self.postcode_entry.get().strip()
@@ -480,7 +478,7 @@ class NEA(ctk.CTk):
                 if not re.match(r'^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$', postcode, re.IGNORECASE): #postcode forma
                     messagebox.showinfo("Error", "Invalid postcode format")
                     return
-                self.quiz_answers["Postcode"] = postcode
+                self.selected_answers[self.current_question_index] = postcode
                 self.next_question()
 
         class mainpage(ctk.CTkFrame):
