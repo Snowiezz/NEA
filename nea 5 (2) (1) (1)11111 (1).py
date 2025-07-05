@@ -255,6 +255,9 @@ class NEA(ctk.CTk):
                 self.header.place(relx=0,rely=0,relwidth=1,relheight=0.12)
                 self.logintext = ctk.CTkLabel(self.header,text="UniPicker", font=("Tahoma",55,"bold"),text_color="white",fg_color="#25995e")
                 self.logintext.place(anchor="w",rely=0.5,relx=0.04)
+                signout = ctk.CTkLabel(self.header,text="Sign Out", font=("Tahoma",25,"bold"),text_color="white",fg_color="#25995e",cursor="hand2")
+                signout.place(anchor="e",rely=0.5,relx=0.96)
+                # bind signout to go to login page, sort out later
                 self.scrollableframe = ctk.CTkScrollableFrame(self,fg_color="white")
                 self.scrollableframe.place(relx=0,rely=0.12,relwidth=1,relheight=0.88)
                 self.quiz_answers = {}
@@ -323,67 +326,86 @@ class NEA(ctk.CTk):
                         "text": "2: Are you interested in any potential universities?",
                         "type": "multi",
                         "options": self.universitylist,
-                        "handler": self.subject_selected
+                        "handler": self.university_selected
+                    },
+                    {
+                        "text": "3: Do you plan on staying at home or moving away for university?",
+                        "type": "single",
+                        "options": ["Staying at home", "Moving away"," Not sure"],
+                        "handler": self.question3choice
                     }
                 ]
-                self.question_label = ctk.CTkLabel(self.scrollableframe ,font=("Tahoma", 35,"bold"), text_color="#25995e")
+                self.question_label = ctk.CTkLabel(self.scrollableframe ,font=("Tahoma", 35,"bold"), text_color="#25995e") # label for questions
                 self.question_label.pack(pady=(50,30))
-                self.answer_menu = ctk.CTkOptionMenu(self.scrollableframe, height=80, width=500, font=("Tahoma", 20),values=[])
-                self.answer_menu.pack(pady=(10))
-
-                
-
-
+                self.answer_menu = ctk.CTkOptionMenu(self.scrollableframe, height=80, width=500, font=("Tahoma", 20),values=[]) # drop down, used for multi
 
                 # Row holds list of selected subjects
                 self.selection_row = ctk.CTkFrame(self.scrollableframe, fg_color="white")
-                self.selection_row.pack(pady=(5,2), anchor="center")
-                self.selectedsubjectlist = ctk.CTkLabel(
+                self.selection_label = ctk.CTkLabel(
                     self.selection_row,
                     text="You have selected:",
                     text_color="#a3a3a3",
                     font=("Tahoma", 20)
                 )
-                self.selectedsubjectlist.pack(side="left", padx=(0, 10))
+                self.selection_label.pack(side="left", padx=(0, 10))
                 self.selectedsubjects_frame = ctk.CTkFrame(self.selection_row, fg_color="white")
                 self.selectedsubjects_frame.pack(side="left", padx=0, pady=0)
+                self.question3_button_frame = ctk.CTkFrame(self.scrollableframe, fg_color="white")
 
 
 
-                self.selectedsubjects = []
+                self.selectedsubjects = [] # stores selected subjects
                 self.selecteduniversities = [] # stores selected universities
+                self.continue_button = ctk.CTkButton(self.scrollableframe, text="Continue", font=("Tahoma", 30,"bold"), command=self.next_question,width=400,height=70)
                 self.update_selected_subjects()
                 self.display_question()  # Display the first question
-                self.continue_button = ctk.CTkButton(self.scrollableframe, text="Continue", font=("Tahoma", 30,"bold"), command=self.next_question,width=400,height=70)
-                self.continue_button.pack(pady=(300))
 
 
             def display_question(self):
-                for widget in self.selectedsubjects_frame.winfo_children():
-                    widget.destroy()
                 question = self.questions[self.current_question_index]
-                self.question_label.configure(text=question["text"])
-                self.answer_menu.configure(values=question["options"], command=question["handler"])
+                for widget in self.selectedsubjects_frame.winfo_children(): 
+                    widget.destroy()
+                for widget in self.question3_button_frame.winfo_children():
+                    widget.destroy()
+                self.selection_row.pack_forget()  # Hide the selection row
+                self.question3_button_frame.pack_forget()  # Hide the question 3 button frame
+                self.answer_menu.pack_forget()  # Hide the dynamic dropdown
+                self.continue_button.pack_forget()  # Hide the continue button
                 if self.current_question_index == 1:
-                    self.selectedsubjectlist.configure(text="You have selected:", font=("Tahoma", 20, "bold"))
+                    self.selection_label.configure(text="You have selected:", font=("Tahoma", 20, "bold"))
                 if question["type"] == "multi":
+                    self.question3_button_frame.pack_forget()  # Hide the question 3 button frame
+                    self.question_label.configure(text=question["text"])
+                    self.answer_menu.configure(values=question["options"], command=question["handler"])
+                    self.answer_menu.set("Choose a subject")
                     # Show your custom subject dropdown and chips
-                    self.answer_menu.pack(pady=10)  # hide the dynamic dropdown
+                    self.answer_menu.pack(pady=(100,10))  # hide the dynamic dropdown
                     self.selection_row.pack(pady=(5, 2), anchor="center")
+                    self.update_selected_subjects()  # Update the selected subjects list
+                    self.continue_button.pack(pady=(100,100))
+                elif question["type"] =="single":
+                    self.question_label.configure(text=question["text"])
+                    for option in question["options"]:
+                        btn = ctk.CTkButton(self.question3_button_frame, text=option, font=("Tahoma", 20), command=lambda choice=option: question["handler"](choice), width=250, height=60)
+                        btn.pack(side="left", padx=30, pady=200)  # Pack buttons side by side
+                    self.question3_button_frame.pack(pady=(10, 20), anchor="center")
                 else:
                     # Show the normal dropdown for single choice
                     self.selection_row.pack_forget()
                     self.answer_menu.configure(values=question["options"], command=question["handler"])
                     self.answer_menu.set("Choose an option")
                     self.answer_menu.pack(pady=(10))
-                self.answer_menu.configure(values=question["options"],command=question["handler"])
-                self.answer_menu.set("Choose an answer") # sets default value
+                    
+
             def next_question(self):
-                self.quiz_answers[self.questions[self.current_question_index]["text"]] = self.selectedsubjects.copy() 
-                if self.current_question_index < len(self.questions) - 1: # checks theres another question 
-                    self.quiz_answers[self.questions[self.current_question_index]["text"]] = self.selectedsubjects.copy() if self.current_question_index == 0 else self.selecteduniversities.copy() # stores answers
-                    self.current_question_index += 1
+                if self.current_question_index == 0: # if first question
+                    self.quiz_answers[self.questions[self.current_question_index]["text"]] = self.selectedsubjects.copy() 
                     self.selectedsubjects.clear()
+                elif self.current_question_index == 1: # if second question
+                    self.quiz_answers[self.questions[self.current_question_index]["text"]] = self.selecteduniversities.copy()
+                    self.selecteduniversities.clear()
+                if self.current_question_index < len(self.questions) - 1: # checks theres another question 
+                    self.current_question_index += 1
                     self.display_question()
                 else:
 
@@ -395,29 +417,46 @@ class NEA(ctk.CTk):
             def update_selected_subjects(self):
                 for widget in self.selectedsubjects_frame.winfo_children(): # deletes widgets so they dont stack
                     widget.destroy() # destroys widgets
-                if not self.selectedsubjects: #if theres no elements
-                    self.selectedsubjects_frame.pack_forget() # hides frame when theres no elements
-                    self.selectedsubjectlist.configure(text="You have selected: None",font=("Tahoma",20,"bold"))
+                if self.current_question_index == 0: # if first question
+                    selected = self.selectedsubjects
+                elif self.current_question_index == 1: # if second question
+                    selected = self.selecteduniversities
                 else:
+                    selected = []
+                if not selected : #if theres no elements
+                    self.selection_label.configure(text="You have selected: None",font=("Tahoma",20,"bold"))
+                    self.selectedsubjects_frame.pack_forget() # hides frame when theres no elements
+                    self.selection_row.pack(pady=(5, 2), anchor="center") # packs row
+                else:
+                    self.selection_label.configure(text="You have selected:", font=("Tahoma", 20, "bold"))
+                    self.selection_row.pack(pady=(5, 2), anchor="center") # packs row
                     self.selectedsubjects_frame.pack(side="left")
-                    self.selectedsubjectlist.configure(text="You have selected:", font=("Tahoma", 20, "bold"))
-                    for subject in self.selectedsubjects:
+                    for item in selected:
                         self.container  = ctk.CTkFrame(self.selectedsubjects_frame, fg_color="white") # container allows x to be next to subject
                         self.container.pack(side="left", padx=0, pady=0) # packs container
-                        subject_label = ctk.CTkLabel(self.container, text=subject, font=("Tahoma", 20), text_color="grey")
+                        subject_label = ctk.CTkLabel(self.container, text=item, font=("Tahoma", 20), text_color="grey")
                         subject_label.pack(side="left", padx=5, pady=5) # packs button
                         x_label = ctk.CTkLabel(self.container, text="x", font=("Tahoma", 18,"bold"), text_color="#7C7C7C", cursor="hand2")
                         x_label.pack(side="right", padx=0) # packs x
-                        x_label.bind("<Button-1>", lambda event, s=subject: self.remove_subject(s)) # binds click to remove subject
+                        x_label.bind("<Button-1>", lambda event, s=item: self.remove_subject(s)) # binds click to remove subject
             def subject_selected(self,choice):
+            
                 if choice not in self.selectedsubjects:
                     self.selectedsubjects.append(choice) # adds subject to list
                     self.update_selected_subjects()
                 else:
                     messagebox.showinfo("Error", "You have already selected this subject")
                 self.answer_menu.set("Choose a subject")
-
-
+            def university_selected(self,choice):
+                if choice not in self.selecteduniversities:
+                    self.selecteduniversities.append(choice)
+                    self.update_selected_subjects()
+                else:
+                    messagebox.showinfo("Error", "You have already selected this university")
+                self.answer_menu.set("Choose a university")
+            def question3choice(self,choice):
+                self.quiz_answers[self.questions[self.current_question_index]["text"]] = choice
+                self.next_question()
         
 
         class mainpage(ctk.CTkFrame):
