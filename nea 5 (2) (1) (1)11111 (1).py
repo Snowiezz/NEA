@@ -28,9 +28,6 @@ class NEA(ctk.CTk):
                 answer = ', '.join(answer)
             self.cursor.execute("INSERT INTO quiz_answers (user_id, question_num, answer) VALUES (?, ?, ?)", (self.current_user_id, question_num, answer))
         self.db.commit()
-            
-
-
     def __init__(self):
         super().__init__()
         self.state('zoomed')          # standards across all pages
@@ -74,9 +71,8 @@ class loginpage(ctk.CTkFrame):
         self.db = db
         self.cursor = cursor
 
-
-
-
+        self.unipicker = ctk.CTkLabel(self,text="UniPicker",text_color="white",font=("Tahoma",70,"bold"))
+        self.unipicker.pack(anchor="center",pady="120")
         self.form_frame = ctk.CTkFrame(self,border_color="#2b2b2b",fg_color="white",corner_radius=12)
         self.form_frame.place(relx=0.5,rely=0.53,anchor="center")
         #log in
@@ -261,8 +257,8 @@ class quizpage(ctk.CTkFrame):
         self.header.place(relx=0,rely=0,relwidth=1,relheight=0.12)
         self.logintext = ctk.CTkLabel(self.header,text="UniPicker", font=("Tahoma",55,"bold"),text_color="white",fg_color="#25995e")
         self.logintext.place(anchor="w",rely=0.5,relx=0.04)
-        signout = ctk.CTkLabel(self.header,text="Sign Out", font=("Tahoma",25,"bold"),text_color="white",fg_color="#25995e",cursor="hand2")
-        signout.place(anchor="e",rely=0.5,relx=0.96)
+        signoutbutton = ctk.CTkLabel(self.header,text="Sign Out", font=("Tahoma",25,"bold"),text_color="white",fg_color="#25995e",cursor="hand2")
+        signoutbutton.place(anchor="e",rely=0.5,relx=0.96)
         # bind signout to go to login page, sort out later
         self.scrollableframe = ctk.CTkScrollableFrame(self,fg_color="white")
         self.scrollableframe.place(relx=0,rely=0.12,relwidth=1,relheight=0.88)
