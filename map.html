@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>University Map</title>
+  <meta charset="utf-8" />
+  <style>
+    #map { height: 100vh; width: 100vw; }
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  const map = L.map('map').setView([54.5, -3], 6); // UK center
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
+  subdomains: 'abcd',
+  maxZoom: 19
+}).addTo(map);
+  const ukBounds = [
+  [49.8, -8.6],  // Southwest corner
+  [60.9, 1.8]    // Northeast corner
+  ];
+  map.setMaxBounds(ukBounds);
+  map.on('drag', function () {
+  map.panInsideBounds(ukBounds, { animate: false });
+});
+map.setMinZoom(5);
+map.setMaxZoom(12);
+
+
+  // Example: Add a university marker
+  const uniMarker = L.marker([52.2044, 0.1218]).addTo(map) // Cambridge
+    .bindPopup("University of Cambridge");
+
+
+  // You can later dynamically add markers from Python using JS injection
+</script>
+</body>
+</html>
