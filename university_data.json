@@ -1,0 +1,154 @@
+[
+  {
+    "university_name": "University of Oxford",
+    "student_score": 4.0,
+    "student_review": "Renowned for academic excellence and historic facilities.",
+    "latitude": 51.754816,
+    "longitude": -1.254367,
+    "financial_support_info": "Offers bursaries for annual household incomes under £32,500, ",
+    "accommodation_cost": "£250/week",
+    "cost_of_living": "£700/month",
+    "links": {
+      "accommodation": "https://www.ox.ac.uk/students/accommodation",
+      "scholarships": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding",
+      "colleges_list": "https://www.ox.ac.uk/admissions/undergraduate/colleges/a-z-of-colleges",
+      "living_costs": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs",
+      "Courses": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing"
+    }
+  },
+  {
+    "university_name": "University of Cambridge",
+    "student_score": 4.2,
+    "student_review": "Known for academic excellence and historic colleges.",
+    "latitude": 52.204267,
+    "longitude": 0.114908,
+    "financial_support_info": "Provides bursaries and scholarships for low-income students and contextual offers.",
+    "accommodation_cost": "£230/week",
+    "cost_of_living": "£680/month",
+    "links": {
+      "accommodation": "https://www.cam.ac.uk/study/student-life/accommodation",
+      "scholarships": "https://www.cam.ac.uk/study/undergraduate/fees-and-funding",
+      "student_life": "https://www.cam.ac.uk/study/student-life"
+    }
+  },
+  {
+    "university_name": "Imperial College London",
+    "student_score": 4.2,
+    "student_review": "Strong STEM programs with a challenging workload.",
+    "latitude": 51.4988,
+    "longitude": -0.1749,
+    "financial_support_info": "Offers scholarships and hardship funds for eligible students.",
+    "accommodation_cost": "£280/week",
+    "cost_of_living": "£800/month",
+    "links": {
+      "accommodation": "https://www.imperial.ac.uk/study/campus-life/accommodation/",
+      "scholarships": "https://www.imperial.ac.uk/study/ug/fees-and-funding/",
+      "student_life": "https://www.imperial.ac.uk/study/campus-life/"
+    }
+  },
+  {
+    "university_name": "UCL",
+    "student_score": 4.1,
+    "student_review": "Diverse courses with vibrant campus life.",
+    "latitude": 51.5246,
+    "longitude": -0.134,
+    "financial_support_info": "Financial support includes scholarships and bursaries for eligible students.",
+    "accommodation_cost": "£260/week",
+    "cost_of_living": "£750/month",
+    "links": {
+      "accommodation": "https://www.ucl.ac.uk/accommodation/",
+      "scholarships": "https://www.ucl.ac.uk/scholarships/",
+      "student_life": "https://www.ucl.ac.uk/students/student-life"
+    }
+  },
+  {
+    "university_name": "University of Edinburgh",
+    "student_score": 4.2,
+    "student_review": "Historic campus with strong research output.",
+    "latitude": 55.9444,
+    "longitude": -3.1883,
+    "financial_support_info": "Offers scholarships, bursaries, and student loans for support.",
+    "accommodation_cost": "£180/week",
+    "cost_of_living": "£650/month",
+    "links": {
+      "accommodation": "https://www.ed.ac.uk/studying/accommodation",
+      "scholarships": "https://www.ed.ac.uk/student-funding",
+      "student_life": "https://www.ed.ac.uk/student-life"
+    }
+  },
+  {
+    "university_name": "King’s College London",
+    "student_score": 4.0,
+    "student_review": "Excellent programs with a central location.",
+    "latitude": 51.5112,
+    "longitude": -0.1167,
+    "financial_support_info": "Provides scholarships, bursaries, and hardship support for students in need.",
+    "accommodation_cost": "£270/week",
+    "cost_of_living": "£770/month",
+    "links": {
+      "accommodation": "https://www.kcl.ac.uk/accommodation",
+      "scholarships": "https://www.kcl.ac.uk/study/undergraduate/fees-funding",
+      "student_life": "https://www.kcl.ac.uk/student-experience"
+    }
+  },
+  {
+    "university_name": "LSE",
+    "student_score": 4.0,
+    "student_review": "Known for social sciences and strong career prospects.",
+    "latitude": 51.5145,
+    "longitude": -0.1165,
+    "financial_support_info": "Offers scholarships, bursaries, and financial aid to students.",
+    "accommodation_cost": "£300/week",
+    "cost_of_living": "£800/month",
+    "links": {
+      "accommodation": "https://www.lse.ac.uk/study/accommodation",
+      "scholarships": "https://www.lse.ac.uk/study/undergraduate/fees-and-funding",
+      "student_life": "https://www.lse.ac.uk/student-life"
+    }
+  },
+  {
+    "university_name": "University of Manchester",
+    "student_score": 4.2,
+    "student_review": "Diverse student body with vibrant city life.",
+    "latitude": 53.4668,
+    "longitude": -2.2339,
+    "financial_support_info": "Provides scholarships and support programs for eligible students.",
+    "accommodation_cost": "£200/week",
+    "cost_of_living": "£650/month",
+    "links": {
+      "accommodation": "https://www.manchester.ac.uk/study/accommodation/",
+      "scholarships": "https://www.manchester.ac.uk/study/undergraduate/student-finance/",
+      "student_life": "https://www.manchester.ac.uk/study/student-life/"
+    }
+  },
+  {
+    "university_name": "University of Bristol",
+    "student_score": 4.2,
+    "student_review": "Strong academic programs with lively student community.",
+    "latitude": 51.4545,
+    "longitude": -2.5879,
+    "financial_support_info": "Offers scholarships, bursaries, and hardship funds to students.",
+    "accommodation_cost": "£220/week",
+    "cost_of_living": "£670/month",
+    "links": {
+      "accommodation": "https://www.bristol.ac.uk/accommodation/",
+      "scholarships": "https://www.bristol.ac.uk/fees-funding/",
+      "student_life": "https://www.bristol.ac.uk/student-life/"
+    }
+  },
+  {
+    "university_name": "University of Glasgow",
+    "student_score": 4.2,
+    "student_review": "Welcoming atmosphere with strong research opportunities.",
+    "latitude": 55.8738,
+    "longitude": -4.288,
+    "financial_support_info": "Provides scholarships, bursaries, and funding options for students.",
+    "accommodation_cost": "£190/week",
+    "cost_of_living": "£630/month",
+    "links": {
+      "accommodation": "https://www.gla.ac.uk/myglasgow/accommodation/",
+      "scholarships": "https://www.gla.ac.uk/scholarships/",
+      "student_life": "https://www.gla.ac.uk/studentlife/"
+    }
+  }
+]
