@@ -102,17 +102,17 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 self.signupcheck1.pack(side="left", padx=2, anchor="center")
                 
             def accountchecker(self):
-                emailcheck = self.email_form.get()
+                emailcheck = self.email_form.get() 
                 passcheck = self.password_form.get()
                 self.cursor.execute("SELECT Password FROM users WHERE Email = ?", (emailcheck, )) # finds email
                 result = self.cursor.fetchone() # stores results
                 if result: # if a result is found
+                    passcheck = hashlib.sha256(passcheck.encode()).hexdigest()
                     stored_password = result[0]
                     if stored_password == passcheck:
                         messagebox.showinfo("Login", "Login successful")
                         self.controller.openpage(self,self.controller.otherpage)
                     else:
-                        print("fail")
                         messagebox.showinfo("Error", "Incorrect email or password")
                 if not result: # if no result is found
                     messagebox.showinfo("Error", "Incorrect email or password")
@@ -133,8 +133,6 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 super().__init__(parent)
                 self.controller = controller
                 self.configure(fg_color="#25995e")
-                #self.greeting = Greeting(self)
-                #self.greeting.pack(pady=20)
                 self.db = db 
                 self.cursor = cursor
                                 
@@ -165,7 +163,8 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 self.password_form_frame = ctk.CTkFrame(self.entryform_frame,fg_color="white")
                 self.password_form_frame.pack(anchor="w",pady=0,padx=10,fill="x")
 
-                self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), placeholder_text="Password",show="*",text_color='white',fg_color='lightgrey',width=500,height=70,border_width=0,corner_radius=10)
+                self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), placeholder_text="Password",show="*",text_color='white',fg_color='lightgrey',
+                                                width=500,height=70,border_width=0,corner_radius=10)
                 self.password_form.pack(padx=15,pady=10)
 
 
