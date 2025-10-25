@@ -316,14 +316,19 @@ class quizpage(ctk.CTkFrame):
                 "handler": self.dropdown_selected
             },
         ]
-        self.question_label = ctk.CTkLabel(self.scrollableframe, font=("Tahoma", 35, "bold"), text_color="#25995e")
+        # Hide all widgets first
+        #self.answer_menu.pack_forget()
+        #self.single_choice_frame.pack_forget()
+        #self.continue_button.pack_forget()
+        #self.postcode_entry.pack_forget()
+        self.question_label = ctk.CTkLabel(self.scrollableframe, font=("Tahoma", 35, "bold"), text_color="#25995e") # Question label
         self.question_label.pack(pady=(50, 30))
-        self.answer_menu = ctk.CTkOptionMenu(self.scrollableframe, height=80, width=500, font=("Tahoma", 20), values=[])
-        self.single_choice_frame = ctk.CTkFrame(self.scrollableframe, fg_color="white")
+        self.answer_menu = ctk.CTkOptionMenu(self.scrollableframe, height=80, width=500, font=("Tahoma", 20), values=[])# Dropdown menu
+        self.single_choice_frame = ctk.CTkFrame(self.scrollableframe, fg_color="white") # Frame for single choice buttons
         self.postcode_entry = ctk.CTkEntry(self.scrollableframe, font=("Tahoma", 20), placeholder_text="Enter your postcode", width=500, height=70, border_width=0, fg_color='lightgrey', corner_radius=10)
         self.continue_button = ctk.CTkButton(self.scrollableframe, text="Continue", font=("Tahoma", 30, "bold"), command=self.next_question, width=400, height=70)
         self.selected_answers = {}
-        self.display_question()
+        self.display_question() # Display the first question
 
     def display_question(self):
         question = self.questions[self.current_question_index]
@@ -334,39 +339,36 @@ class quizpage(ctk.CTkFrame):
         self.postcode_entry.pack_forget()
         for widget in self.single_choice_frame.winfo_children():
             widget.destroy()
-        self.question_label.configure(text=question["text"])
-        if question["type"] == "dropdown":
+        self.question_label.configure(text=question["text"]) # displays the quiz question
+        if question["type"] == "dropdown": # if a dropdown question
             self.answer_menu.configure(values=question["options"], command=question["handler"])
             self.answer_menu.set("Choose an option")
             self.answer_menu.pack(pady=(100, 10))
             self.continue_button.pack(pady=(200, 10))
-        elif question["type"] == "single":
+        elif question["type"] == "single": # if a single choice question
             for option in question["options"]:
                 btn = ctk.CTkButton(self.single_choice_frame, text=option, font=("Tahoma", 20), command=lambda choice=option: question["handler"](choice), width=250, height=60)
                 btn.pack(side="left", padx=30, pady=20)
             self.single_choice_frame.pack(pady=(30, 20), anchor="center")
-        elif question["type"] == "text":
-            self.postcode_entry.delete(0, "end")
-            self.postcode_entry.pack(pady=(100, 20), anchor="center")
-            self.postcode_entry.bind("<Return>", lambda event: question["handler"]())
-            self.continue_button.configure(text="Submit", command=question["handler"])
+        elif question["type"] == "text": # if a text question
+            self.postcode_entry.pack(pady=(100, 20), anchor="center") # place entry box
+            self.postcode_entry.bind("<Return>", lambda event: question["handler"]()) # if user clicks enter key, moves to next question
+            self.continue_button.configure(text="Submit", command=question["handler"]) # changes continue button to submit and calls handler function
             self.continue_button.pack(pady=(200, 10))
 
     def next_question(self):
-        current_q = self.questions[self.current_question_index]["questionnumber"]
-        current_selection = self.selected_answers.get(self.current_question_index, None)
+        current_q = self.questions[self.current_question_index]["questionnumber"] # holds current q number
+        current_selection = self.selected_answers.get(self.current_question_index)  # gets current selection
         self.quiz_answers[current_q] = current_selection
-        if self.current_question_index < len(self.questions) - 1:
+        if self.current_question_index < len(self.questions) - 1: # if more questions
             self.current_question_index += 1
             self.display_question()
         else:
-            messagebox.showinfo("Quiz Completed", "Thank you for completing the quiz!")
-            self.controller.save_quiz_answers(self.quiz_answers)
-            print(self.quiz_answers)
+            messagebox.showinfo("Quiz Completed", "Please continue to the main page.") # no more questions
+            self.controller.save_quiz_answers(self.quiz_answers) # saves quiz answers to db
 
     def dropdown_selected(self, choice):
         self.selected_answers[self.current_question_index] = choice
-        # For dropdown, require pressing continue
 
     def single_selected(self, choice):
         self.selected_answers[self.current_question_index] = choice
