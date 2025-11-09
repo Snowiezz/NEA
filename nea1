@@ -189,6 +189,15 @@ class signuppage(ctk.CTkFrame):
         self.signupcheckbutton.pack(side="left", padx=2, anchor="center")
 
     # Validation functions
+    def validname(self,name): 
+        if len(name) < 2 or len(name) > 15: # checks name length
+            messagebox.showinfo("Error", "Name must be between 2 and 15 characters long")
+            return False
+        if not name.isalpha(): # can only contain letter and spaces
+            messagebox.showinfo("Error", "Name must contain only letters and spaces!")
+            return False
+        else:
+            return True
     def validemail(self, email):
         pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'  # checks if valid email follows email format
         return re.match(pattern, email) is not None # returns true if email is valid
@@ -219,7 +228,9 @@ class signuppage(ctk.CTkFrame):
         newuser = self.email_form.get()
         newpass = self.password_form.get()
         if not newuser or not newpass or not newname: # checks fields arent empty
-            print("Name/Username/Password cannot be blank")
+            messagebox.showinfo("Error", "Name/Username/Password cannot be blank")
+            return
+        if not self.validname(newname):
             return
         if not self.validemail(newuser):
             messagebox.showinfo("Error", "Invalid email format")
