@@ -115,6 +115,9 @@ class loginpage(ctk.CTkFrame):
         passcheck = self.password_form.get()
         self.cursor.execute("SELECT Password FROM users WHERE Email = ?", (emailcheck, )) # finds email
         result = self.cursor.fetchone() # stores results
+        if passcheck == "" or emailcheck == "": # checks fields arent empty
+            messagebox.showinfo("Error", "Email/Password cannot be blank")
+            return
         if result: # if a result is found
             stored_password = result[0]
             hashed_password = hashlib.sha256(passcheck.encode()).hexdigest()
