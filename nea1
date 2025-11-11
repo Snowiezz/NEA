@@ -283,10 +283,10 @@ class quizpage(ctk.CTkFrame):
         self.questions = [
             {
                 "text": "Are you interested in any potential universities?",
-                "type": "dropdown",
+                "type": "multi",
                 "questionnumber": 1,
                 "options": self.universitylist,
-                "handler": self.dropdown_selected
+                "handler": self.multi_selected
             },
             {
                 "text": "Do you plan on staying at home or moving away for university?",
@@ -324,10 +324,10 @@ class quizpage(ctk.CTkFrame):
             },
             {
                 "text": "Are you interested in any of the following?",
-                "type": "dropdown",
+                "type": "multi",
                 "questionnumber": 7,
                 "options": ["Masters Degree", "Placement Year", "Study Abroad", "Scotland degree(4 years)"],
-                "handler": self.dropdown_selected
+                "handler": self.multi_selected
             },
         ]
         # Hide all widgets first
@@ -346,24 +346,33 @@ class quizpage(ctk.CTkFrame):
 
     def display_question(self):
         question = self.questions[self.current_question_index]
-        # Hide all widgets first
+        # Hide/destroy all widgets first
         self.answer_menu.pack_forget()
         self.single_choice_frame.pack_forget()
         self.continue_button.pack_forget()
         self.postcode_entry.pack_forget()
         for widget in self.single_choice_frame.winfo_children():
             widget.destroy()
+
+
         self.question_label.configure(text=question["text"]) # displays the quiz question
-        if question["type"] == "dropdown": # if a dropdown question
-            self.answer_menu.configure(values=question["options"], command=question["handler"])
-            self.answer_menu.set("Choose an option")
-            self.answer_menu.pack(pady=(100, 10))
-            self.continue_button.pack(pady=(200, 10))
+
+        #for each question type, display the widgets
+    
+        if question["type"] == "multi": # if a multiple choice question
+            for option in question["options"]: # for each option
+                var = ctk.IntVar() # checks if box has been ticked
+                check = ctk.CTkCheckBox(self.single_choice_frame, text=option, font=("Tahoma", 20), variable=var, command=lambda choice=option, v=var: self.multi_selected(choice, v)) # tick box
+                check.pack(side="top", anchor="w", pady=10)
+            self.single_choice_frame.pack(pady=(30, 20), anchor="center")
+            self.continue_button.pack(pady=(20, 10)) # places continue button
+
         elif question["type"] == "single": # if a single choice question
             for option in question["options"]:
                 btn = ctk.CTkButton(self.single_choice_frame, text=option, font=("Tahoma", 20), command=lambda choice=option: question["handler"](choice), width=250, height=60)
                 btn.pack(side="left", padx=30, pady=20)
             self.single_choice_frame.pack(pady=(30, 20), anchor="center")
+
         elif question["type"] == "text": # if a text question
             self.postcode_entry.pack(pady=(100, 20), anchor="center") # place entry box
             self.postcode_entry.bind("<Return>", lambda event: question["handler"]()) # if user clicks enter key, moves to next question
@@ -380,9 +389,16 @@ class quizpage(ctk.CTkFrame):
         else:
             messagebox.showinfo("Quiz Completed", "Please continue to the main page.") # no more questions
             self.controller.save_quiz_answers(self.quiz_answers) # saves quiz answers to db
+            print(self.quiz_answers)
 
-    def dropdown_selected(self, choice):
-        self.selected_answers[self.current_question_index] = choice
+    # Handlers for different question types
+    def multi_selected(self, choice,var):
+        if var.get() == 1: # if selected
+            self.selected_answers[self.current_question_index] = [] # assigns empty list
+            self.selected_answers[self.current_question_index].append(choice) # adds choice to the answers
+        else: # if unselected
+            self.selected_answers[self.current_question_index].remove(choice)
+
 
     def single_selected(self, choice):
         self.selected_answers[self.current_question_index] = choice
