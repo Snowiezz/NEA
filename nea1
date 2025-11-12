@@ -345,7 +345,7 @@ class quizpage(ctk.CTkFrame):
         self.display_question() # Display the first question
 
     def display_question(self):
-        question = self.questions[self.current_question_index]
+        question = self.questions[self.current_question_index] # gets current question
         # Hide/destroy all widgets first
         self.answer_menu.pack_forget()
         self.single_choice_frame.pack_forget()
@@ -394,7 +394,8 @@ class quizpage(ctk.CTkFrame):
     # Handlers for different question types
     def multi_selected(self, choice,var):
         if var.get() == 1: # if selected
-            self.selected_answers[self.current_question_index] = [] # assigns empty list
+            if self.current_question_index not in self.selected_answers: # checks there isnt already a list
+                self.selected_answers[self.current_question_index] = [] # assigns empty list
             self.selected_answers[self.current_question_index].append(choice) # adds choice to the answers
         else: # if unselected
             self.selected_answers[self.current_question_index].remove(choice)
