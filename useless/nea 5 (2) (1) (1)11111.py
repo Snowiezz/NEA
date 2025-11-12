@@ -109,6 +109,8 @@ KEY AUTOINCREMENT,Name text NOT NULL, Email text NOT NULL, Password text NOT NUL
                 if result: # if a result is found
                     passcheck = hashlib.sha256(passcheck.encode()).hexdigest()
                     stored_password = result[0]
+                    print(stored_password)
+                    print(passcheck)
                     if stored_password == passcheck:
                         messagebox.showinfo("Login", "Login successful")
                         self.controller.openpage(self,self.controller.otherpage)

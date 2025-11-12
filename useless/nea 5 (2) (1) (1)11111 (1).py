@@ -125,6 +125,9 @@ class loginpage(ctk.CTkFrame):
         result = self.cursor.fetchone() # stores results
         if result: # if a result is found
             stored_password = result[0]
+            print(stored_password)
+            print(passcheck)
+
             if stored_password == passcheck:
                 self.cursor.execute("SELECT id FROM users WHERE Email = ?", (emailcheck, )) # finds email
                 result1 = self.cursor.fetchone() # stores results

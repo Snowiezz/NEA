@@ -1,6 +1,5 @@
 import customtkinter as ctk
 from tkinter import messagebox #confirmation 
-from PIL import Image #logo
 import re # for valid email pattern
 import sqlite3 #db
 import hashlib #hashes
@@ -88,7 +87,7 @@ class loginpage(ctk.CTkFrame):
 
 
         self.password_form = ctk.CTkEntry(self.password_form_frame, font= ("Tahoma",20,"normal"), placeholder_text="Password",show="*",text_color='black',fg_color='lightgrey',width=500,height=70,border_width=0,corner_radius=10)
-        self.password_form.pack(padx=15,pady=0)
+        self.password_form.pack(padx=15, pady=0)
         self.forgotpassword = ctk.CTkLabel(self.password_form_frame,text="Forgot Password?",text_color="green",fg_color="white",font=("Tahoma",15,"underline"),cursor="hand2")
         self.forgotpassword.pack(anchor="e",side="right",padx=20,pady=0)
 
@@ -256,6 +255,8 @@ class signuppage(ctk.CTkFrame):
                 if result1:
                     user_id = result1[0] # get user id
                     self.controller.quiztaken(user_id, self)
+
+                    
 class quizpage(ctk.CTkFrame):
     def __init__(self, parent, controller):
         super().__init__(parent)
@@ -458,4 +459,3 @@ class mainpage(ctk.CTkFrame):
         
 app = NEA()
 app.mainloop()
-
