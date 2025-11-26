@@ -323,19 +323,26 @@ class quizpage(ctk.CTkFrame):
                 "handler": self.single_selected
             },
             {
-                "text": "What is your preferred study duration?",
+                "text": "Are you interested in studying in London?",
                 "type": "single",
                 "questionnumber": 6,
-                "options": ["3 Years", "4 Years(masters/industry/scotland)", "No preference"],
+                "options": ["Yes", "No", "No preference"],
                 "handler": self.single_selected
             },
             {
-                "text": "Are you interested in any of the following?",
+                "text": "Which extracurricular activities are you interested in?",
                 "type": "multi",
                 "questionnumber": 7,
-                "options": ["Masters Degree", "Placement Year", "Study Abroad", "Scotland degree(4 years)"],
+                "options": ["Sports","Art/music","Societies","Job opportunities (part-time)","Job opportunities (internships)"],
                 "handler": self.multi_selected
             },
+            {
+                "text": "How important is nightlife to you?",
+                "type": "single",
+                "questionnumber": 8,
+                "options": ["Very important", "Somewhat important", "Not important"],
+                "handler": self.single_selected
+            }
         ]
         # Hide all widgets first
         #self.answer_menu.pack_forget()
