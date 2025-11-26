@@ -404,6 +404,7 @@ class quizpage(ctk.CTkFrame):
             messagebox.showinfo("Quiz Completed", "Please continue to the main page.") # no more questions
             self.controller.save_quiz_answers(self.quiz_answers) # saves quiz answers to db
             print(self.quiz_answers)
+            self.controller.openpage(self, self.controller.mainpage)
 
     # Handlers for different question types
     def multi_selected(self, choice,var):
