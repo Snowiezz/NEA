@@ -14,9 +14,9 @@ class NEA(ctk.CTk):
         current.place_forget() 
         page.place(relwidth=1, relheight=1)
     def quiztaken(self,user_id,currentpage): # checks if user has taken quiz
-        self.current_user_id = user_id  # stores current user id
-        self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id,)) #Checks database for it quiz has been taken
+        self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id)) #Checks database for it quiz has been taken
         result = self.cursor.fetchone() # fetches result
+        print(result)
         if result and result[0] == 0: # if quiz not taken
             self.openpage(currentpage, self.quizpage)
         else: # if quiz taken
@@ -404,6 +404,8 @@ class quizpage(ctk.CTkFrame):
             messagebox.showinfo("Quiz Completed", "Please continue to the main page.") # no more questions
             self.controller.save_quiz_answers(self.quiz_answers) # saves quiz answers to db
             print(self.quiz_answers)
+            self.controller.cursor.execute("UPDATE users SET quiz_taken = 1 WHERE id = ?", (self.controller.current_user_id,)); self.controller.db.commit()
+            
             self.controller.openpage(self, self.controller.mainpage)
 
     # Handlers for different question types
