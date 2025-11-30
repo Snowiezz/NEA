@@ -14,7 +14,8 @@ class NEA(ctk.CTk):
         current.place_forget() 
         page.place(relwidth=1, relheight=1)
     def quiztaken(self,user_id,currentpage): # checks if user has taken quiz
-        self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id)) #Checks database for it quiz has been taken
+        self.current_user_id = user_id  # stores current user id
+        self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id,)) #Checks database for it quiz has been taken
         result = self.cursor.fetchone() # fetches result
         print(result)
         if result and result[0] == 0: # if quiz not taken
@@ -27,10 +28,30 @@ class NEA(ctk.CTk):
                 answer = ', '.join(answer)
             self.cursor.execute("INSERT INTO quiz_answers (user_id, question_num, answer) VALUES (?, ?, ?)", (self.current_user_id, question_num, answer))
         self.db.commit()
+    def create_header(self, parent, show_search=False):
+        header = ctk.CTkFrame(parent, fg_color="#25995e", height=0.2)
+        header.place(relx=0, rely=0, relwidth=1, relheight=0.12)
+        logintext = ctk.CTkLabel(header, text="UniPicker", font=("Tahoma", 55, "bold"), 
+                                 text_color="white", fg_color="#25995e")
+        logintext.place(anchor="w", rely=0.5, relx=0.04)
+        
+        #Search bar
+        if show_search:
+            searchbar = ctk.CTkEntry(header, placeholder_text="Search universities...", 
+                                       font=("Tahoma", 18), width=500, height=50,
+                                       border_width=0, corner_radius=25,
+                                       fg_color="white", text_color="black",
+                                       placeholder_text_color="gray")
+            searchbar.place(anchor="center", rely=0.5, relx=0.5)
+        
+        signout = ctk.CTkLabel(header, text="Sign Out", font=("Tahoma", 25, "bold"), text_color="white", 
+                               fg_color="#25995e", cursor="hand2")
+        signout.place(anchor="e", rely=0.5, relx=0.96)
+        signout.bind("<Button-1>", lambda event: self.openpage(parent, self.loginpage))
     def __init__(self):
         super().__init__()
         self.state('zoomed')          # standards across all pages
-        self.geometry('1920x1080')
+        self.geometry('1920x1080') 
         self.title("UniPicker")
         self.configure(fg_color="white")
 
@@ -53,7 +74,7 @@ class NEA(ctk.CTk):
         self.quizpage = quizpage(parent=self,controller=self)
         self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
-        self.loginpage.place(relwidth=1,relheight=1)
+        self.mainpage.place(relwidth=1,relheight=1)
 class loginpage(ctk.CTkFrame):
     def __init__(self,db,cursor,parent,controller):
         super().__init__(parent)
@@ -268,14 +289,7 @@ class quizpage(ctk.CTkFrame):
         super().__init__(parent)
         self.configure(fg_color="white")
         self.controller = controller
-        # Header
-        self.header = ctk.CTkFrame(self, fg_color="#25995e", height=0.2)
-        self.header.place(relx=0, rely=0, relwidth=1, relheight=0.12)
-        self.logintext = ctk.CTkLabel(self.header, text="UniPicker", font=("Tahoma", 55, "bold"), text_color="white", fg_color="#25995e")
-        self.logintext.place(anchor="w", rely=0.5, relx=0.04)
-        signoutbutton = ctk.CTkLabel(self.header, text="Sign Out", font=("Tahoma", 25, "bold"), text_color="white", fg_color="#25995e", cursor="hand2")
-        signoutbutton.place(anchor="e", rely=0.5, relx=0.96)
-        signoutbutton.bind("<Button-1>", lambda event: self.controller.openpage(self, self.controller.loginpage))
+        self.controller.create_header(self) ####
         # Body
         self.scrollableframe = ctk.CTkScrollableFrame(self, fg_color="white")
         self.scrollableframe.place(relx=0, rely=0.12, relwidth=1, relheight=0.88)
@@ -436,8 +450,10 @@ class quizpage(ctk.CTkFrame):
 class mainpage(ctk.CTkFrame):
     def __init__(self,parent,controller):
         super().__init__(parent)
-        self.configure(fg_color="#25995e")
+        self.configure(fg_color="#e8f5e9") # body background
         self.controller = controller
+        self.controller.create_header(self, show_search=True) # creates header with search bar
+        
 
             
                 
