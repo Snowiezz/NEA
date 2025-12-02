@@ -54,7 +54,7 @@ class NEA(ctk.CTk):
         self.geometry('1920x1080') 
         self.title("UniPicker")
         self.configure(fg_color="white")
-
+        self.saved_universities = []
         #connect to db
         self.db = sqlite3.connect("login.db")
         self.cursor = self.db.cursor()
@@ -453,6 +453,15 @@ class mainpage(ctk.CTkFrame):
         self.configure(fg_color="#e8f5e9") # body background
         self.controller = controller
         self.controller.create_header(self, show_search=True) # creates header with search bar
+
+        self.widgetframe = ctk.CTkFrame(self,border_color="#2b2b2b",fg_color="white",corner_radius=12) # Frame of the widgets
+        self.widgetframe.place(relx=0.5,rely=0.53,anchor="center")
+
+        self.saved_universities_frame = ctk.CTkFrame(self.widgetframe,fg_color="white")
+        self.saved_universities_frame.place(relx=0.5, rely=0.5, anchor="center")
+
+        self.saved_universities_text = ctk.CTkLabel(self.saved_universities_frame,text="Saved Universities",text_color="#25995e",font=("Tahoma",80,"bold")) #Title
+        self.saved_universities_text.pack(anchor="center",pady=100)
         
 
             
