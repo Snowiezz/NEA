@@ -1,0 +1,38 @@
+       
+        # Saved universities frame
+        self.saveduniversities_frame = ctk.CTkFrame(self, fg_color="white", corner_radius=15, border_width=1, border_color="#c8e6c9")
+        self.saveduniversities_frame.place(relx=0.05, rely=0.15)
+        
+        self.saveduniversities_label = ctk.CTkLabel(self.saveduniversities_frame, text="Saved Universities", font=("Tahoma", 25, "bold"), text_color="black")
+        self.saveduniversities_label.pack(pady=10, padx=20)
+        
+        # Scrollable list of saved universities
+        self.saved_scroll = ctk.CTkScrollableFrame(self.saveduniversities_frame, fg_color="white", width=350, height=300)
+        self.saved_scroll.pack(pady=10, padx=10)
+        
+        # Add university section
+        self.add_label = ctk.CTkLabel(self.saveduniversities_frame, text="Add University:", font=("Tahoma", 16))
+        self.add_label.pack(pady=(10, 5))
+        
+        self.uni_dropdown = ctk.CTkOptionMenu(self.saveduniversities_frame, values=self.controller.universitylist, width=350, height=40, font=("Tahoma", 14))
+        self.uni_dropdown.pack(pady=5, padx=10)
+        
+        self.add_button = ctk.CTkButton(self.saveduniversities_frame, text="Add", command=self.add_university, width=100, height=35, font=("Tahoma", 16))
+        self.add_button.pack(pady=10)
+        
+        self.update_saved_list()
+    
+    def add_university(self):
+        uni = self.uni_dropdown.get()
+        if uni not in self.controller.saveduniversities:
+            self.controller.saveduniversities.append(uni)
+            self.update_saved_list()
+    
+    def update_saved_list(self):
+        for widget in self.saved_scroll.winfo_children():
+            widget.destroy()
+        
+        for uni in self.controller.saveduniversities:
+            label = ctk.CTkLabel(self.saved_scroll, text=uni, font=("Tahoma", 14), anchor="w")
+            label.pack(pady=5, padx=10, fill="x")
+        

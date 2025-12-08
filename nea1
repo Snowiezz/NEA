@@ -28,21 +28,14 @@ class NEA(ctk.CTk):
                 answer = ', '.join(answer)
             self.cursor.execute("INSERT INTO quiz_answers (user_id, question_num, answer) VALUES (?, ?, ?)", (self.current_user_id, question_num, answer))
         self.db.commit()
-    def create_header(self, parent, show_search=False):
+    def create_header(self, parent):
         header = ctk.CTkFrame(parent, fg_color="#25995e", height=0.2)
         header.place(relx=0, rely=0, relwidth=1, relheight=0.12)
         logintext = ctk.CTkLabel(header, text="UniPicker", font=("Tahoma", 55, "bold"), 
                                  text_color="white", fg_color="#25995e")
         logintext.place(anchor="w", rely=0.5, relx=0.04)
         
-        #Search bar
-        if show_search:
-            searchbar = ctk.CTkEntry(header, placeholder_text="Search universities...", 
-                                       font=("Tahoma", 18), width=500, height=50,
-                                       border_width=0, corner_radius=25,
-                                       fg_color="white", text_color="black",
-                                       placeholder_text_color="gray")
-            searchbar.place(anchor="center", rely=0.5, relx=0.5)
+
         
         signout = ctk.CTkLabel(header, text="Sign Out", font=("Tahoma", 25, "bold"), text_color="white", 
                                fg_color="#25995e", cursor="hand2")
@@ -60,6 +53,11 @@ class NEA(ctk.CTk):
         self.cursor = self.db.cursor()
 
         self.db.commit()
+        self.universitylist = [
+            "University of Oxford", "University of Cambridge", "Imperial College London",
+            "London School of Economics and Political Science", "University College London (UCL)", "University of Edinburgh",
+            "University of Manchester", "Kings College London", "University of Bristol", "University of Glasgow",
+        ]
 
  
 
@@ -296,17 +294,12 @@ class quizpage(ctk.CTkFrame):
 
         self.quiz_answers = {}
         self.current_question_index = 0
-        self.universitylist = [
-            "University of Oxford", "University of Cambridge", "Imperial College London",
-            "London School of Economics and Political Science", "University College London (UCL)", "University of Edinburgh",
-            "University of Manchester", "Kings College London", "University of Bristol", "University of Glasgow",
-        ]
         self.questions = [
             {
                 "text": "Are you interested in any potential universities?",
                 "type": "multi",
                 "questionnumber": 1,
-                "options": self.universitylist,
+                "options": self.controller.universitylist,
                 "handler": self.multi_selected
             },
             {
@@ -452,8 +445,14 @@ class mainpage(ctk.CTkFrame):
         super().__init__(parent)
         self.configure(fg_color="#e8f5e9") # body background
         self.controller = controller
-        self.controller.create_header(self, show_search=True) # creates header with search bar
-        
+        self.controller.create_header(self) # creates header with search bar
+        self.universitydropdown = ctk.CTkOptionMenu(self, height=50, width=300, font=("Tahoma", 20), values=self.controller.universitylist) # university dropdown
+        self.universitydropdown.place(relx=0.5, rely=0.2,anchor="center")
+        self.saveduniversities_frame = ctk.CTkFrame(self, fg_color="white", corner_radius=15, border_width=1, border_color="#c8e6c9") # saved universities frame
+        self.saveduniversities_frame.place(relx=0.05, rely=0.15)
+        self.saveduniversities_label = ctk.CTkLabel(self.saveduniversities_frame, text="Saved Universities", font=("Tahoma", 30, "bold"), text_color="black", fg_color="white")
+        self.saveduniversities_label.pack(pady=20, padx=20)
+        # FINISH OFF UNIVERSTY DROPDOWN NEEDS AN ADD BUTTON AND SAVED UNIVERSITIES NEEDS TO BE ABLE TO SAVE UNIVERSITIES
 
             
                 
