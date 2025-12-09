@@ -41,7 +41,6 @@ class NEA(ctk.CTk):
                                fg_color="#25995e", cursor="hand2")
         signout.place(anchor="e", rely=0.5, relx=0.96)
         signout.bind("<Button-1>", lambda event: self.openpage(parent, self.loginpage))
-    def update_saved_universities(self,)
     def __init__(self):
         super().__init__()
         self.state('zoomed')          # standards across all pages
@@ -442,6 +441,9 @@ class quizpage(ctk.CTkFrame):
         self.next_question()
 
 class mainpage(ctk.CTkFrame):
+    def update_saved_universities(self):
+        option = self.adduniversitybtn.get()
+        print(option)
     def __init__(self,parent,controller):
         super().__init__(parent)
         self.configure(fg_color="#e8f5e9") # body background
@@ -466,7 +468,7 @@ class mainpage(ctk.CTkFrame):
 
         # button to add a university
         self.adduniversitybtn = ctk.CTkButton(self.adduniversity_frame, text="Add",font=("Inter",20,"bold"),text_color="white",
-        cursor="hand2",fg_color="#25995e",width=300,height=60,corner_radius=12,cammand = lambda event: self.saveduniversities()) 
+        cursor="hand2",fg_color="#25995e",width=300,height=60,corner_radius=12,command = self.update_saved_universities()) 
         self.adduniversitybtn.pack(pady=10,padx=0)
 
 
