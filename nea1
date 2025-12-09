@@ -468,8 +468,9 @@ class mainpage(ctk.CTkFrame):
 
         # button to add a university
         self.adduniversitybtn = ctk.CTkButton(self.adduniversity_frame, text="Add",font=("Inter",20,"bold"),text_color="white",
-        cursor="hand2",fg_color="#25995e",width=300,height=60,corner_radius=12,command = self.update_saved_universities()) 
+        cursor="hand2",fg_color="#25995e",width=300,height=60,corner_radius=12) 
         self.adduniversitybtn.pack(pady=10,padx=0)
+        self.adduniversitybtn.bind("<Button-1>", self.update_saved_universities()) # FINISHAND DOCUMENT NOT SURE IF WORKS
 
 
         """
