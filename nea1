@@ -41,6 +41,7 @@ class NEA(ctk.CTk):
                                fg_color="#25995e", cursor="hand2")
         signout.place(anchor="e", rely=0.5, relx=0.96)
         signout.bind("<Button-1>", lambda event: self.openpage(parent, self.loginpage))
+    def update_saved_universities(self,)
     def __init__(self):
         super().__init__()
         self.state('zoomed')          # standards across all pages
@@ -446,12 +447,38 @@ class mainpage(ctk.CTkFrame):
         self.configure(fg_color="#e8f5e9") # body background
         self.controller = controller
         self.controller.create_header(self) # creates header with search bar
-        self.universitydropdown = ctk.CTkOptionMenu(self, height=50, width=300, font=("Tahoma", 20), values=self.controller.universitylist) # university dropdown
-        self.universitydropdown.place(relx=0.5, rely=0.2,anchor="center")
+
+        # saved universities frame
+        self.adduniversity_frame = ctk.CTkFrame(self,corner_radius=15, border_width=1,
+        fg_color="#e8f5e9",  border_color="#c8e6c9") 
+        self.adduniversity_frame.place(relx=0.5, rely=0.28,anchor="center")
+        #saved university dropdown table
+
+        self.adduniversitydropdown_label = ctk.CTkLabel(self.adduniversity_frame, 
+        text="Add a university", font=("Inter", 50, "bold"), text_color="Black")
+        self.adduniversitydropdown_label.pack(pady=20, padx=20)
+
+        # university dropdown
+
+        self.adduniversitydropdown = ctk.CTkOptionMenu(self.adduniversity_frame, height=50, width=300, font=("Tahoma", 20), 
+        values=self.controller.universitylist) 
+        self.adduniversitydropdown.pack(pady=20,anchor="center")
+
+        # button to add a university
+        self.adduniversitybtn = ctk.CTkButton(self.adduniversity_frame, text="Add",font=("Inter",20,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=300,height=60,corner_radius=12,cammand = lambda event: self.saveduniversities()) 
+        self.adduniversitybtn.pack(pady=10,padx=0)
+
+
+        """
+        
+        
+       
         self.saveduniversities_frame = ctk.CTkFrame(self, fg_color="white", corner_radius=15, border_width=1, border_color="#c8e6c9") # saved universities frame
         self.saveduniversities_frame.place(relx=0.05, rely=0.15)
         self.saveduniversities_label = ctk.CTkLabel(self.saveduniversities_frame, text="Saved Universities", font=("Tahoma", 30, "bold"), text_color="black", fg_color="white")
         self.saveduniversities_label.pack(pady=20, padx=20)
+        """
         # FINISH OFF UNIVERSTY DROPDOWN NEEDS AN ADD BUTTON AND SAVED UNIVERSITIES NEEDS TO BE ABLE TO SAVE UNIVERSITIES
 
             
