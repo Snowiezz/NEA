@@ -442,7 +442,7 @@ class quizpage(ctk.CTkFrame):
 
 class mainpage(ctk.CTkFrame):
     def update_saved_universities(self):
-        option = self.adduniversitybtn.get()
+        option = self.adduniversitydropdown.get()
         print(option)
     def __init__(self,parent,controller):
         super().__init__(parent)
@@ -470,7 +470,8 @@ class mainpage(ctk.CTkFrame):
         self.adduniversitybtn = ctk.CTkButton(self.adduniversity_frame, text="Add",font=("Inter",20,"bold"),text_color="white",
         cursor="hand2",fg_color="#25995e",width=300,height=60,corner_radius=12) 
         self.adduniversitybtn.pack(pady=10,padx=0)
-        self.adduniversitybtn.bind("<Button-1>", self.update_saved_universities()) # FINISHAND DOCUMENT NOT SURE IF WORKS
+        self.adduniversitybtn.bind("<Button-1>", lambda event: self.update_saved_universities()) 
+        # FINISHAND DOCUMENT NOT SURE IF WORKS
 
 
         """
