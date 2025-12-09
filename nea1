@@ -47,7 +47,7 @@ class NEA(ctk.CTk):
         self.geometry('1920x1080') 
         self.title("UniPicker")
         self.configure(fg_color="white")
-
+        self.saved_universities = []
         #connect to db
         self.db = sqlite3.connect("login.db")
         self.cursor = self.db.cursor()
