@@ -13,8 +13,10 @@ class NEA(ctk.CTk):
     def openpage(self,current,page): 
         current.place_forget() 
         page.place(relwidth=1, relheight=1)
+    # Quiz
     def quiztaken(self,user_id,currentpage): # checks if user has taken quiz
         self.current_user_id = user_id  # stores current user id
+        self.load_saved_universities()  # loads saved universities for the user
         self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id,)) #Checks database for it quiz has been taken
         result = self.cursor.fetchone() # fetches result
         print(result)
@@ -28,6 +30,8 @@ class NEA(ctk.CTk):
                 answer = ', '.join(answer)
             self.cursor.execute("INSERT INTO quiz_answers (user_id, question_num, answer) VALUES (?, ?, ?)", (self.current_user_id, question_num, answer))
         self.db.commit()
+
+
     def create_header(self, parent):
         header = ctk.CTkFrame(parent, fg_color="#25995e", height=0.2)
         header.place(relx=0, rely=0, relwidth=1, relheight=0.12)
@@ -41,6 +45,25 @@ class NEA(ctk.CTk):
                                fg_color="#25995e", cursor="hand2")
         signout.place(anchor="e", rely=0.5, relx=0.96)
         signout.bind("<Button-1>", lambda event: self.openpage(parent, self.loginpage))
+
+    def load_saved_universities(self):
+        self.cursor.execute("SELECT university_name FROM saved_universities WHERE user_id = ?", (self.current_user_id,)) # finds all universities
+        results = self.cursor.fetchall() # collects
+        self.saved_universities = [row[0] for row in results] # creates list with each uni
+        print(self.saved_universities)
+
+    def save_saved_universities(self,university):
+        print(self.current_user_id)
+        self.cursor.execute("SELECT * FROM saved_universities WHERE user_id = ? AND university_name = ?", (self.current_user_id, university))
+        result = self.cursor.fetchone() # fetches result
+        if result:
+            return False # already saved
+        else:
+            self.cursor.execute("INSERT INTO saved_universities (user_id, university_name) VALUES (?, ?)", (self.current_user_id, university))
+            self.db.commit()
+            return True # saved successfully
+
+
     def __init__(self):
         super().__init__()
         self.state('zoomed')          # standards across all pages
@@ -72,7 +95,7 @@ class NEA(ctk.CTk):
         self.quizpage = quizpage(parent=self,controller=self)
         self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
-        self.mainpage.place(relwidth=1,relheight=1)
+        self.loginpage.place(relwidth=1,relheight=1)
 class loginpage(ctk.CTkFrame):
     def __init__(self,db,cursor,parent,controller):
         super().__init__(parent)
@@ -442,8 +465,14 @@ class quizpage(ctk.CTkFrame):
 
 class mainpage(ctk.CTkFrame):
     def update_saved_universities(self):
-        option = self.adduniversitydropdown.get()
-        print(option)
+        option = self.adduniversitydropdown.get() # gets selected option
+        if self.controller.save_saved_universities(option) is False: # tries to save uni to db
+            messagebox.showinfo("Error", "University already saved")
+            return
+        else:
+            messagebox.showinfo("Success", "University saved successfully")
+            self.controller.load_saved_universities() # reloads saved unis
+            print(self.controller.saved_universities) # prints saved unis
     def __init__(self,parent,controller):
         super().__init__(parent)
         self.configure(fg_color="#e8f5e9") # body background
