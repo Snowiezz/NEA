@@ -500,7 +500,6 @@ class mainpage(ctk.CTkFrame):
         cursor="hand2",fg_color="#25995e",width=300,height=60,corner_radius=12) 
         self.adduniversitybtn.pack(pady=10,padx=0)
         self.adduniversitybtn.bind("<Button-1>", lambda event: self.update_saved_universities()) 
-        # FINISHAND DOCUMENT NOT SURE IF WORKS
 
 
         """
