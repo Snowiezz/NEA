@@ -464,6 +464,12 @@ class quizpage(ctk.CTkFrame):
         self.next_question()
 
 class mainpage(ctk.CTkFrame):
+    def display_saved_universities(self):
+        for widget in self.saveduniversities_content.winfo_children():
+            widget.destroy()
+        for uni in self.controller.saved_universities:
+            uni_label = ctk.CTkLabel(self.saveduniversities_content, text=uni, font=("Tahoma", 20), text_color="black", fg_color="white")
+            uni_label.pack(pady=5, padx=20, anchor="w")
     def update_saved_universities(self):
         option = self.adduniversitydropdown.get() # gets selected option
         if self.controller.save_saved_universities(option) is False: # tries to save uni to db
@@ -473,6 +479,7 @@ class mainpage(ctk.CTkFrame):
             messagebox.showinfo("Success", "University saved successfully")
             self.controller.load_saved_universities() # reloads saved unis
             print(self.controller.saved_universities) # prints saved unis
+            self.display_saved_universities()
     def __init__(self,parent,controller):
         super().__init__(parent)
         self.configure(fg_color="#e8f5e9") # body background
@@ -502,16 +509,20 @@ class mainpage(ctk.CTkFrame):
         self.adduniversitybtn.bind("<Button-1>", lambda event: self.update_saved_universities()) 
 
 
-        """
-        
         
        
-        self.saveduniversities_frame = ctk.CTkFrame(self, fg_color="white", corner_radius=15, border_width=1, border_color="#c8e6c9") # saved universities frame
+        self.saveduniversities_frame = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # saved universities frame
         self.saveduniversities_frame.place(relx=0.05, rely=0.15)
-        self.saveduniversities_label = ctk.CTkLabel(self.saveduniversities_frame, text="Saved Universities", font=("Tahoma", 30, "bold"), text_color="black", fg_color="white")
+        self.saveduniversities_label = ctk.CTkLabel(self.saveduniversities_frame, text="Saved Universities", font=("Tahoma", 30, "bold"), text_color="black", fg_color="#e8f5e9")
         self.saveduniversities_label.pack(pady=20, padx=20)
-        """
+        self.saveduniversities_content = ctk.CTkScrollableFrame(self.saveduniversities_frame, 
+                                                                fg_color="white", 
+                                                                width=350, height=400)
+        self.saveduniversities_content.pack(pady=10, padx=10)
+        self.display_saved_universities()
+
         # FINISH OFF UNIVERSTY DROPDOWN NEEDS AN ADD BUTTON AND SAVED UNIVERSITIES NEEDS TO BE ABLE TO SAVE UNIVERSITIES
+
 
             
                 
