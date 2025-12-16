@@ -1,0 +1,20 @@
+line 98:
+self.mappage = mappage(self.db,self.cursor,parent=self,controller=self)
+
+
+line 521
+class mappage(ctk.CTkFrame):
+    def __init__(self,parent,controller):
+        super().__init__(parent)                
+        self.configure(fg_color="#e8f5e9") # body background   
+  
+  
+line 506
+        self.mapbtn = ctk.CTkButton(self,text="Map",font=("Inter",60,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
+        self.mapbtn.place(relx=0.5,rely=0.8,anchor="center")
+        self.mapbtn.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.mappage))
+        
+        self.comparebtn = ctk.CTkButton(self,text="Compare",font=("Inter",60,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
+        self.comparebtn.place(relx=0.8,rely=0.8)
