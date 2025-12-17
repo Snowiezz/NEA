@@ -17,9 +17,9 @@ class NEA(ctk.CTk):
     def quiztaken(self,user_id,currentpage): # checks if user has taken quiz
         self.current_user_id = user_id  # stores current user id
         self.load_saved_universities()  # loads saved universities for the user
+        self.mainpage.display_saved_universities()
         self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id,)) #Checks database for it quiz has been taken
         result = self.cursor.fetchone() # fetches result
-        print(result)
         if result and result[0] == 0: # if quiz not taken
             self.openpage(currentpage, self.quizpage)
         else: # if quiz taken
@@ -78,7 +78,7 @@ class NEA(ctk.CTk):
         self.db.commit()
         self.universitylist = [
             "University of Oxford", "University of Cambridge", "Imperial College London",
-            "London School of Economics and Political Science", "University College London (UCL)", "University of Edinburgh",
+            "London School of Economics", "University College London (UCL)", "University of Edinburgh",
             "University of Manchester", "Kings College London", "University of Bristol", "University of Glasgow",
         ]
 
@@ -93,6 +93,8 @@ class NEA(ctk.CTk):
         
         self.mainpage = mainpage(parent=self,controller=self)
         self.quizpage = quizpage(parent=self,controller=self)
+        self.mappage = mainpage(parent=self,controller=self)
+        self.comparepage = comparepage(parent=self,controller=self)
         self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
         self.loginpage.place(relwidth=1,relheight=1)
@@ -468,8 +470,13 @@ class mainpage(ctk.CTkFrame):
         for widget in self.saveduniversities_content.winfo_children():
             widget.destroy()
         for uni in self.controller.saved_universities:
-            uni_label = ctk.CTkLabel(self.saveduniversities_content, text=uni, font=("Tahoma", 20), text_color="black", fg_color="white")
+            uni_label = ctk.CTkLabel(self.saveduniversities_content, text=uni, font=("Tahoma", 20), text_color="black", fg_color="#e8f5e9")
             uni_label.pack(pady=5, padx=20, anchor="w")
+            # put line through when hovering over
+            uni_label.bind("<Enter>", lambda event, label=uni_label: label.configure(text_color="red"))
+            uni_label.bind("<Leave>", lambda event, label=uni_label: label.configure(text_color="black"))
+
+            uni_label.bind("<Button-1>", lambda event, university=uni: self.delete_university(university))
     def update_saved_universities(self):
         option = self.adduniversitydropdown.get() # gets selected option
         if self.controller.save_saved_universities(option) is False: # tries to save uni to db
@@ -480,6 +487,16 @@ class mainpage(ctk.CTkFrame):
             self.controller.load_saved_universities() # reloads saved unis
             print(self.controller.saved_universities) # prints saved unis
             self.display_saved_universities()
+    def delete_university(self,university):
+        # deletes university from saved universities
+        self.controller.cursor.execute("DELETE FROM saved_universities WHERE user_id = ? AND university_name = ?",
+                                        (self.controller.current_user_id, university))
+        self.controller.db.commit() # commits changes
+
+        messagebox.showinfo("Success", "University removed successfully")
+        self.controller.load_saved_universities() # reloads saved unis
+        self.display_saved_universities()
+
     def __init__(self,parent,controller):
         super().__init__(parent)
         self.configure(fg_color="#e8f5e9") # body background
@@ -512,18 +529,40 @@ class mainpage(ctk.CTkFrame):
         
        
         self.saveduniversities_frame = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # saved universities frame
-        self.saveduniversities_frame.place(relx=0.05, rely=0.15)
+        self.saveduniversities_frame.place(relx=0.01, rely=0.15)
         self.saveduniversities_label = ctk.CTkLabel(self.saveduniversities_frame, text="Saved Universities", font=("Tahoma", 30, "bold"), text_color="black", fg_color="#e8f5e9")
-        self.saveduniversities_label.pack(pady=20, padx=20)
-        self.saveduniversities_content = ctk.CTkScrollableFrame(self.saveduniversities_frame, 
-                                                                fg_color="white", 
-                                                                width=350, height=400)
+        self.saveduniversities_label.pack(pady=10, padx=20)
+        self.saveduniversities_content = ctk.CTkFrame(self.saveduniversities_frame, 
+                                                                fg_color="#e8f5e9", 
+                                                                width=600, height=600)
         self.saveduniversities_content.pack(pady=10, padx=10)
-        self.display_saved_universities()
+
+        self.mapbtn = ctk.CTkButton(self,text="Map",font=("Inter",60,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
+        self.mapbtn.place(relx=0.5,rely=0.8,anchor="center")
+        self.mapbtn.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.mappage))
+        
+        self.comparebtn = ctk.CTkButton(self,text="Compare",font=("Inter",60,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
+        self.comparebtn.place(relx=0.7,rely=0.2)
+        self.comparebtn.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.comparepage))
+
+        self.redoquizbtn = ctk.CTkButton(self,text="Redo Quiz",font=("Inter",60,"bold"),text_color="white", cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
+        self.redoquizbtn.place(relx=0.7,rely=0.45)
+
+
 
         # FINISH OFF UNIVERSTY DROPDOWN NEEDS AN ADD BUTTON AND SAVED UNIVERSITIES NEEDS TO BE ABLE TO SAVE UNIVERSITIES
 
+class mappage(ctk.CTkFrame):
+    def __init__(self,parent,controller):
+        super().__init__(parent)                
+        self.configure(fg_color="#e8f5e9") # body background   
 
+class comparepage(ctk.CTkFrame):
+    def __init__(self,parent,controller):
+        super().__init__(parent)                
+        self.configure(fg_color="#e8f5e9") # body background
             
                 
                 
