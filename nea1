@@ -93,7 +93,7 @@ class NEA(ctk.CTk):
         
         self.mainpage = mainpage(parent=self,controller=self)
         self.quizpage = quizpage(parent=self,controller=self)
-        self.mappage = mainpage(parent=self,controller=self)
+        self.mappage = mappage(parent=self,controller=self)
         self.comparepage = comparepage(parent=self,controller=self)
         self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
@@ -465,6 +465,12 @@ class quizpage(ctk.CTkFrame):
         self.selected_answers[self.current_question_index] = postcode
         self.next_question()
 
+
+
+
+
+
+
 class mainpage(ctk.CTkFrame):
     def display_saved_universities(self):
         for widget in self.saveduniversities_content.winfo_children():
@@ -496,6 +502,13 @@ class mainpage(ctk.CTkFrame):
         messagebox.showinfo("Success", "University removed successfully")
         self.controller.load_saved_universities() # reloads saved unis
         self.display_saved_universities()
+    def redo_quiz(self):
+        # resets quiz_taken to 0
+        self.controller.cursor.execute("UPDATE users SET quiz_taken = 0 WHERE id = ?", (self.controller.current_user_id,))
+        # deletes previous quiz answers
+        self.controller.cursor.execute("DELETE FROM quiz_answers WHERE user_id = ?", (self.controller.current_user_id,))
+        self.controller.db.commit() # commits changes
+        self.controller.openpage(self, self.controller.quizpage) # opens quiz page
 
     def __init__(self,parent,controller):
         super().__init__(parent)
@@ -547,12 +560,11 @@ class mainpage(ctk.CTkFrame):
         self.comparebtn.place(relx=0.7,rely=0.2)
         self.comparebtn.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.comparepage))
 
-        self.redoquizbtn = ctk.CTkButton(self,text="Redo Quiz",font=("Inter",60,"bold"),text_color="white", cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
+        self.redoquizbtn = ctk.CTkButton(self,text="Redo Quiz",font=("Inter",60,"bold"),text_color="white", 
+                                         cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
         self.redoquizbtn.place(relx=0.7,rely=0.45)
 
 
-
-        # FINISH OFF UNIVERSTY DROPDOWN NEEDS AN ADD BUTTON AND SAVED UNIVERSITIES NEEDS TO BE ABLE TO SAVE UNIVERSITIES
 
 class mappage(ctk.CTkFrame):
     def __init__(self,parent,controller):
