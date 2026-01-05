@@ -97,7 +97,7 @@ class NEA(ctk.CTk):
         self.comparepage = comparepage(parent=self,controller=self)
         self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
-        self.loginpage.place(relwidth=1,relheight=1)
+        self.comparepage.place(relwidth=1,relheight=1)
 class loginpage(ctk.CTkFrame):
     def __init__(self,db,cursor,parent,controller):
         super().__init__(parent)
@@ -584,6 +584,26 @@ class comparepage(ctk.CTkFrame):
     def __init__(self,parent,controller):
         super().__init__(parent)                
         self.configure(fg_color="#e8f5e9") # body background
+
+        self.controller = controller
+        self.controller.create_header(self) # creates header
+        
+        self.leftcompareframe = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # left compare frame
+        self.leftcompareframe.place(relx=0.25, rely=0.5)
+        self.leftcomparetext = ctk.CTkLabel(self.leftcompareframe, text="University 1", font=("Tahoma", 30, "bold"), text_color="black", fg_color="#e8f5e9")
+        self.leftcomparetext.pack(pady=10, padx=20)
+        self.leftcomparedropdown = ctk.CTkOptionMenu(self.leftcompareframe, height=50, width=400, font=("Tahoma", 20), 
+        values=controller.saved_universities)
+        self.leftcomparedropdown.pack(pady=20,anchor="center",padx=50)
+
+        self.rightcompareframe = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # right compare frame
+        self.rightcompareframe.place(relx=0.75, rely=0.5)
+        self.rightcomparetext = ctk.CTkLabel(self.rightcompareframe, text="University 2", font=("Tahoma", 30, "bold"), text_color="black", fg_color="#e8f5e9")
+        self.rightcomparetext.pack(pady=10, padx=20)
+
+
+
+
             
                 
                 
