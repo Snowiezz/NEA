@@ -411,6 +411,7 @@ class quizpage(ctk.CTkFrame):
                 check = ctk.CTkCheckBox(self.single_choice_frame, text=option, font=("Tahoma", 20), variable=var, command=lambda choice=option, v=var: self.multi_selected(choice, v)) # tick box
                 check.pack(side="top", anchor="w", pady=10)
             self.single_choice_frame.pack(pady=(30, 20), anchor="center")
+            self.continue_button.configure(text="Continue", command=self.next_question) # Reset button command
             self.continue_button.pack(pady=(20, 10)) # places continue button
 
         elif question["type"] == "single": # if a single choice question
@@ -508,6 +509,14 @@ class mainpage(ctk.CTkFrame):
         # deletes previous quiz answers
         self.controller.cursor.execute("DELETE FROM quiz_answers WHERE user_id = ?", (self.controller.current_user_id,))
         self.controller.db.commit() # commits changes
+
+        # Reset all quiz variables
+        self.controller.quizpage.quiz_answers = {}
+        self.controller.quizpage.selected_answers = {}
+        self.controller.quizpage.current_question_index = 0 # resets quiz page question index
+        self.controller.quizpage.postcode_entry.delete(0, "end")
+        self.controller.quizpage.display_question()
+
         self.controller.openpage(self, self.controller.quizpage) # opens quiz page
 
     def __init__(self,parent,controller):
@@ -561,7 +570,7 @@ class mainpage(ctk.CTkFrame):
         self.comparebtn.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.comparepage))
 
         self.redoquizbtn = ctk.CTkButton(self,text="Redo Quiz",font=("Inter",60,"bold"),text_color="white", 
-                                         cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
+                                         cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12, command= lambda: self.redo_quiz())
         self.redoquizbtn.place(relx=0.7,rely=0.45)
 
 
