@@ -1,9 +1,55 @@
-line 98:
+    def __init__(self,parent,controller):
+        super().__init__(parent)
+        self.configure(fg_color="#e8f5e9") # body background
+        self.controller = controller
+        self.controller.create_header(self) # creates header with search bar
+
+        # saved universities frame
+        self.adduniversity_frame = ctk.CTkFrame(self,corner_radius=15, border_width=1,
+        fg_color="#e8f5e9",  border_color="#c8e6c9") 
+        self.adduniversity_frame.place(relx=0.5, rely=0.35,anchor="center")
+        #saved university dropdown table
+
+        self.adduniversitydropdown_label = ctk.CTkLabel(self.adduniversity_frame, 
+        text="Add a university", font=("Inter", 50, "bold"), text_color="Black")
+        self.adduniversitydropdown_label.pack(pady=20, padx=40)
+
+        # university dropdown
+
+        self.adduniversitydropdown = ctk.CTkOptionMenu(self.adduniversity_frame, height=50, width=300, font=("Tahoma", 20), 
+        values=self.controller.universitylist) 
+        self.adduniversitydropdown.pack(pady=20,anchor="center")
+
+        # button to add a university
+        self.adduniversitybtn = ctk.CTkButton(self.adduniversity_frame, text="Add",font=("Inter",20,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=300,height=60,corner_radius=12) 
+        self.adduniversitybtn.pack(pady=10,padx=0)
+        self.adduniversitybtn.bind("<Button-1>", lambda event: self.update_saved_universities()) 
 
 
+        
+       
+        self.saveduniversities_frame = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # saved universities frame
+        self.saveduniversities_frame.place(relx=0.01, rely=0.15)
+        self.saveduniversities_label = ctk.CTkLabel(self.saveduniversities_frame, text="Saved Universities", font=("Tahoma", 30, "bold"), text_color="black", fg_color="#e8f5e9")
+        self.saveduniversities_label.pack(pady=10, padx=20)
+        self.saveduniversities_content = ctk.CTkFrame(self.saveduniversities_frame, 
+                                                                fg_color="#e8f5e9", 
+                                                                width=600, height=600)
+        self.saveduniversities_content.pack(pady=10, padx=10)
 
-line 521
+        self.mapbtn = ctk.CTkButton(self,text="Map",font=("Inter",60,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=500,height=300,corner_radius=12)
+        self.mapbtn.place(relx=0.5,rely=0.75,anchor='center')
+        self.mapbtn.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.mappage))
+        
+        self.comparebtn = ctk.CTkButton(self,text="Compare",font=("Inter",60,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=500,height=300,corner_radius=12)
+        self.comparebtn.place(relx=0.7,rely=0.2)
+        self.comparebtn.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.comparepage))
 
-  
-  
-line 506
+        self.redoquizbtn = ctk.CTkButton(self,text="Redo Quiz",font=("Inter",60,"bold"),text_color="white", 
+                                         cursor="hand2",fg_color="#25995e",width=500,height=300,corner_radius=12, command= lambda: self.redo_quiz())
+        self.redoquizbtn.place(relx=0.7,rely=0.6)
+
+
