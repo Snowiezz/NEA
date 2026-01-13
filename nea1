@@ -18,6 +18,7 @@ class NEA(ctk.CTk):
         self.current_user_id = user_id  # stores current user id
         self.load_saved_universities()  # loads saved universities for the user
         self.mainpage.display_saved_universities()
+        self.comparepage.update_dropdown()
         self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id,)) #Checks database for it quiz has been taken
         result = self.cursor.fetchone() # fetches result
         if result and result[0] == 0: # if quiz not taken
@@ -97,7 +98,7 @@ class NEA(ctk.CTk):
         self.comparepage = comparepage(parent=self,controller=self)
         self.loginpage = loginpage(self.db,self.cursor,parent=self,controller=self)
         self.signuppage = signuppage(self.db,self.cursor,parent=self,controller=self)
-        self.comparepage.place(relwidth=1,relheight=1)
+        self.loginpage.place(relwidth=1,relheight=1)
 class loginpage(ctk.CTkFrame):
     def __init__(self,db,cursor,parent,controller):
         super().__init__(parent)
@@ -582,6 +583,9 @@ class mappage(ctk.CTkFrame):
         self.configure(fg_color="#e8f5e9") # body background   
 
 class comparepage(ctk.CTkFrame):
+    def update_dropdown(self):
+        self.leftcomparedropdown.configure(values=self.controller.saved_universities) #updates the left dropdown
+        self.rightcomparedropdown.configure(values=self.controller.saved_universities)# updates the right dropdown
     def __init__(self,parent,controller):
         super().__init__(parent)                
         self.configure(fg_color="#e8f5e9") # body background
@@ -604,6 +608,8 @@ class comparepage(ctk.CTkFrame):
         self.rightcomparedropdown = ctk.CTkOptionMenu(self.rightcompareframe, height=50, width=400, font=("Tahoma", 20), 
         values=self.controller.saved_universities)
         self.rightcomparedropdown.pack(pady=20,anchor="center",padx=50)
+
+        self.return_button = ctk.CTkLabel(self)#finish
 
 
 
