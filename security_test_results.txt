@@ -1,0 +1,283 @@
+
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║                    NEA1.PY SECURITY TESTING SUITE                        ║
+    ║                          Penetration Test Mode                            ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    
+    This test suite will perform comprehensive security testing on nea1.py
+    to identify potential vulnerabilities and security issues.
+    
+    Tests include:
+    - Password security and hashing
+    - SQL injection vulnerabilities
+    - Authentication and authorization
+    - Input validation
+    - XSS protection
+    - Session management
+    - Database security
+    - Sensitive data exposure
+    
+Starting security penetration tests...
+================================================================================
+
+[1/11] Testing password hashing algorithm...
+[2/11] Testing rainbow table attack resistance...
+[3/11] Testing password validation strength...
+[4/11] Testing SQL injection vulnerabilities...
+[5/11] Testing email validation...
+[6/11] Testing brute force protection...
+[7/11] Testing session management...
+[8/11] Testing name field validation...
+[9/11] Testing postcode validation...
+[10/11] Testing database security...
+[11/11] Testing XSS protection...
+[12/11] Testing sensitive data exposure...
+
+================================================================================
+All tests completed!
+================================================================================
+
+================================================================================
+ SECURITY PENETRATION TEST REPORT FOR nea1.py
+================================================================================
+
+Test Date: 2026-01-13 12:04:05
+Total Tests Run: 12
+Critical Vulnerabilities Found: 2
+High Severity Issues: 2
+Medium Severity Issues: 0
+
+================================================================================
+ DETAILED TEST RESULTS
+================================================================================
+
+[CRITICAL] Password Hashing Algorithm
+--------------------------------------------------------------------------------
+Status: FAILED
+
+VULNERABILITY: Password hashing uses SHA256 without salt. SHA256 is vulnerable to rainbow table attacks. Recommendation: Use bcrypt, scrypt, or Argon2 with salt.
+
+[CRITICAL] Rainbow Table Attack Resistance
+--------------------------------------------------------------------------------
+Status: FAILED
+
+VULNERABILITY: The application uses unsalted SHA256. Common passwords can be cracked using rainbow tables:
+  - 'password123' -> ef92b778bafe771e...
+  - 'Password1' -> 19513fdc9da4fb72...
+  - 'Admin123456' -> 1cd73874884db6a0...
+Recommendation: Implement salted hashing (bcrypt/Argon2).
+
+[MEDIUM] Password Validation Strength
+--------------------------------------------------------------------------------
+Status: FAILED
+
+Password validation analysis:
+  - WEAK: 'AAAAAAAA1a' passes validation but is weak
+
+RECOMMENDATION: Add special character requirement, check against common password lists, add entropy checks.
+
+[INFO] SQL Injection in Login
+--------------------------------------------------------------------------------
+Status: PASSED
+
+Testing SQL injection payloads in login:
+  - PROTECTED from payload: ' OR '1'='1
+  - PROTECTED from payload: ' OR '1'='1' --
+  - PROTECTED from payload: admin'--
+  - PROTECTED from payload: ' UNION SELECT * FROM users--
+  - PROTECTED from payload: '; DROP TABLE users;--
+
+GOOD: Parameterized queries protect against SQL injection.
+
+[INFO] Email Validation Bypass
+--------------------------------------------------------------------------------
+Status: PASSED
+
+Email validation test results:
+  - OK: 'valid@example.com' (Valid email)
+  - OK: 'test.user@example.co.uk' (Valid with subdomain)
+  - OK: 'test@test' (Missing TLD)
+  - OK: '' (Empty string)
+  - OK: '@example.com' (Missing local part)
+  - OK: 'test@' (Missing domain)
+  - OK: 'test..test@example.com' (Consecutive dots (may be invalid))
+  - OK: 'test@example..com' (Consecutive dots in domain (invalid))
+  - OK: '<script>alert('xss')</script>@example.com' (XSS attempt)
+  - OK: 'test@example.com; DROP TABLE users;' (SQL injection attempt)
+
+Email validation appears adequate.
+
+[HIGH] Brute Force Attack Protection
+--------------------------------------------------------------------------------
+Status: FAILED
+
+VULNERABILITY: No rate limiting or account lockout mechanism detected.
+An attacker can attempt unlimited login attempts.
+Simulating 1000 login attempts...
+  - All attempts would be processed without delay
+  - No account lockout after failed attempts
+  - No CAPTCHA or challenge-response system
+
+RECOMMENDATION: Implement:
+  1. Rate limiting (e.g., max 5 attempts per 15 minutes)
+  2. Account lockout after N failed attempts
+  3. CAPTCHA after several failed attempts
+  4. Log suspicious activity
+
+[MEDIUM] Session Management
+--------------------------------------------------------------------------------
+Status: FAILED
+
+Session management analysis:
+  - User ID stored in memory (self.current_user_id)
+  - No session timeout detected
+  - No session token generation
+  - Simple sign out without session invalidation
+
+VULNERABILITY: Basic session management without security features.
+RECOMMENDATION:
+  1. Implement session tokens
+  2. Add session timeout (e.g., 30 minutes)
+  3. Implement secure session storage
+  4. Clear sensitive data on logout
+
+[LOW] Name Field Input Validation
+--------------------------------------------------------------------------------
+Status: PASSED
+
+Name validation test results:
+  - OK: 'John' (Normal name)
+  - OK: 'A' (Too short)
+  - OK: 'VeryLongNameHere' (Too long)
+  - OK: 'John123' (Contains numbers)
+  - OK: 'John Doe' (Contains space)
+  - OK: 'O'Brien' (Contains apostrophe)
+  - OK: '<script>' (XSS attempt)
+  - OK: ''; DROP TABLE users;--' (SQL injection)
+
+NOTE: Current validation rejects valid names with spaces or apostrophes.
+RECOMMENDATION: Allow spaces and common characters while sanitizing.
+
+[INFO] Postcode Validation
+--------------------------------------------------------------------------------
+Status: PASSED
+
+Postcode validation test results:
+  - OK: 'SW1A 1AA' (Valid postcode)
+  - OK: 'M1 1AE' (Valid short postcode)
+  - OK: 'CR2 6XH' (Valid postcode)
+  - OK: 'DN55 1PT' (Valid postcode)
+  - OK: 'W1A 0AX' (Valid postcode)
+  - OK: ''; DROP TABLE users;--' (SQL injection)
+  - OK: '<script>alert(1)</script>' (XSS attempt)
+  - OK: 'AAAAA' (Invalid format)
+
+Postcode validation appears secure.
+
+[MEDIUM] Database Security Configuration
+--------------------------------------------------------------------------------
+Status: FAILED
+
+Database security analysis:
+  - Database file: login.db (stored locally)
+  - No database encryption detected
+  - No backup strategy visible
+  - Database connection not using SSL/TLS
+
+VULNERABILITY: Database file can be accessed directly.
+RECOMMENDATION:
+  1. Encrypt database file (SQLCipher)
+  2. Set proper file permissions
+  3. Implement database backups
+  4. Consider server-based database for production
+
+[HIGH] Cross-Site Scripting (XSS) Protection
+--------------------------------------------------------------------------------
+Status: FAILED
+
+XSS vulnerability analysis:
+  - University names displayed without sanitization
+  - User names displayed in UI
+  - Quiz answers stored and potentially displayed
+
+POTENTIAL VULNERABILITY: If data from database is displayed without sanitization,
+XSS attacks are possible through stored data.
+
+Test payloads:
+  - <script>alert('XSS')</script>
+  - <img src=x onerror=alert('XSS')>
+  - javascript:alert('XSS')
+  - <iframe src='javascript:alert(1)'>
+
+RECOMMENDATION:
+  1. Sanitize all user input before storage
+  2. Escape output when displaying user data
+  3. Use Content Security Policy headers
+  4. Validate data types strictly
+
+[MEDIUM] Sensitive Data Exposure
+--------------------------------------------------------------------------------
+Status: FAILED
+
+Sensitive data exposure analysis:
+  - ISSUE: User ID printed to console (line 179: print(result1[0]))
+  - ISSUE: Saved universities printed to console (line 53, 495)
+  - ISSUE: Quiz answers printed to console (line 439)
+  - ISSUE: Plain text passwords in memory before hashing
+
+VULNERABILITY: Sensitive information logged to console.
+In production, console logs may be exposed.
+
+RECOMMENDATION:
+  1. Remove or disable debug print statements
+  2. Implement proper logging with levels
+  3. Never log sensitive data (passwords, tokens)
+  4. Use secure logging libraries
+
+================================================================================
+ CRITICAL VULNERABILITIES SUMMARY
+================================================================================
+
+1. [CRITICAL] Password Hashing Algorithm
+   VULNERABILITY: Password hashing uses SHA256 without salt. SHA256 is vulnerable to rainbow table attacks. Recommendation: Use bcrypt, scrypt, or Argon2 with salt....
+
+2. [CRITICAL] Rainbow Table Attack Resistance
+   VULNERABILITY: The application uses unsalted SHA256. Common passwords can be cracked using rainbow tables:
+  - 'password123' -> ef92b778bafe771e...
+  - 'Password1' -> 19513fdc9da4fb72...
+  - 'Admin123...
+
+3. [HIGH] Brute Force Attack Protection
+   VULNERABILITY: No rate limiting or account lockout mechanism detected.
+An attacker can attempt unlimited login attempts.
+Simulating 1000 login attempts...
+  - All attempts would be processed without d...
+
+4. [HIGH] Cross-Site Scripting (XSS) Protection
+   XSS vulnerability analysis:
+  - University names displayed without sanitization
+  - User names displayed in UI
+  - Quiz answers stored and potentially displayed
+
+POTENTIAL VULNERABILITY: If data from ...
+
+================================================================================
+ RECOMMENDATIONS PRIORITY
+================================================================================
+
+1. CRITICAL - Implement salted password hashing (bcrypt/Argon2)
+2. HIGH - Add rate limiting and brute force protection
+3. HIGH - Implement XSS protection and input sanitization
+4. MEDIUM - Improve session management with timeouts
+5. MEDIUM - Encrypt database or restrict file access
+6. MEDIUM - Remove sensitive data from console logs
+7. LOW - Enhance input validation for names and emails
+
+================================================================================
+ END OF REPORT
+================================================================================
+
+
+[INFO] Security test report has been displayed above.
+[INFO] You can redirect this output to a file using:
+       python test_security_nea1.py > security_test_report.txt
