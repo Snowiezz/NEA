@@ -528,12 +528,12 @@ class mainpage(ctk.CTkFrame):
         # saved universities frame
         self.adduniversity_frame = ctk.CTkFrame(self,corner_radius=15, border_width=1,
         fg_color="#e8f5e9",  border_color="#c8e6c9") 
-        self.adduniversity_frame.place(relx=0.5, rely=0.28,anchor="center")
+        self.adduniversity_frame.place(relx=0.5, rely=0.35,anchor="center")
         #saved university dropdown table
 
         self.adduniversitydropdown_label = ctk.CTkLabel(self.adduniversity_frame, 
         text="Add a university", font=("Inter", 50, "bold"), text_color="Black")
-        self.adduniversitydropdown_label.pack(pady=20, padx=20)
+        self.adduniversitydropdown_label.pack(pady=20, padx=40)
 
         # university dropdown
 
@@ -560,18 +560,19 @@ class mainpage(ctk.CTkFrame):
         self.saveduniversities_content.pack(pady=10, padx=10)
 
         self.mapbtn = ctk.CTkButton(self,text="Map",font=("Inter",60,"bold"),text_color="white",
-        cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
-        self.mapbtn.place(relx=0.5,rely=0.8,anchor="center")
+        cursor="hand2",fg_color="#25995e",width=500,height=300,corner_radius=12)
+        self.mapbtn.place(relx=0.5,rely=0.75,anchor='center')
         self.mapbtn.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.mappage))
         
         self.comparebtn = ctk.CTkButton(self,text="Compare",font=("Inter",60,"bold"),text_color="white",
-        cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12)
+        cursor="hand2",fg_color="#25995e",width=500,height=300,corner_radius=12)
         self.comparebtn.place(relx=0.7,rely=0.2)
         self.comparebtn.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.comparepage))
 
         self.redoquizbtn = ctk.CTkButton(self,text="Redo Quiz",font=("Inter",60,"bold"),text_color="white", 
-                                         cursor="hand2",fg_color="#25995e",width=400,height=180,corner_radius=12, command= lambda: self.redo_quiz())
-        self.redoquizbtn.place(relx=0.7,rely=0.45)
+                                         cursor="hand2",fg_color="#25995e",width=500,height=300,corner_radius=12, command= lambda: self.redo_quiz())
+        self.redoquizbtn.place(relx=0.7,rely=0.6)
+
 
 
 
@@ -589,17 +590,20 @@ class comparepage(ctk.CTkFrame):
         self.controller.create_header(self) # creates header
         
         self.leftcompareframe = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # left compare frame
-        self.leftcompareframe.place(relx=0.25, rely=0.5)
+        self.leftcompareframe.place(relx=0.15, rely=0.2)
         self.leftcomparetext = ctk.CTkLabel(self.leftcompareframe, text="University 1", font=("Tahoma", 30, "bold"), text_color="black", fg_color="#e8f5e9")
         self.leftcomparetext.pack(pady=10, padx=20)
         self.leftcomparedropdown = ctk.CTkOptionMenu(self.leftcompareframe, height=50, width=400, font=("Tahoma", 20), 
-        values=controller.saved_universities)
+        values=self.controller.saved_universities)
         self.leftcomparedropdown.pack(pady=20,anchor="center",padx=50)
 
         self.rightcompareframe = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # right compare frame
-        self.rightcompareframe.place(relx=0.75, rely=0.5)
+        self.rightcompareframe.place(relx=0.55, rely=0.2)
         self.rightcomparetext = ctk.CTkLabel(self.rightcompareframe, text="University 2", font=("Tahoma", 30, "bold"), text_color="black", fg_color="#e8f5e9")
         self.rightcomparetext.pack(pady=10, padx=20)
+        self.rightcomparedropdown = ctk.CTkOptionMenu(self.rightcompareframe, height=50, width=400, font=("Tahoma", 20), 
+        values=self.controller.saved_universities)
+        self.rightcomparedropdown.pack(pady=20,anchor="center",padx=50)
 
 
 
