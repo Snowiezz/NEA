@@ -3,6 +3,7 @@ from tkinter import messagebox #confirmation
 import re # for valid email pattern
 import sqlite3 #db
 import hashlib #hashes
+import json
 
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("green")
@@ -82,11 +83,12 @@ class NEA(ctk.CTk):
             "London School of Economics", "University College London (UCL)", "University of Edinburgh",
             "University of Manchester", "Kings College London", "University of Bristol", "University of Glasgow",
         ]
-
- 
+        with open('university_data.json', 'r') as f:
+            self.unidata = {uni['university_name']: uni for uni in json.load(f)}
+            print(self.unidata)
 
         self.after(100, lambda: self.lift())              #opens python file to front in macos
-        self.after(100, lambda: self.focus_force())   #macos
+        self.after(100, lambda: self.focus_force())   #macos    
         self.after(100, lambda: self.attributes('-topmost', True))  #macos
         self.after(500, lambda: self.attributes('-topmost', False)) #macos
         self.current_user_id = None  # stores current user id
@@ -586,12 +588,27 @@ class comparepage(ctk.CTkFrame):
     def update_dropdown(self):
         self.leftcomparedropdown.configure(values=self.controller.saved_universities) #updates the left dropdown
         self.rightcomparedropdown.configure(values=self.controller.saved_universities)# updates the right dropdown
+
+        self.leftcomparedropdown.set(self.controller.saved_universities[0]) #resets left dropdown
+        self.rightcomparedropdown.set(self.controller.saved_universities[0]) #resets right dropdown
+
+
+    def display_comparison(self,university_name):
+        data = self.controller.unidata.get(university_name)
+        if not data:
+            messagebox.showinfo("Error", f"No data found for {university_name}")
+            return
+        else:
+            print(data)
+        
     def __init__(self,parent,controller):
         super().__init__(parent)                
         self.configure(fg_color="#e8f5e9") # body background
 
         self.controller = controller
         self.controller.create_header(self) # creates header
+
+        
         
         self.leftcompareframe = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # left compare frame
         self.leftcompareframe.place(relx=0.15, rely=0.2)
@@ -609,9 +626,15 @@ class comparepage(ctk.CTkFrame):
         values=self.controller.saved_universities)
         self.rightcomparedropdown.pack(pady=20,anchor="center",padx=50)
 
-        self.return_button = ctk.CTkLabel(self)#finish
+        self.return_button = ctk.CTkButton(self,text="Back",font=("Inter",40,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=90,height=60,corner_radius=12)
+        self.return_button.place(relx=0.95, rely=0.2, anchor="e")
+        self.return_button.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.mainpage))
 
-
+        self.compare_button = ctk.CTkButton(self,text="Compare",font=("Inter",40,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=250,height=100,corner_radius=12)
+        self.compare_button.place(relx=0.5, rely=0.95, anchor="s")
+        self.compare_button.bind("<Button-1>", lambda event: self.display_comparison("University of Cambridge"))
 
 
             
