@@ -595,6 +595,7 @@ class comparepage(ctk.CTkFrame):
 
     def display_comparison(self,university_name):
         data = self.controller.unidata.get(university_name)
+        
         if not data:
             messagebox.showinfo("Error", f"No data found for {university_name}")
             return
@@ -631,10 +632,15 @@ class comparepage(ctk.CTkFrame):
         self.return_button.place(relx=0.95, rely=0.2, anchor="e")
         self.return_button.bind("<Button-1>", lambda event: self.controller.openpage(self,self.controller.mainpage))
 
-        self.compare_button = ctk.CTkButton(self,text="Compare",font=("Inter",40,"bold"),text_color="white",
+        self.compare_button_left = ctk.CTkButton(self,text="Compare",font=("Inter",40,"bold"),text_color="white",
         cursor="hand2",fg_color="#25995e",width=250,height=100,corner_radius=12)
-        self.compare_button.place(relx=0.5, rely=0.95, anchor="s")
-        self.compare_button.bind("<Button-1>", lambda event: self.display_comparison("University of Cambridge"))
+        self.compare_button_left.place(relx=0.25, rely=0.95, anchor="s")
+        self.compare_button_left.bind("<Button-1>", lambda event: self.display_comparison(self.leftcomparedropdown.get()))
+
+        self.compare_button_right = ctk.CTkButton(self,text="Compare",font=("Inter",40,"bold"),text_color="white",
+        cursor="hand2",fg_color="#25995e",width=250,height=100,corner_radius=12)
+        self.compare_button_right.place(relx=0.75, rely=0.95, anchor="s")
+        self.compare_button_right.bind("<Button-1>", lambda event: self.display_comparison(self.rightcomparedropdown.get()))
 
 
             
