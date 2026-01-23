@@ -27,10 +27,13 @@ class NEA(ctk.CTk):
         else: # if quiz taken
             self.openpage(currentpage, self.mainpage)
     def save_quiz_answers(self,quiz_answers):
+        # Batch insert for better performance
+        batch_data = []
         for question_num, answer in quiz_answers.items():
             if isinstance(answer, list):
                 answer = ', '.join(answer)
-            self.cursor.execute("INSERT INTO quiz_answers (user_id, question_num, answer) VALUES (?, ?, ?)", (self.current_user_id, question_num, answer))
+            batch_data.append((self.current_user_id, question_num, answer))
+        self.cursor.executemany("INSERT INTO quiz_answers (user_id, question_num, answer) VALUES (?, ?, ?)", batch_data)
         self.db.commit()
 
 
@@ -49,9 +52,9 @@ class NEA(ctk.CTk):
         signout.bind("<Button-1>", lambda event: self.openpage(parent, self.loginpage))
 
     def load_saved_universities(self):
-        self.cursor.execute("SELECT university_name FROM saved_universities WHERE user_id = ?", (self.current_user_id,)) # finds all universities
-        results = self.cursor.fetchall() # collects
-        self.saved_universities = [row[0] for row in results] # creates list with each uni
+        # Use list comprehension directly with cursor for better performance
+        self.cursor.execute("SELECT university_name FROM saved_universities WHERE user_id = ?", (self.current_user_id,))
+        self.saved_universities = [row[0] for row in self.cursor.fetchall()]
         print(self.saved_universities)
 
     def save_saved_universities(self,university):
