@@ -603,11 +603,7 @@ class comparepage(ctk.CTkFrame):
 
     def display_comparison(self,university_name):
         data = self.controller.unidata.get(university_name)
-<<<<<<< HEAD
-        print(self.controller.quiz_answers)
-=======
         answers = self.controller.quiz_answers    
->>>>>>> 75679060f24c78a0e4c36b096d78f8448ae0a20b
         
         if not data:
             messagebox.showinfo("Error", f"No data found for {university_name}")
