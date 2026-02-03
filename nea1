@@ -18,6 +18,7 @@ class NEA(ctk.CTk):
     def quiztaken(self,user_id,currentpage): # checks if user has taken quiz
         self.current_user_id = user_id  # stores current user id
         self.load_saved_universities()  # loads saved universities for the user
+        self.load_quiz_answers()
         self.mainpage.display_saved_universities()
         self.load_quiz_answers()
         self.comparepage.update_dropdown()
@@ -37,7 +38,10 @@ class NEA(ctk.CTk):
         self.cursor.execute("SELECT question_num, answer FROM quiz_answers WHERE user_id = ?", (self.current_user_id,))
         results = self.cursor.fetchall()
         self.quiz_answers = {row[0]: row[1] for row in results}
+<<<<<<< HEAD
 
+=======
+>>>>>>> 75679060f24c78a0e4c36b096d78f8448ae0a20b
     def create_header(self, parent):
         header = ctk.CTkFrame(parent, fg_color="#25995e", height=0.2)
         header.place(relx=0, rely=0, relwidth=1, relheight=0.12)
@@ -599,13 +603,17 @@ class comparepage(ctk.CTkFrame):
 
     def display_comparison(self,university_name):
         data = self.controller.unidata.get(university_name)
+<<<<<<< HEAD
         print(self.controller.quiz_answers)
+=======
+        answers = self.controller.quiz_answers    
+>>>>>>> 75679060f24c78a0e4c36b096d78f8448ae0a20b
         
         if not data:
             messagebox.showinfo("Error", f"No data found for {university_name}")
             return
-        else:
-            print(data)
+        if answers.get(4) == "Yes":
+            print("Financial information needed")
         
     def __init__(self,parent,controller):
         super().__init__(parent)                
