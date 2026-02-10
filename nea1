@@ -604,12 +604,49 @@ class comparepage(ctk.CTkFrame):
     def display_comparison(self,university_name):
         data = self.controller.unidata.get(university_name)
         answers = self.controller.quiz_answers    
-        
+        sections = []
+        priorities = {
+            "Nightlife": 3,
+            "Financial information": 2,
+            "Student Reviews": 1,
+            "Costs": 4
+
+        }
         if not data:
             messagebox.showinfo("Error", f"No data found for {university_name}")
             return
-        if answers.get(4) == "Yes":
-            print("Financial information needed")
+        financial_info = answers.get(4)
+        if financial_info:
+            if financial_info == "Yes":
+                sections.append(("Financial support", data["financial_support_info"]))
+
+
+        nightlife_answer = answers.get(8)
+        if nightlife_answer:
+            if nightlife_answer == "Very important":
+                priorities["Nightlife"] = 0
+                nightlife_text = "Nightlife is very important to you, so city options may suit you best."
+            elif nightlife_answer == "Somewhat important":
+                priorities["Nightlife"] = 2
+                nightlife_text = "Nightlife matters somewhat to you, so balanced city/campus options are good."
+            elif nightlife_answer == "Not important":
+                priorities["Nightlife"] = 5
+                nightlife_text = "Nightlife is not important to you, so campus or quieter areas may suit you."
+            sections.append(("Nightlife", nightlife_text + "\n" + data["nightlife_info"]))
+
+        activities_answer = answers.get(7)
+        if activities_answer:
+            if activities_answer == "Sports":
+                print("Interested in sports")
+            if activities_answer == "Art/music":
+                print("Interested in art/music")
+            if activities_answer == "Societies":
+                print("Interested in societies")
+            if activities_answer == "Job opportunities (part-time)":   
+                print("Interested in part-time job opportunities")
+            if activities_answer == "Job opportunities (internships)":
+                print("Interested in internship opportunities")   
+
         
     def __init__(self,parent,controller):
         super().__init__(parent)                
