@@ -38,10 +38,6 @@ class NEA(ctk.CTk):
         self.cursor.execute("SELECT question_num, answer FROM quiz_answers WHERE user_id = ?", (self.current_user_id,))
         results = self.cursor.fetchall()
         self.quiz_answers = {row[0]: row[1] for row in results}
-<<<<<<< HEAD
-
-=======
->>>>>>> 75679060f24c78a0e4c36b096d78f8448ae0a20b
     def create_header(self, parent):
         header = ctk.CTkFrame(parent, fg_color="#25995e", height=0.2)
         header.place(relx=0, rely=0, relwidth=1, relheight=0.12)
@@ -637,15 +633,17 @@ class comparepage(ctk.CTkFrame):
         activities_answer = answers.get(7)
         if activities_answer:
             if activities_answer == "Sports":
-                print("Interested in sports")
+                sections.append(("Sports", "You are interested in sports activities. " + data["sports"]))
             if activities_answer == "Art/music":
-                print("Interested in art/music")
+                sections.append(("Art/Music", "You are interested in art/music activities. " + data["art_music"]))
             if activities_answer == "Societies":
-                print("Interested in societies")
+                sections.append(("Societies", "You are interested in societies. " + data["societies"]))
             if activities_answer == "Job opportunities (part-time)":   
-                print("Interested in part-time job opportunities")
+                sections.append(("Job Opportunities (Part-time)", "You are interested in part-time job opportunities. " + data["job_opportunities_part_time"]))
             if activities_answer == "Job opportunities (internships)":
-                print("Interested in internship opportunities")   
+                sections.append(("Job Opportunities (Internships)", "You are interested in internship opportunities. " + data["job_opportunities_full_time"]))
+        print(sections)
+            
 
         
     def __init__(self,parent,controller):
