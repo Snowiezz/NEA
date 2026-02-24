@@ -89,7 +89,6 @@ class NEA(ctk.CTk):
         ]
         with open('university_data.json', 'r') as f:
             self.unidata = {uni['university_name']: uni for uni in json.load(f)}
-            print(self.unidata)
 
         self.after(100, lambda: self.lift())              #opens python file to front in macos
         self.after(100, lambda: self.focus_force())   #macos    
@@ -443,7 +442,6 @@ class quizpage(ctk.CTkFrame):
         else:
             messagebox.showinfo("Quiz Completed", "Please continue to the main page.") # no more questions
             self.controller.save_quiz_answers(self.quiz_answers) # saves quiz answers to db
-            print(self.quiz_answers)
             self.controller.cursor.execute("UPDATE users SET quiz_taken = 1 WHERE id = ?", (self.controller.current_user_id,)); self.controller.db.commit()
             
             self.controller.openpage(self, self.controller.mainpage)
@@ -603,10 +601,14 @@ class comparepage(ctk.CTkFrame):
         sections = []
         priorities = {
             "Nightlife": 3,
-            "Financial information": 2,
+            "Financial support": 2,
             "Student Reviews": 1,
-            "Costs": 4
-
+            "Costs": 4,
+            "Sports": 6,
+            "Art/Music": 6,
+            "Societies": 6,
+            "Job Opportunities (Part-time)": 6,
+            "Job Opportunities (Internships)": 6
         }
         if not data:
             messagebox.showinfo("Error", f"No data found for {university_name}")
@@ -614,7 +616,7 @@ class comparepage(ctk.CTkFrame):
         financial_info = answers.get(4)
         if financial_info:
             if financial_info == "Yes":
-                sections.append(("Financial support", data["financial_support_info"]))
+                sections.append(("Financial support", str(data["financial_support_info"])))
 
 
         nightlife_answer = answers.get(8)
@@ -628,20 +630,22 @@ class comparepage(ctk.CTkFrame):
             elif nightlife_answer == "Not important":
                 priorities["Nightlife"] = 5
                 nightlife_text = "Nightlife is not important to you, so campus or quieter areas may suit you."
-            sections.append(("Nightlife", nightlife_text + "\n" + data["nightlife_info"]))
+            sections.append(("Nightlife", nightlife_text + "\n" + str(data["nightlife_info"])))
 
         activities_answer = answers.get(7)
         if activities_answer:
             if activities_answer == "Sports":
-                sections.append(("Sports", "You are interested in sports activities. " + data["sports"]))
+                sections.append(("Sports", "You are interested in sports activities. " + str(data["sports"])))
             if activities_answer == "Art/music":
-                sections.append(("Art/Music", "You are interested in art/music activities. " + data["art_music"]))
+                sections.append(("Art/Music", "You are interested in art/music activities. " + str(data["art_music"])))
             if activities_answer == "Societies":
-                sections.append(("Societies", "You are interested in societies. " + data["societies"]))
+                sections.append(("Societies", "You are interested in societies. " + str(data["societies"])))
             if activities_answer == "Job opportunities (part-time)":   
-                sections.append(("Job Opportunities (Part-time)", "You are interested in part-time job opportunities. " + data["job_opportunities_part_time"]))
+                sections.append(("Job Opportunities (Part-time)", "You are interested in part-time job opportunities. " + str(data["job_opportunities_part_time"])))
             if activities_answer == "Job opportunities (internships)":
-                sections.append(("Job Opportunities (Internships)", "You are interested in internship opportunities. " + data["job_opportunities_full_time"]))
+                sections.append(("Job Opportunities (Internships)", "You are interested in internship opportunities. " + str(data["job_opportunities_full_time"])))
+        print(sections)
+        sections.sort(key=lambda s: priorities.get(s[0], 999))
         print(sections)
             
 
