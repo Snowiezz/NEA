@@ -21,6 +21,7 @@ class NEA(ctk.CTk):
         self.load_quiz_answers()
         self.mainpage.display_saved_universities()
         self.load_quiz_answers()
+        self.comparepage.update_dropdown()
         self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id,)) #Checks database for it quiz has been taken
         result = self.cursor.fetchone() # fetches result
         if result and result[0] == 0: # if quiz not taken
@@ -442,8 +443,7 @@ class quizpage(ctk.CTkFrame):
             messagebox.showinfo("Quiz Completed", "Please continue to the main page.") # no more questions
             self.controller.save_quiz_answers(self.quiz_answers) # saves quiz answers to db
             self.controller.cursor.execute("UPDATE users SET quiz_taken = 1 WHERE id = ?", (self.controller.current_user_id,)); self.controller.db.commit()
-            self.controller.load_saved_universities()
-            self.controller.comparepage.update_dropdown()
+            self.controller.mainpage.display_saved_universities()
             self.controller.openpage(self, self.controller.mainpage)
 
     # Handlers for different question types
@@ -590,9 +590,9 @@ class comparepage(ctk.CTkFrame):
     def update_dropdown(self):
         self.leftcomparedropdown.configure(values=self.controller.saved_universities) #updates the left dropdown
         self.rightcomparedropdown.configure(values=self.controller.saved_universities)# updates the right dropdown
-        
-        self.leftcomparedropdown.set(self.controller.saved_universities[0]) #resets left dropdown
-        self.rightcomparedropdown.set(self.controller.saved_universities[0]) #resets right dropdown
+        if self.controller.saved_universities:
+            self.leftcomparedropdown.set(self.controller.saved_universities[0]) #resets left dropdown
+            self.rightcomparedropdown.set(self.controller.saved_universities[0]) #resets right dropdown        
 
 
     def display_comparison(self,university_name):
@@ -644,10 +644,11 @@ class comparepage(ctk.CTkFrame):
                 sections.append(("Job Opportunities (Part-time)", "You are interested in part-time job opportunities. " + str(data["job_opportunities_part_time"])))
             if activities_answer == "Job opportunities (internships)":
                 sections.append(("Job Opportunities (Internships)", "You are interested in internship opportunities. " + str(data["job_opportunities_full_time"])))
-        print(sections)
-        sections.sort(key=lambda s: priorities.get(s[0], 999))
-        print(sections)
-            
+        
+        # Sort sections on priority 
+        print("My original sections are:",sections)
+        sections_sorted = sorted(sections, key=lambda section: priorities.get(section[0], 999))
+        print("New sections are: ",sections_sorted)
 
         
     def __init__(self,parent,controller):
