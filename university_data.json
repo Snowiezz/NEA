@@ -15,17 +15,15 @@
       "living_costs": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs",
       "Courses": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing"
     },
-    "sports": [
-      "Extensive college and university-level sport, including competitive inter-college leagues and university clubs across many sports.",
-      "Facilities and club information are typically coordinated through Oxford University Sport."
-    ],
-    "art_music": [
-      "Strong arts and music scene across colleges and the university, including choirs, orchestras, ensembles, theatre and exhibitions.",
-      "Many events are run through colleges, university departments and student groups."
-    ],
-    "societies": [
+    "sports": 
+      "Extensive college and university-level sport, including competitive inter-college leagues and university clubs across many sports. Facilities and club information are typically coordinated through Oxford University Sport."
+    ,
+    "art_music": 
+      "Strong arts and music scene across colleges and the university, including choirs, orchestras, ensembles, theatre and exhibitions. Many events are run through colleges, university departments and student groups."
+    ,
+    "societies": 
       "Large range of student societies and common rooms across colleges, plus university-wide clubs covering academic, cultural, volunteering and hobby interests."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time work opportunities are commonly available in Oxford via college roles, university departments, local hospitality/retail, and casual event work; students should follow university guidance on working hours during term.",
     "job_opportunities_full_time": "Full-time opportunities are supported through the university careers service, internships and graduate schemes, with strong recruitment pipelines into academia, consulting, finance, tech and the public sector.",
     "nightlife_info": "Oxford has a relaxed but lively nightlife with pubs, bars, student nights, and occasional club events."
@@ -44,16 +42,15 @@
       "scholarships": "https://www.cam.ac.uk/study/undergraduate/fees-and-funding",
       "student_life": "https://www.cam.ac.uk/study/student-life"
     },
-    "sports": [
-      "Wide range of sports through colleges and university clubs, including competitive varsity and inter-college competitions.",
-      "Sports facilities and club coordination are supported through the university sports service."
-    ],
-    "art_music": [
+    "sports": 
+      "Wide range of sports through colleges and university clubs, including competitive varsity and inter-college competitions. Sports facilities and club coordination are supported through the university sports service."
+    ,
+    "art_music": 
       "Active music and arts community with choirs, orchestras, bands, theatre and visual arts across colleges and university venues."
-    ],
-    "societies": [
+    ,
+    "societies": 
       "Hundreds of student-led societies spanning academic interests, cultural groups, volunteering, entrepreneurship and hobbies, many coordinated through the students’ union and colleges."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time work is often available via colleges, university departments and local employers (hospitality/retail/tutoring); students should consider course workload and term-time working guidance.",
     "job_opportunities_full_time": "Graduate and full-time opportunities are supported via the university careers service, with strong pipelines into research, tech, engineering, consulting, finance and public service.",
     "nightlife_info": "Cambridge nightlife is mostly centred on pubs and student events, with a smaller club scene than major cities."
@@ -72,22 +69,21 @@
       "scholarships": "https://www.imperial.ac.uk/study/ug/fees-and-funding/",
       "student_life": "https://www.imperial.ac.uk/study/campus-life/"
     },
-    "sports": [
-      "Extensive sports clubs and competitive teams, with opportunities ranging from recreational to performance sport.",
-      "Sports are largely organized through Imperial College Union clubs."
-    ],
-    "art_music": [
+    "sports": 
+      "Extensive sports clubs and competitive teams, with opportunities ranging from recreational to performance sport. Sports are largely organized through Imperial College Union clubs."
+    ,
+    "art_music": 
       "Active performing arts and music groups (e.g., bands, orchestras, choirs, theatre, dance) alongside London’s wider cultural scene."
-    ],
-    "societies": [
+    ,
+    "societies": 
       "Large number of student societies including academic/departmental, cultural, arts, volunteering and tech/entrepreneurship groups, mainly through Imperial College Union."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time work opportunities are widely available in London (hospitality, retail, tutoring, campus roles). Students often balance work with demanding course schedules.",
     "job_opportunities_full_time": "Strong full-time prospects supported by Imperial careers services and industry links, especially in engineering, tech, consulting and finance.",
     "nightlife_info": "London offers one of the best nightlife scenes in the UK, with countless clubs, bars, gigs and late-night events."
   },
   {
-    "university_name": "UCL",
+    "university_name": "University College London (UCL)",
     "student_score": 4.1,
     "student_review": "Diverse courses with vibrant campus life.",
     "latitude": 51.5246,
@@ -100,16 +96,15 @@
       "scholarships": "https://www.ucl.ac.uk/scholarships/",
       "student_life": "https://www.ucl.ac.uk/students/student-life"
     },
-    "sports": [
-      "Wide selection of sports clubs, fitness and recreational activities, with student participation supported through UCL Students’ Union.",
-      "London location also provides access to external clubs and facilities."
-    ],
-    "art_music": [
+    "sports": 
+      "Wide selection of sports clubs, fitness and recreational activities, with student participation supported through UCL Students’ Union. London location also provides access to external clubs and facilities."
+    ,
+    "art_music": 
       "Many music, theatre and arts opportunities via student groups and London’s cultural institutions (museums, galleries, theatres)."
-    ],
-    "societies": [
+    ,
+    "societies": 
       "Hundreds of societies spanning academic subjects, cultural communities, campaigning, volunteering, entrepreneurship and hobbies, coordinated via UCL Students’ Union."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time opportunities are plentiful across London and through campus jobs (where available), including tutoring, hospitality and retail; students should follow guidance on term-time hours.",
     "job_opportunities_full_time": "Full-time and graduate opportunities are supported through UCL Careers, with strong access to London-based employers across finance, consulting, tech, healthcare, government and NGOs.",
     "nightlife_info": "Central London gives UCL students easy access to a huge range of nightlife, from pubs to major clubs and live music."
@@ -128,22 +123,21 @@
       "scholarships": "https://www.ed.ac.uk/student-funding",
       "student_life": "https://www.ed.ac.uk/student-life"
     },
-    "sports": [
-      "Strong sports offering with clubs and recreational sport, supported through the university and students’ association.",
-      "Facilities typically include gyms and sports centers with a range of activities."
-    ],
-    "art_music": [
+    "sports": 
+      "Strong sports offering with clubs and recreational sport, supported through the university and students’ association. Facilities typically include gyms and sports centers with a range of activities."
+    ,
+    "art_music": 
       "Large arts and music community including ensembles, choirs, theatre, and festivals; Edinburgh’s city-wide arts scene is a major advantage."
-    ],
-    "societies": [
+    ,
+    "societies": 
       "Wide range of societies and student groups through the students’ association, including academic, cultural, volunteering and interest-based clubs."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time roles are commonly available in Edinburgh (hospitality, retail, tourism, events) and sometimes via university departments; students should consider workload in term.",
     "job_opportunities_full_time": "Full-time opportunities supported by the university careers service, with graduate routes into tech, finance, public sector, education, and research.",
     "nightlife_info": "Edinburgh has a fun nightlife with pubs, cocktail bars and student nights, especially around the city centre."
   },
   {
-    "university_name": "King’s College London",
+    "university_name": "Kings College London",
     "student_score": 4.0,
     "student_review": "Excellent programs with a central location.",
     "latitude": 51.5112,
@@ -156,15 +150,15 @@
       "scholarships": "https://www.kcl.ac.uk/study/undergraduate/fees-funding",
       "student_life": "https://www.kcl.ac.uk/student-experience"
     },
-    "sports": [
+    "sports":
       "Sports clubs and activities are available through King’s College London Students’ Union, with access to London-wide facilities and competitions."
-    ],
-    "art_music": [
+    ,
+    "art_music": 
       "Good access to music and arts through student groups and central London’s major cultural venues; opportunities include ensembles, performance and creative societies."
-    ],
-    "societies": [
+    ,
+    "societies": 
       "Broad range of societies including course-related, cultural, faith, volunteering, campaigning, and hobby groups via KCLSU."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time work is widely available in central London (retail, hospitality, tutoring, events) and sometimes through campus opportunities; students should follow any visa/working-hour constraints if applicable.",
     "job_opportunities_full_time": "Full-time/graduate opportunities supported via King’s Careers and London employer networks, including healthcare, policy, law, finance, consulting and tech.",
     "nightlife_info": "Being in central London means KCL students can easily reach many of the city’s best nightlife spots."
@@ -183,15 +177,15 @@
       "scholarships": "https://www.lse.ac.uk/study/undergraduate/fees-and-funding",
       "student_life": "https://www.lse.ac.uk/student-life"
     },
-    "sports": [
+    "sports": 
       "Sports and fitness opportunities are available through LSE student clubs and London facilities; participation ranges from recreational to competitive."
-    ],
-    "art_music": [
+    ,
+    "art_music": 
       "Arts and music opportunities via student groups, plus exceptional access to London’s theatres, galleries and music venues."
-    ],
-    "societies": [
+    ,
+    "societies": 
       "Extensive societies ecosystem (academic, cultural, political, media, volunteering, entrepreneurship) strongly associated with LSE’s social-science focus."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time work opportunities are widely available in London (events, hospitality, retail, tutoring). Students often find roles aligned with language skills, admin, research support or event staffing.",
     "job_opportunities_full_time": "Very strong full-time prospects supported by LSE Careers; common destinations include finance, consulting, policy/government, NGOs, research and tech.",
     "nightlife_info": "LSE’s location offers quick access to central London nightlife, including bars, clubs, and live events."
@@ -210,16 +204,15 @@
       "scholarships": "https://www.manchester.ac.uk/study/undergraduate/student-finance/",
       "student_life": "https://www.manchester.ac.uk/study/student-life/"
     },
-    "sports": [
-      "Large range of sports clubs and facilities, with opportunities for beginners through to competitive teams.",
-      "Student sport is often coordinated through the students’ union and university sport services."
-    ],
-    "art_music": [
+    "sports": 
+      "Large range of sports clubs and facilities, with opportunities for beginners through to competitive teams, Student sport is often coordinated through the students’ union and university sport services."
+    ,
+    "art_music": 
       "Strong music and arts scene with student groups and venues across Manchester; opportunities include bands, orchestras, theatre and creative societies."
-    ],
-    "societies": [
+    ,
+    "societies": 
       "Many societies spanning academic, cultural, faith, volunteering, media, entrepreneurship and hobbies, largely coordinated through the Students’ Union."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time jobs are commonly available in Manchester (retail, hospitality, events, tutoring) and potentially on-campus roles; the city’s size supports varied options.",
     "job_opportunities_full_time": "Full-time and graduate support via the university careers service, with regional and national employers across tech, engineering, healthcare, finance and the public sector.",
     "nightlife_info": "Manchester is famous for nightlife, with lots of student nights, clubs, bars and live music venues."
@@ -238,16 +231,15 @@
       "scholarships": "https://www.bristol.ac.uk/fees-funding/",
       "student_life": "https://www.bristol.ac.uk/student-life/"
     },
-    "sports": [
-      "Good selection of sports clubs and activities, from recreational sport to competitive teams, supported through the students’ union and university sport.",
-      "Access to local outdoor activities around Bristol is also a benefit."
-    ],
-    "art_music": [
+    "sports": 
+      "Good selection of sports clubs and activities, from recreational sport to competitive teams, supported through the students’ union and university sport. Access to local outdoor activities around Bristol is also a benefit."
+    ,
+    "art_music": 
       "Active arts and music culture with student theatre, bands, ensembles and creative societies; Bristol’s city music scene is well known."
-    ],
-    "societies": [
+    ,
+    "societies": 
       "Wide variety of societies including academic, cultural, volunteering, performing arts and hobby groups, largely coordinated through the students’ union."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time roles are commonly available across Bristol (hospitality, retail, events, tutoring) and sometimes through university departments; students should balance with study demands.",
     "job_opportunities_full_time": "Full-time prospects supported by the careers service with links to employers in engineering, aerospace, tech, creative industries, finance and the public sector.",
     "nightlife_info": "Bristol has a lively student nightlife with popular pubs, clubs, and regular live music events."
@@ -266,15 +258,15 @@
       "scholarships": "https://www.gla.ac.uk/scholarships/",
       "student_life": "https://www.gla.ac.uk/studentlife/"
     },
-    "sports": [
+    "sports": 
       "Range of sports clubs and facilities with opportunities for social and competitive sport, coordinated through the university and student groups."
-    ],
-    "art_music": [
+    ,
+    "art_music": 
       "Active arts and music life including theatre, bands, ensembles and creative societies; Glasgow’s wider music and arts scene offers many options."
-    ],
-    "societies": [
+    ,
+    "societies": 
       "Many student societies across academic interests, culture, volunteering, faith and hobbies, with strong student community structures."
-    ],
+    ,
     "job_opportunities_part_time": "Part-time work is available across Glasgow (retail, hospitality, events) and potentially through university roles; students should account for timetable and workload.",
     "job_opportunities_full_time": "Full-time and graduate opportunities supported through the university careers service, with routes into engineering, tech, finance, education, healthcare and research.",
     "nightlife_info": "Glasgow has a vibrant nightlife with plenty of clubs, pubs, gig venues and student-friendly events."

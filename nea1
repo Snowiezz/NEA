@@ -380,6 +380,13 @@ class quizpage(ctk.CTkFrame):
                 "questionnumber": 8,
                 "options": ["Very important", "Somewhat important", "Not important"],
                 "handler": self.single_selected
+            },
+            {
+                "text": "How important is cost to you?",
+                "type": "single",
+                "questionnumber": 9,
+                "options": ["Very important", "Somewhat important", "Not important"],
+                "handler": self.single_selected
             }
         ]
         # Hide all widgets first
@@ -443,7 +450,15 @@ class quizpage(ctk.CTkFrame):
             messagebox.showinfo("Quiz Completed", "Please continue to the main page.") # no more questions
             self.controller.save_quiz_answers(self.quiz_answers) # saves quiz answers to db
             self.controller.cursor.execute("UPDATE users SET quiz_taken = 1 WHERE id = ?", (self.controller.current_user_id,)); self.controller.db.commit()
-            self.controller.mainpage.display_saved_universities()
+
+            saved_unis = self.quiz_answers.get(1) # gets saved universities from quiz answers
+            if saved_unis: #if it exists 
+                for uni in saved_unis: # for each one
+                    self.controller.save_saved_universities(uni) # saves them to saved universities
+                
+            self.controller.load_saved_universities() # loads saved universities
+            self.controller.mainpage.display_saved_universities() # updates them
+            self.controller.comparepage.update_dropdown() # updates compare page dropdowns
             self.controller.openpage(self, self.controller.mainpage)
 
     # Handlers for different question types
@@ -595,7 +610,7 @@ class comparepage(ctk.CTkFrame):
             self.rightcomparedropdown.set(self.controller.saved_universities[0]) #resets right dropdown        
 
 
-    def display_comparison(self,university_name):
+    def display_comparison(self,university_name,side):
         data = self.controller.unidata.get(university_name)
         answers = self.controller.quiz_answers    
         sections = []
@@ -616,7 +631,7 @@ class comparepage(ctk.CTkFrame):
         financial_info = answers.get(4)
         if financial_info:
             if financial_info == "Yes":
-                sections.append(("Financial support", str(data["financial_support_info"])))
+                sections.append(("Financial support" + (data["financial_support_info"])))
 
 
         nightlife_answer = answers.get(8)
@@ -625,31 +640,58 @@ class comparepage(ctk.CTkFrame):
                 priorities["Nightlife"] = 0
                 nightlife_text = "Nightlife is very important to you, so city options may suit you best."
             elif nightlife_answer == "Somewhat important":
-                priorities["Nightlife"] = 2
+                priorities["Nightlife"] = 3
                 nightlife_text = "Nightlife matters somewhat to you, so balanced city/campus options are good."
             elif nightlife_answer == "Not important":
-                priorities["Nightlife"] = 5
+                priorities["Nightlife"] = 7
                 nightlife_text = "Nightlife is not important to you, so campus or quieter areas may suit you."
-            sections.append(("Nightlife", nightlife_text + "\n" + str(data["nightlife_info"])))
+            sections.append(("Nightlife", nightlife_text + "\n" + (data["nightlife_info"])))
+        
+        cost_answer = answers.get(9)
+        if cost_answer:
+            if cost_answer == "Very important":
+                priorities["Costs"] = 0
+                cost_text = "Cost is very important to you, so here is more information regarding costs."
+            elif cost_answer == "Somewhat important":
+                priorities["Costs"] = 3
+                cost_text = "Cost matters somewhat to you, so here is some information regarding the costs."
+            elif cost_answer == "Not important":
+                priorities["Costs"] = 7
+                cost_text = "Cost is not important to you, but here is some information in case."
+            costs_content = (cost_text + "\n" +
+        "Accommodation costs: " + (data["accommodation_cost"]) + "\n" +
+        "Cost of living: " + (data["cost_of_living"]))
+            sections.append(("Costs", costs_content))
 
         activities_answer = answers.get(7)
         if activities_answer:
-            if activities_answer == "Sports":
-                sections.append(("Sports", "You are interested in sports activities. " + str(data["sports"])))
-            if activities_answer == "Art/music":
-                sections.append(("Art/Music", "You are interested in art/music activities. " + str(data["art_music"])))
-            if activities_answer == "Societies":
-                sections.append(("Societies", "You are interested in societies. " + str(data["societies"])))
-            if activities_answer == "Job opportunities (part-time)":   
-                sections.append(("Job Opportunities (Part-time)", "You are interested in part-time job opportunities. " + str(data["job_opportunities_part_time"])))
-            if activities_answer == "Job opportunities (internships)":
-                sections.append(("Job Opportunities (Internships)", "You are interested in internship opportunities. " + str(data["job_opportunities_full_time"])))
+            if "Sports" in activities_answer:
+                sections.append(("Sports", "You are interested in sports activities. " + (data["sports"])))
+            if "Art/music" in activities_answer:
+                sections.append(("Art/Music", "You are interested in art/music activities. " + (data["art_music"])))
+            if "Societies" in activities_answer:
+                sections.append(("Societies", "You are interested in societies. " + (data["societies"])))
+            if "Job opportunities (part-time)" in activities_answer:   
+                sections.append(("Job Opportunities (Part-time)", "You are interested in part-time job opportunities. " + (data["job_opportunities_part_time"])))
+            if "Job opportunities (internships)" in activities_answer:
+                sections.append(("Job Opportunities (Internships)", "You are interested in internship opportunities. " + (data["job_opportunities_full_time"])))
         
         # Sort sections on priority 
-        print("My original sections are:",sections)
-        sections_sorted = sorted(sections, key=lambda section: priorities.get(section[0], 999))
-        print("New sections are: ",sections_sorted)
+        self.sections_sorted = sorted(sections, key=lambda section: priorities.get(section[0], 999))
 
+        if side=="left":
+            resultsframe = self.leftresultsframe
+        elif side=="right":
+            resultsframe = self.rightresultsframe
+
+        for widget in resultsframe.winfo_children(): #deletes all the current widgets
+            widget.destroy()
+
+        for title, content in self.sections_sorted:
+            title_label = ctk.CTkLabel(resultsframe, text=title, font=("Tahoma", 22, "bold"), text_color="#25995e", fg_color="#f5f5f5")
+            title_label.pack(anchor="w", pady=(10, 0), padx=20)
+            content_label = ctk.CTkLabel(resultsframe, text=content, font=("Tahoma", 16), text_color="black", fg_color="#f5f5f5", wraplength=400, justify="left")
+            content_label.pack(anchor="w", pady=(0, 10), padx=40)
         
     def __init__(self,parent,controller):
         super().__init__(parent)                
@@ -661,7 +703,7 @@ class comparepage(ctk.CTkFrame):
         
         
         self.leftcompareframe = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # left compare frame
-        self.leftcompareframe.place(relx=0.15, rely=0.2)
+        self.leftcompareframe.place(relx=0.08, rely=0.15, relwidth=0.4, relheight=0.8)
         self.leftcomparetext = ctk.CTkLabel(self.leftcompareframe, text="University 1", font=("Tahoma", 30, "bold"), text_color="black", fg_color="#e8f5e9")
         self.leftcomparetext.pack(pady=10, padx=20)
         self.leftcomparedropdown = ctk.CTkOptionMenu(self.leftcompareframe, height=50, width=400, font=("Tahoma", 20), 
@@ -669,12 +711,18 @@ class comparepage(ctk.CTkFrame):
         self.leftcomparedropdown.pack(pady=20,anchor="center",padx=50)
 
         self.rightcompareframe = ctk.CTkFrame(self, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # right compare frame
-        self.rightcompareframe.place(relx=0.55, rely=0.2)
+        self.rightcompareframe.place(relx=0.55, rely=0.15, relwidth=0.4, relheight=0.8)
         self.rightcomparetext = ctk.CTkLabel(self.rightcompareframe, text="University 2", font=("Tahoma", 30, "bold"), text_color="black", fg_color="#e8f5e9")
         self.rightcomparetext.pack(pady=10, padx=20)
         self.rightcomparedropdown = ctk.CTkOptionMenu(self.rightcompareframe, height=50, width=400, font=("Tahoma", 20), 
         values=self.controller.saved_universities)
         self.rightcomparedropdown.pack(pady=20,anchor="center",padx=50)
+
+        self.leftresultsframe = ctk.CTkScrollableFrame(self.leftcompareframe, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # results frame
+        self.leftresultsframe.place(relx=0.05, rely=0.25, relwidth=0.9, relheight=0.6)
+
+        self.rightresultsframe = ctk.CTkScrollableFrame(self.rightcompareframe, fg_color="#e8f5e9", corner_radius=15, border_width=1, border_color="#c8e6c9") # results frame
+        self.rightresultsframe.place(relx=0.05, rely=0.25, relwidth=0.9, relheight=0.6)
 
         self.return_button = ctk.CTkButton(self,text="Back",font=("Inter",40,"bold"),text_color="white",
         cursor="hand2",fg_color="#25995e",width=90,height=60,corner_radius=12)
@@ -684,12 +732,12 @@ class comparepage(ctk.CTkFrame):
         self.compare_button_left = ctk.CTkButton(self,text="Compare",font=("Inter",40,"bold"),text_color="white",
         cursor="hand2",fg_color="#25995e",width=250,height=100,corner_radius=12)
         self.compare_button_left.place(relx=0.25, rely=0.95, anchor="s")
-        self.compare_button_left.bind("<Button-1>", lambda event: self.display_comparison(self.leftcomparedropdown.get()))
+        self.compare_button_left.bind("<Button-1>", lambda event: self.display_comparison(self.leftcomparedropdown.get(),"left"))
 
         self.compare_button_right = ctk.CTkButton(self,text="Compare",font=("Inter",40,"bold"),text_color="white",
         cursor="hand2",fg_color="#25995e",width=250,height=100,corner_radius=12)
         self.compare_button_right.place(relx=0.75, rely=0.95, anchor="s")
-        self.compare_button_right.bind("<Button-1>", lambda event: self.display_comparison(self.rightcomparedropdown.get()))
+        self.compare_button_right.bind("<Button-1>", lambda event: self.display_comparison(self.rightcomparedropdown.get(),"right"))
 
 
             
