@@ -4,7 +4,7 @@ import re # for valid email pattern
 import sqlite3 #db
 import hashlib #hashes
 import json
-
+import tkintermapview #map view
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("green")
 
@@ -514,6 +514,7 @@ class mainpage(ctk.CTkFrame):
             self.controller.load_saved_universities() # reloads saved unis
             print(self.controller.saved_universities) # prints saved unis
             self.display_saved_universities()
+            self.controller.comparepage.update_dropdown() # updates compare page dropdowns
     def delete_university(self,university):
         # deletes university from saved universities
         self.controller.cursor.execute("DELETE FROM saved_universities WHERE user_id = ? AND university_name = ?",
@@ -523,6 +524,7 @@ class mainpage(ctk.CTkFrame):
         messagebox.showinfo("Success", "University removed successfully")
         self.controller.load_saved_universities() # reloads saved unis
         self.display_saved_universities()
+        self.controller.comparepage.update_dropdown() # updates compare page dropdowns
     def redo_quiz(self):
         # resets quiz_taken to 0
         self.controller.cursor.execute("UPDATE users SET quiz_taken = 0 WHERE id = ?", (self.controller.current_user_id,))
@@ -600,7 +602,17 @@ class mappage(ctk.CTkFrame):
     def __init__(self,parent,controller):
         super().__init__(parent)                
         self.configure(fg_color="#e8f5e9") # body background   
+        self.map_widget = tkintermapview.TkinterMapView(self, width=1000, height=900, corner_radius=2)
+        self.map_widget.set_position(54.0021959912, -2.54204416515)
+        self.map_widget.set_zoom(6)
+        self.map_widget.place(relx=0.7, rely=0.5, anchor="center")
 
+        self.home_marker = self.map_widget.set_address("London", marker=True) # home marker
+        print("Home marker result:", self.home_marker)
+
+
+
+        
 class comparepage(ctk.CTkFrame):
     def update_dropdown(self):
         self.leftcomparedropdown.configure(values=self.controller.saved_universities) #updates the left dropdown
@@ -631,7 +643,7 @@ class comparepage(ctk.CTkFrame):
         financial_info = answers.get(4)
         if financial_info:
             if financial_info == "Yes":
-                sections.append(("Financial support" + (data["financial_support_info"])))
+                sections.append(("Financial support" + "\n" + (data["financial_support_info"])))
 
 
         nightlife_answer = answers.get(8)
@@ -666,15 +678,15 @@ class comparepage(ctk.CTkFrame):
         activities_answer = answers.get(7)
         if activities_answer:
             if "Sports" in activities_answer:
-                sections.append(("Sports", "You are interested in sports activities. " + (data["sports"])))
+                sections.append(("Sports", "You are interested in sports activities. " + "\n" + (data["sports"])))
             if "Art/music" in activities_answer:
-                sections.append(("Art/Music", "You are interested in art/music activities. " + (data["art_music"])))
+                sections.append(("Art/Music", "You are interested in art/music activities. " + "\n" + (data["art_music"])))
             if "Societies" in activities_answer:
-                sections.append(("Societies", "You are interested in societies. " + (data["societies"])))
+                sections.append(("Societies", "You are interested in societies. " + "\n" +(data["societies"])))
             if "Job opportunities (part-time)" in activities_answer:   
-                sections.append(("Job Opportunities (Part-time)", "You are interested in part-time job opportunities. " + (data["job_opportunities_part_time"])))
+                sections.append(("Job Opportunities (Part-time)", "You are interested in part-time job opportunities. " + "\n" + (data["job_opportunities_part_time"])))
             if "Job opportunities (internships)" in activities_answer:
-                sections.append(("Job Opportunities (Internships)", "You are interested in internship opportunities. " + (data["job_opportunities_full_time"])))
+                sections.append(("Job Opportunities (Internships)", "You are interested in internship opportunities. " + "\n" + (data["job_opportunities_full_time"])))
         
         # Sort sections on priority 
         self.sections_sorted = sorted(sections, key=lambda section: priorities.get(section[0], 999))
