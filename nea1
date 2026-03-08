@@ -5,6 +5,7 @@ import sqlite3 #db
 import hashlib #hashes
 import json
 import tkintermapview #map view
+import pgeocode #postcode to coordinate
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("green")
 
@@ -22,6 +23,7 @@ class NEA(ctk.CTk):
         self.mainpage.display_saved_universities()
         self.load_quiz_answers()
         self.comparepage.update_dropdown()
+        self.mappage.update_map(self.quiz_answers.get(3),self.saved_universities)
         self.cursor.execute("SELECT quiz_taken FROM users WHERE id = ?",(user_id,)) #Checks database for it quiz has been taken
         result = self.cursor.fetchone() # fetches result
         if result and result[0] == 0: # if quiz not taken
@@ -607,8 +609,18 @@ class mappage(ctk.CTkFrame):
         self.map_widget.set_zoom(6)
         self.map_widget.place(relx=0.7, rely=0.5, anchor="center")
 
-        self.home_marker = self.map_widget.set_address("London", marker=True) # home marker
-        print("Home marker result:", self.home_marker)
+    def update_map(self,postcode,unis):
+        nomi = pgeocode.Nominatim("GB") 
+        location = nomi.query_postal_code(postcode)
+
+        self.home_marker = self.map_widget.set_marker(location.latitude, location.longitude) 
+        self.home_marker.set_text("Home")
+        ###
+        for uni in unis:
+            uni_data = self.controller.unidata.get(uni)
+            print(uni_data)
+        
+
 
 
 
